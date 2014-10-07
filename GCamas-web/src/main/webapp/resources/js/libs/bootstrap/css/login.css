@@ -1,0 +1,36 @@
+body{
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: whitesmoke;
+}
+.recuadro1{
+  box-shadow: 30px 10px 20px #aaa; 
+  border-radius: 20px;  
+  background-color:#E6E6E6;
+  width:330px;
+  padding:10px;
+  margin: 0 auto;
+}
+label.error {
+  font-weight: bold;
+  color: red;
+  padding: 2px 12px;
+  margin-top: 2px;
+  display: inline;
+}
+label.valid {
+	  width: 24px;
+	  height: 19px;
+	  background: url(/../../img/valid.png) center center no-repeat;
+	  display: inline-block;
+	  text-indent: -9999px;
+}
+.resetFormLabel{
+	color: #222222;
+}
+
+.resetFormSelect{
+	color: #222222;
+	border-color: #ccc;
+}
+

@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+  <body>
+    <ui:composition template="./../../Template.xhtml">
+
+      <ui:define name="content">
+        <div id="content" style="margin-left: 0px ! important;">
+          <h:form id="Datos">
+            <p:growl id="growl" life="3000" showSummary="true" showDetail="true"/>
+            <div class="menubar">
+              <div class="sidebar-toggler visible-xs">
+                <i class="ion-navicon"></i>
+              </div>
+              <div class="page-title">
+                Salas
+              </div>
+              <p:commandButton value="Agregar Sala" action="#{salaBean.poderCrear()}"  update="growl" styleClass="new-user btn btn-success pull-right"/>
+            </div>   
+            <div class="content-wrapper">
+              <p:dataTable var="lista" value="#{salaBean.listaSalas}">
+                <p:column>
+                  <p:rowToggler>Ver Camas</p:rowToggler>
+                </p:column>
+                <p:column headerText="Nombre Sala" filterBy="#{lista.nombreSala}" sortBy="#{lista.nombreSala}">
+                  <p:outputLabel value="#{lista.nombreSala}"/>
+                </p:column>
+
+                <p:column headerText="Especialidad" filterBy="#{lista.idEspecialidad.nombreEspecialidad}" sortBy="#{lista.idEspecialidad.nombreEspecialidad}">
+                  <p:outputLabel value="#{lista.idEspecialidad.nombreEspecialidad}"/>
+                </p:column>
+                <p:column headerText="Indicador Activo" sortBy="#{lista.indActivo}" >
+                  <h:selectBooleanCheckbox disabled="true" value="#{true}" rendered="#{lista.indActivo != 0}"/>
+                  <h:selectBooleanCheckbox disabled="true" value="#{false}" rendered="#{lista.indActivo == 0}"/>
+                </p:column>
+
+                <p:column>
+                  <p:commandButton id="btnUpdateSala" icon="ui-icon-pencil" action="SalaUpdate.xhtml">
+                    <f:setPropertyActionListener target="#{salaBean.sala}" value="#{lista}"/>
+                  </p:commandButton>
+                  <p:commandButton id="btnCreateCama" icon="ui-icon-plus" styleClass="new-user btn btn-success" action="../Camas/CamaCreate.xhtml" title="Agregar Cama"  rendered="#{lista.indActivo != 0}">
+                    <f:setPropertyActionListener target="#{camaBean.sala}" value="#{lista}"/>
+                    <f:setPropertyActionListener target="#{camaBean.especilialidad}" value="#{lista.idEspecialidad}"/>
+                  </p:commandButton>
+                </p:column>
+                <p:rowExpansion>
+                  <p:dataTable var="cama" value="#{salaBean.getCamasByIdSala(lista.idSala)}">
+                    <p:column headerText="Numero Cama">
+                      <p:outputLabel value="#{cama.numeroCama}"/>
+                    </p:column>
+                    <p:column headerText="Tipo Cama">
+                      <p:outputLabel value="#{cama.idTipoCama.descripcionTipoCama}" />
+                    </p:column>
+                    <p:column headerText="Estado Cama">
+                      <p:outputLabel value="#{cama.idEstadoCama.descripcionEstadoCama}" />
+                    </p:column>
+                    <p:column headerText="Indicador Activo">
+                      <h:selectBooleanCheckbox disabled="true" value="#{true}" rendered="#{cama.indActivo != 0}"/>
+                      <h:selectBooleanCheckbox disabled="true" value="#{false}" rendered="#{cama.indActivo == 0}"/>
+                    </p:column>
+                    <p:column>
+                      <p:commandButton id="btnUpdateCama" icon="ui-icon-pencil" action="../Camas/CamaUpdate.xhtml" title="Actualizar Cama">
+                        <f:setPropertyActionListener target="#{camaBean.idCamaParaUpdate}" value="#{cama.idCama}"/>
+                        <f:setPropertyActionListener target="#{camaBean.numeroCama}" value="#{cama.numeroCama}"/>
+                        <f:setPropertyActionListener target="#{camaBean.cama}" value="#{cama}"/>
+                        <f:setPropertyActionListener target="#{camaBean.sala}" value="#{lista}"/>
+                        <f:setPropertyActionListener target="#{camaBean.especilialidad}" value="#{lista.idEspecialidad}"/>
+                        <f:setPropertyActionListener target="#{camaBean.tipoCama}" value="#{cama.idTipoCama}"/>
+                      </p:commandButton>
+                    </p:column>
+                  </p:dataTable>
+                </p:rowExpansion>
+
+              </p:dataTable>
+            </div>
+          </h:form>
+        </div>
+      </ui:define>
+    </ui:composition>
+  </body>
+</html>
+

@@ -1,0 +1,336 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+  <body>
+    <ui:composition template="./../../Template.xhtml">
+      <ui:define name="content">
+        <div  id="wizard">
+          <div id="wrapper">
+
+            <div class="header">
+              <div class="sidebar-toggler visible-xs">
+                <i class="ion-navicon"></i>
+              </div>
+
+              <div class="steps clearfix">
+                <div class="step active">
+                  Selecci&oacute;n de Paciente
+                  <span></span>
+                </div>
+                <div class="step">
+                  Selecci&oacute;n Cama
+                  <span></span>
+                </div>
+                <div class="step">
+                  M&aacute;s Antecedentes de Hospitalizaci&oacute;n
+                  <span></span>
+                </div>
+                <div class="step">
+                  Confirmar Información
+                  <span></span>
+                </div>
+              </div>
+            </div>
+            <section class="form-wizard">
+
+              <h:form id="asignacionPaciente" class="form-horizontal">
+                <p:growl id="growl" showSummary="true"/>
+                <!-- PRIMER PASO SELEKSION DE PASIENTE -->
+                <div class="step active animated fadeInRightStep">
+                  <div class="form-group">
+                    <p:commandButton icon="ui-icon-search" value="Buscar Paciente" type="button" onclick="PF('dlg1').show();" />
+                  </div>
+                  <div class="form-group">
+                    <p:outputLabel value="RUT :" styleClass="col-md-4 control-label" />
+                    <div class="col-md-4">
+                      <p:inputText id="rut" styleClass="form-control input-md"
+                                   value="#{asignacionCamaBean.pacienteBuscado.runPaciente}-#{asignacionCamaBean.pacienteBuscado.dvPaciente}"
+                                   readonly="true"/>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <p:outputLabel value="FICHA :" styleClass="col-md-4 control-label" />
+                    <div class="col-md-4">
+                      <p:inputText id="ficha" styleClass="form-control input-md"
+                                   value="#{asignacionCamaBean.pacienteBuscado.numeroFicha}"
+                                   readonly="true"/>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <p:outputLabel value="Nombre Paciente :" styleClass="col-md-4 control-label" />
+                    <div class="col-md-4">
+                      <p:inputText id="nombreCompleto" styleClass="form-control input-md"
+                                   value="#{asignacionCamaBean.pacienteBuscado.nombre} #{asignacionCamaBean.pacienteBuscado.papellidoPaciente} #{asignacionCamaBean.pacienteBuscado.sapellidoPaciente}"
+                                   readonly="true"/>
+                    </div>
+                  </div>
+                  <div class="form-group form-actions">
+                    <button type="submit" id="paso1" class="button" data-step="2">
+                      <span>Siguiente Paso<i class="fa fa-angle-double-right"></i></span>
+                    </button>
+                  </div>
+                </div>
+                <!--SEGUNDO PASO SELECCIONAR LA SALA Y CAMA DE LA ESPECIALIDAD -->
+                <div class="step">
+                  <div class="form-group">
+                    <p:outputLabel value="Especialidad:" styleClass="col-md-4 control-label" for="especialidad"/>
+                    <div class="col-md-4">
+                      <p:inputText type="hidden" id="especialidad" value="#{asignacionCamaBean.especialidadUsuario.idEspecialidad}" 
+                                   styleClass="form-control input-md" required="true"/>
+                      <p:outputLabel value="#{asignacionCamaBean.especialidadUsuario.nombreEspecialidad}" 
+                                     styleClass="form-control input-md"/>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <p:outputLabel value="Sala:" styleClass="col-md-4 control-label" for="sala"/>
+                    <div class="col-md-4">
+                      <h:selectOneMenu id="sala" value="#{asignacionCamaBean.asignacionCama.idCama.idSala.idSala}" 
+                                       styleClass="form-control" required="true">
+                        <f:selectItem itemLabel="Seleccione..." itemValue="" noSelectionOption="true" />
+                        <f:selectItems value="#{asignacionCamaBean.listaSalasPorEspecialidad}" 
+                                       var="item2" itemLabel="#{item2.nombreSala}" itemValue="#{item2.idSala}"/>
+                        <p:ajax listener="#{asignacionCamaBean.onSalaChange()}" update="cama"/>
+                      </h:selectOneMenu>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <p:outputLabel value="Tipo Cama:" styleClass="col-md-4 control-label" for="tipoCama"/>
+                    <div class="col-md-4">
+                      <h:selectOneMenu id="tipoCama" value="#{asignacionCamaBean.asignacionCama.idCama.idTipoCama.idTipoCama}" 
+                                       styleClass="form-control" required="true">
+                        <f:selectItem itemLabel="Seleccione..." itemValue="" noSelectionOption="true" />
+                        <f:selectItems value="#{asignacionCamaBean.listTipoCama}" 
+                                       var="itemTipoCama" itemLabel="#{itemTipoCama.descripcionTipoCama}" 
+                                       itemValue="#{itemTipoCama.idTipoCama}"/>
+                        <p:ajax listener="#{asignacionCamaBean.onTipoCamaChange()}" update="cama estadoPaciente"/>
+                      </h:selectOneMenu>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <p:outputLabel value="Cama:" styleClass="col-md-4 control-label" for="cama"/>
+                    <div class="col-md-4">
+                      <h:selectOneMenu id="cama" value="#{asignacionCamaBean.asignacionCama.idCama.idCama}" 
+                                       styleClass="form-control" required="true"
+                                       valueChangeListener="#{asignacionCamaBean.onCamaChange()}">
+                        <f:selectItem itemLabel="Seleccione..." itemValue="" noSelectionOption="true" />
+                        <f:selectItems value="#{asignacionCamaBean.listaCamasPorEspecialidad}" var="item3" 
+                                       itemLabel="#{item3.numeroCama}" itemValue="#{item3.idCama}"/>
+                        <p:ajax listener="#{asignacionCamaBean.onCamaChangePrecarga()}" update=" nombreEspecialidad nombreSala nombreCama"/>
+                      </h:selectOneMenu>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                      <p:outputLabel value="Diagn&oacute;stico" styleClass="col-md-4 control-label"  for="diagnostico" />
+                      <div class="col-sm-10 col-md-8">
+                          <p:inputTextarea  styleClass="form-control" id="diagnostico" rows="6" cols="35" 
+                                            counter="display" maxlength="200" counterTemplate="{0} Letras Restantes." 
+                                            value="#{asignacionCamaBean.asignacionCama.diagnosticoSala}"
+                                            required="true"/>
+                          <h:outputText id="display" />
+                      </div>
+                    </div>
+                  <div class="form-group form-actions">
+                    <a class="button" href="#" data-step="1">
+                      <span><i class="fa fa-angle-double-left"></i> Atras</span>
+                    </a>
+                    <button type="submit" id="paso2" class="button" data-step="3">
+                      <span>Siguiente Paso<i class="fa fa-angle-double-right"></i></span>
+                    </button>
+                  </div>
+                </div>
+                <!--TERCER PASO SELECCIONAR LA FECHA DE ASIGNACION DE LA CAMA-->
+                <div class="step">
+                  <div class="form-group">
+                    <p:outputLabel for="motivo" value="Motivo Hospitalización" 
+                                   styleClass="col-md-4 control-label" />
+                    <div class="col-md-4">
+                      <p:inputText id="motivo" value="#{asignacionCamaBean.ih.motivoIngreso}" 
+                                   placeholder="Ingrese Motivo de la Hospitalización" 
+                                   required="true" styleClass="form-control input-md"
+                                   requiredMessage="Debe Ingresar un Motivo de Hospitalización" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <p:outputLabel for="fechaAsignacion" value="Fecha Asignacion:" 
+                                   styleClass="col-md-4 control-label" />
+                    <div class="col-md-4">
+                      <p:calendar id="fechaAsignacion" value="#{asignacionCamaBean.asignacionCama.fechaAsignacion}" 
+                                  placeholder="dd/mm/aaaa" pattern="dd/MM/yyyy" navigator="true"
+                                  required="true"/>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <p:outputLabel value="Estado Paciente:" styleClass="col-md-4 control-label" for="estadoPaciente" />
+                    <div class="col-md-4">
+                      <h:selectOneMenu id="estadoPaciente"  styleClass="form-control" 
+                                       value="#{asignacionCamaBean.asignacionCama.idEstadoPaciente.idEstadoPaciente}"
+                                       required="true">
+                        <f:selectItem itemLabel="Seleccione..." itemValue="" noSelectionOption="true" />
+                        <f:selectItems value="#{asignacionCamaBean.listEstadoPacientes}" 
+                                       var="itemEstadoPaciente" itemLabel="#{itemEstadoPaciente.descripcionEstadoPaciente}"
+                                       itemValue="#{itemEstadoPaciente.idEstadoPaciente}" />
+                      </h:selectOneMenu>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <p:outputLabel value="Ectopico:" styleClass="col-md-4 control-label" for="ectopico"/>
+                    <div class="col-md-4">
+                        <p:selectBooleanCheckbox value="#{asignacionCamaBean.ectopico}" id="ectopico" >
+                            <p:ajax rendered="pertenece" update="pertenece"/>
+                        </p:selectBooleanCheckbox>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <p:outputLabel for="pertenece" value="Servicio al que Pertenece" 
+                                   styleClass="col-md-4 control-label" />
+                    <div class="col-md-4">
+                        <h:selectOneMenu id="pertenece" value="#{asignacionCamaBean.asignacionCama.idServEctopico}" disabled="#{!asignacionCamaBean.ectopico}"
+                                       styleClass="form-control">
+                        <f:selectItems value="#{asignacionCamaBean.listaEspecialidades}" var="item5" 
+                                       itemLabel="#{item5.nombreEspecialidad}" itemValue="#{item5.idEspecialidad}"/>
+                      </h:selectOneMenu>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <p:outputLabel value="Servicio Procedencia:" styleClass="col-md-4 control-label" for="procedencia"/>
+                    <div class="col-md-4">
+                        <h:selectOneMenu id="procedencia" value="#{asignacionCamaBean.asignacionCama.idServicioProcedencia}" 
+                                       styleClass="form-control" required="true">
+                        <f:selectItems value="#{asignacionCamaBean.listaEspecialidades}" var="item4" 
+                                       itemLabel="#{item4.nombreEspecialidad}" itemValue="#{item4.idEspecialidad}"/>
+                      </h:selectOneMenu>
+                    </div>
+                  </div>
+                  <div class="form-group form-actions">
+                    <a class="button" href="#" data-step="2">
+                      <span><i class="fa fa-angle-double-left"></i> Back</span>
+                    </a>
+                   <button type="submit" id="paso3" class="button" data-step="4">
+                      <span>Siguiente Paso<i class="fa fa-angle-double-right"></i></span>
+                    </button>
+                  </div>
+                </div>
+                <!--PASO 4  CONFIRMACION DE LA INFORMACION INGRESADA-->
+                <div class="step">
+                    <h:inputHidden  id="c7" value="#{asignacionCamaBean.pacienteBuscado.idPaciente}"/>
+                  <div class="form-group">
+                    <p:outputLabel value="Especialidad:" styleClass="col-md-4 control-label" />
+                    <div class="col-md-4"> 
+                      <p:outputLabel id="nombreEspecialidad" styleClass="form-control input-md"
+                                     value="#{asignacionCamaBean.asignacionCama.idCama.idSala.idEspecialidad.nombreEspecialidad}"/>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <p:outputLabel value="Sala:" styleClass="col-md-4 control-label" />
+                    <div class="col-md-4">
+                      <p:outputLabel id="nombreSala" value="#{asignacionCamaBean.asignacionCama.idCama.idSala.nombreSala}"
+                                     styleClass="form-control input-md"/>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <p:outputLabel value="Cama:" styleClass="col-md-4 control-label" />
+                    <div class="col-md-4">
+                      <p:outputLabel id="nombreCama" value="#{asignacionCamaBean.asignacionCama.idCama.numeroCama}"
+                                     styleClass="form-control input-md"/>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <p:outputLabel value="RUT:" styleClass="col-md-4 control-label" />
+                    <div class="col-md-4">
+                      <p:outputLabel id="c4" value=" #{asignacionCamaBean.pacienteBuscado.runPaciente}-
+                                     #{asignacionCamaBean.pacienteBuscado.dvPaciente}"
+                                     styleClass="form-control input-md"/>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <p:outputLabel value="Ficha:" styleClass="col-md-4 control-label" />
+                    <div class="col-md-4">
+                      <p:outputLabel  id="c5" value="#{asignacionCamaBean.pacienteBuscado.numeroFicha}"
+                                      styleClass="form-control input-md"/>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <p:outputLabel value="Nombre Paciente:" styleClass="col-md-4 control-label" />
+                    <div class="col-md-4">
+                      <p:outputLabel id="c6" value="#{asignacionCamaBean.pacienteBuscado.nombre} 
+                                     #{asignacionCamaBean.pacienteBuscado.papellidoPaciente} 
+                                     #{asignacionCamaBean.pacienteBuscado.sapellidoPaciente}"
+                                     styleClass="form-control input-md"/>
+                    </div>
+                  </div>
+                  <div class="form-group form-actions">
+                    <a class="button" href="#" data-step="3">
+                      <span><i class="fa fa-angle-double-left"></i> Back</span>
+                    </a>
+                    <p:commandButton actionListener="#{asignacionCamaBean.create()}" value="Terminar Ingreso" 
+                                       update=":asignacionPaciente:growl" styleClass="btn btn-success" icon="ui-icon-circle-check"
+                                       oncomplete="ocultar(xhr, status, args)" />
+                  </div>
+                </div>
+              </h:form>
+              <!--DIALOG DE BUSQUEDA DE PACIENTE-->
+              <p:dialog header="B&uacute;squeda Paciente" widgetVar="dlg1" 
+                        width="600" resizable="false" 
+                        position="center">
+                <h:form id="frmBuscarPaciente" class="form-horizontal">
+                  <div class="form-group">
+                    <p:outputLabel value="RUT:" styleClass="col-md-4 control-label" />
+                    <div class="col-md-4">
+                      <p:inputText id="runPacinete" value="#{asignacionCamaBean.rut}" title="Rut" 
+                                   styleClass="form-control input-md"
+                                   style="text-transform: uppercase;">                      
+                        <p:ajax event="blur" update=":asignacionPaciente:growl" listener="#{asignacionCamaBean.onValidaRut()}" />
+                        <p:ajax event="blur" update="runPacinete" listener="#{asignacionCamaBean.onFormateaRut()}" />
+                      </p:inputText>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <p:outputLabel value="Ficha:" styleClass="col-md-4 control-label" for="nroficha" />
+                    <div class="col-md-4">
+                      <p:inputText id="nroficha" value="#{asignacionCamaBean.nroFicha}" title="Ficha" 
+                                   styleClass="form-control input-md"
+                                   style="text-transform: uppercase;">
+                      </p:inputText>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-4 control-label"></label>
+                    <div class="col-md-4">
+                      <p:commandButton icon="ui-icon-search" actionListener="#{asignacionCamaBean.buscaPaciente(event)}" 
+                                       update=":asignacionPaciente:growl :asignacionPaciente:rut :asignacionPaciente:ficha
+                                       :asignacionPaciente:nombreCompleto :asignacionPaciente:c7
+                                       :asignacionPaciente:c4 :asignacionPaciente:c5 :asignacionPaciente:c6 " 
+                                       oncomplete="ocultar(xhr, status, args)" />
+                    </div>
+                  </div>
+                </h:form>
+              </p:dialog>  
+
+              <script type="text/javascript">
+                function ocultar(xhr, status, args) {
+                  if (args.encontrado) {
+                    PF('dlg1').hide();
+                  }
+                }
+                function ocultar2(xhr, status, args) {
+                  if (args.encontrado) {
+                    PF('dlg2').hide();
+                  }
+                }
+                </script>
+            </section>
+          </div>
+        </div>  
+
+      </ui:define>
+    </ui:composition>
+  </body>
+</html>
+
+
+

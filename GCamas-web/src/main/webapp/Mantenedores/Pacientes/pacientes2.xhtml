@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../../Template.xhtml">
+
+            <ui:define name="content">
+                <f:view>
+
+
+                    <div id="content" style="margin-left:0px !important;">
+                        <h:form>
+                            <div class="menubar">
+                                <div class="sidebar-toggler visible-xs">
+                                    <i class="ion-navicon"></i>
+                                </div>
+                                <div class="page-title">
+                                    Pacientes
+                                </div>
+                                <p:commandButton id="cmdAgregar" value="Agregar" styleClass="new-user btn btn-success pull-right"
+                                                 action="{null}" />
+                            </div>
+                            <div class="content-wrapper">  
+                                <p:dataTable value="#{pacientesBean.listPacientes}" var="item" 
+                                             rows="10" paginator="true" 
+                                             paginatorPosition="bottom"
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="5,10,15"
+                                             widgetVar="tabla"
+                                             filteredValue="#{fixme}"
+                                             emptyMessage="No se encontraron resultados"
+
+                                             >
+                                    <f:facet name="header">
+                                        <p:outputPanel>
+                                            <h:outputText value="Buscar en todas las Columnas" />
+                                            <p:inputText id="globalFilter" onkeyup="PF('tabla').filter()" style="width:300px; text-transform: uppercase;" placeholder="Ingrese palabra"/>
+                                        </p:outputPanel>
+                                    </f:facet>
+                                    <p:column filterBy="#{item.idPaciente}">
+                                        <f:facet name="header">
+                                            <h:outputText value="IdPaciente"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.idPaciente}"/>
+                                    </p:column>
+                                    <p:column filterBy="#{item.runPaciente}">
+                                        <f:facet name="header">
+                                            <h:outputText value="RunPaciente"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.runPaciente}"/>
+                                    </p:column>
+                                    <p:column filterBy="#{item.dvPaciente}">
+                                        <f:facet name="header">
+                                            <h:outputText value="DvPaciente"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.dvPaciente}"/>
+                                    </p:column>
+                                    <p:column filterBy="#{item.nombre}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Nombre"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.nombre}"/>
+                                    </p:column>
+                                    <p:column filterBy="#{item.papellidoPaciente}">
+                                        <f:facet name="header">
+                                            <h:outputText value="PapellidoPaciente"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.papellidoPaciente}"/>
+                                    </p:column>
+                                    <p:column filterBy="#{item.sapellidoPaciente}">
+                                        <f:facet name="header">
+                                            <h:outputText value="SapellidoPaciente"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.sapellidoPaciente}"/>
+                                    </p:column>
+                                    <p:column filterBy="#{item.fechaNacimiento}">
+                                        <f:facet name="header">
+                                            <h:outputText value="FechaNacimiento"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.fechaNacimiento}">
+                                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column filterBy="#{item.numeroFicha}">
+                                        <f:facet name="header">
+                                            <h:outputText value="NumeroFicha"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.numeroFicha}"/>
+                                    </p:column>
+                                    <p:column filterBy="#{item.idSexo}">
+                                        <f:facet name="header">
+                                            <h:outputText value="IdSexo"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.idSexo}"/>
+                                    </p:column>
+                                    <p:column filterBy="#{item.idTipoPrevision}">
+                                        <f:facet name="header">
+                                            <h:outputText value="IdTipoPrevision"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.idTipoPrevision}"/>
+                                    </p:column>
+                                    <p:column style="width:10%; text-align:center">
+                                        <p:commandButton icon="ui-icon-plus" title="Editar" action="{null}">
+                                            <f:setPropertyActionListener value="itemm is undefined." target="{null}" />
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </h:form>
+                    </div>
+                </f:view>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

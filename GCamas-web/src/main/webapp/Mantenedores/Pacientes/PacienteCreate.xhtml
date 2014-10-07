@@ -1,0 +1,155 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+  <body onload="#{pacientesBean.resetData()}">
+    <ui:composition template="./../../Template.xhtml">
+      <ui:define name="content">
+        <div id="content" style="margin-left: 0px !important;">
+          <fieldset>
+            <legend>Ingresar Paciente</legend>
+            <h:form styleClass="form-horizontal" id="frmPacienteCreate" >
+              <p:growl id="growl" showSummary="true" life="3000"  />  
+
+              <div class="form-group">
+                <p:outputLabel value="Rut:" for="runPacinete" styleClass="col-md-4 control-label" />
+                <div class="col-md-4">
+                  <p:inputText id="runPacinete" value="#{pacientesBean.rut}" title="Rut" 
+                               styleClass="form-control input-md" required="true" 
+                               requiredMessage="Ingrese un RUT." style="text-transform: uppercase;">
+                    <f:validator validatorId="Validator.RutValidator" />
+                    <p:ajax event="blur" update="growl" listener="#{pacientesBean.onValidaRut()}" />
+                    <p:ajax event="blur" update="runPacinete" listener="#{pacientesBean.onFormateaRut()}" />
+                  </p:inputText>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <p:outputLabel value="Nombre:" for="nombre" styleClass="col-md-4 control-label" />
+                <div class="col-md-4">
+                  <p:inputText id="nombre" value="#{pacientesBean.paciente.nombre}" title="Nombre" 
+                               styleClass="form-control input-md" required="true" 
+                               requiredMessage="Debe Ingresar por lo menos un Nombre."
+                               style="text-transform: uppercase;"
+                               validatorMessage="Se debe Ingresar solo Letras">
+                    <f:validateRegex pattern="[A-Za-z ]*" />
+                  </p:inputText>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <p:outputLabel value="Apellido Paterno:" for="papellidoPaciente" styleClass="col-md-4 control-label" />
+                <div class="col-md-4">
+                  <p:inputText id="papellidoPaciente" value="#{pacientesBean.paciente.papellidoPaciente}" 
+                               title="PapellidoPaciente" styleClass="form-control input-md" 
+                               required="true" requiredMessage="Ingrese un Apellido Paterno."
+                               style="text-transform: uppercase;"
+                               validatorMessage="Se debe Ingresar solo Letras">
+                    <f:validateRegex pattern="[A-Za-z ]*" />
+                  </p:inputText>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <p:outputLabel value="Apellido Materno:" for="sapellidoPaciente" styleClass="col-md-4 control-label" />
+                <div class="col-md-4">
+                  <p:inputText id="sapellidoPaciente" value="#{pacientesBean.paciente.sapellidoPaciente}" 
+                               title="SapellidoPaciente" styleClass="form-control input-md" 
+                               style="text-transform: uppercase;"
+                               validatorMessage="Se debe Ingresar solo Letras">
+                    <f:validateRegex pattern="[A-Za-z ]*"/>
+                  </p:inputText>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <p:outputLabel value="Fecha Nacimiento:" for="fechaNacimiento" styleClass="col-md-4 control-label" />
+                <div class="col-md-4">
+                  <p:calendar id="fechaNacimiento" value="#{pacientesBean.paciente.fechaNacimiento}" 
+                              pattern="dd/MM/yyyy" title="FechaNacimiento" navigator="true"
+                              required="true" requiredMessage="Ingrese su Fecha de Nacimiento." placeholder="dd/mm/yyyy"
+                              yearRange="c-120:c">
+                    <p:ajax event="blur" listener="#{pacientesBean.calculaEdad(event)}" update="edad" />
+                    <p:ajax rendered="edad" update="edad" />
+                  </p:calendar>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <p:outputLabel value="Edad:" for="edad" styleClass="col-md-4 control-label" />
+                <div class="col-md-4">
+                  <p:inputText id="edad" value="#{pacientesBean.edad}" readonly="true"
+                               title="Edad" styleClass="form-control input-md" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <p:outputLabel value="N&deg; Ficha:" for="numeroFicha" styleClass="col-md-4 control-label" />
+                <div class="col-md-4">
+                  <p:inputText id="numeroFicha" value="#{pacientesBean.paciente.numeroFicha}" title="NumeroFicha" 
+                               styleClass="form-control input-md" type="number" 
+                               required="true" requiredMessage="Ingrese Número de Ficha del Paciente." />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <p:outputLabel value="Sexo:" for="idSexo" styleClass="col-md-4 control-label" />
+                <div class="col-md-4">
+                  <h:selectOneMenu id="idSexo" value="#{pacientesBean.paciente.idSexo.idSexo}"  
+                                   required="true" requiredMessage="Seleccione el Sexo del Paciente."
+                                   styleClass="form-control">
+                    <f:selectItem itemLabel="Seleccione..." itemValue="" noSelectionOption="true" />
+                    <f:selectItems value="#{pacientesBean.listSexo}" var="sexo" itemLabel="#{sexo.descripcion}" 
+                                   itemValue="#{sexo.idSexo}" />
+                  </h:selectOneMenu>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <p:outputLabel value="Prevision:" for="idPrevision" styleClass="col-md-4 control-label" />
+                <div class="col-md-4">
+                  <h:selectOneMenu id="idPrevision" value="#{pacientesBean.paciente.idTipoPrevision.idPrevision.idPrevision}"  
+                                   required="true" requiredMessage="Seleccione una Previsión."
+                                   styleClass="form-control">
+                    <p:ajax listener="#{pacientesBean.onPrevisionChange()}" update="idTipoPrevision" />
+                    <f:selectItem itemLabel="Seleccione..." itemValue="" noSelectionOption="true" />
+                    <f:selectItems value="#{previsionBean.allPrevisiones}" var="prevision" 
+                                   itemLabel="#{prevision.descripcionPrevision}" itemValue="#{prevision.idPrevision}"/>
+                  </h:selectOneMenu>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <p:outputLabel value="Tipo Prevision:" for="idTipoPrevision" styleClass="col-md-4 control-label" />
+                <div class="col-md-4">
+                  <h:selectOneMenu id="idTipoPrevision" value="#{pacientesBean.paciente.idTipoPrevision.idTipoPrevision}" 
+                                   required="true" requiredMessage="Seleccione una Tipo Previsión"
+                                   styleClass="form-control">
+                    <f:selectItem itemLabel="Seleccione..." itemValue="" noSelectionOption="true" />
+                    <f:selectItems value="#{pacientesBean.listTipoPrevisionCombo}" var="tPrevision"
+                                   itemLabel="#{tPrevision.descripcionTipoPrevision}"
+                                   itemValue="#{tPrevision.idTipoPrevision}" />
+                  </h:selectOneMenu>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-md-4 control-label"></label>
+                <div class="col-md-4">
+                  <p:commandButton value="Guardar" actionListener="#{pacientesBean.create()}" 
+                                   update="growl" styleClass="btn btn-success" ajax="false" />
+                  <p:commandButton value="Cancelar" styleClass="btn btn-danger"
+                                   onclick="volver('#{appBean.baseUrl}/Mantenedores/Pacientes/Pacientes.xhtml')"/>
+                </div>
+              </div>
+            </h:form>
+          </fieldset>
+        </div>
+      </ui:define>
+    </ui:composition>
+  </body>
+</html>
+

@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../../Template.xhtml">
+
+            <ui:define name="content">
+                <f:view>
+
+                    <div id="content" style="margin-left: 0px !important;">
+                        <fieldset>
+                            <legend>Egreso Paciente</legend>
+                            <h:form styleClass="form-horizontal" id="PacienteEgreso3" >
+                                <p:growl id="growl" showSummary="true" life="3000"  />  
+
+                                <div class="form-group">
+                                    <p:outputLabel value="Motivo Egreso:" for="motivoEgreso" styleClass="col-md-4 control-label" />
+                                    <div class="col-md-4">
+                                        <p:inputTextarea  styleClass="form-control" id="motivoEgreso" rows="6" cols="35" 
+                                                          counter="display" maxlength="200" counterTemplate="{0} Letras Restantes." 
+                                                          value="#{pacientesBean.egresoH.motivoEgreso}" />
+                                        <h:outputText id="display" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p:outputLabel value="FechaEgreso:" for="fechaEgreso" styleClass="col-md-4 control-label" />
+                                    <div class="col-md-4">
+                                        <p:calendar id="fechaEgreso" value="#{pacientesBean.egresoH.fechaEgreso}" 
+                                                    placeholder="dd/mm/aaaa" pattern="dd/MM/yyyy" navigator="true"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p:outputLabel value="Tipo Egreso:" for="idTipoEgreso" 
+                                                   styleClass="col-md-4 control-label" />
+                                    <div class="col-md-4">
+                                        <h:selectOneMenu id="idTipoEgreso" value="#{pacientesBean.egresoH.idTipoEgreso}" 
+                                                         styleClass="form-control input-md" required="true" 
+                                                         requiredMessage="The IdTipoEgreso field is required."
+                                                         converter="tipoEgresoConverter">
+                                            <f:selectItems value="#{pacientesBean.listaEgresos}" var="egresos" 
+                                                           itemLabel="#{egresos.descripcion}" 
+                                                           itemValue="#{egresos}" />
+
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p:outputLabel value="RUT :" styleClass="col-md-4 control-label" />
+                                    <div class="col-md-4">
+                                        <p:inputText id="rut" styleClass="form-control input-md"
+                                                     value="#{pacientesBean.paciente.runPaciente}-#{pacientesBean.paciente.dvPaciente}"
+                                                     readonly="true"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p:outputLabel value="FICHA :" styleClass="col-md-4 control-label" />
+                                    <div class="col-md-4">
+                                        <p:inputText id="ficha" styleClass="form-control input-md"
+                                                     value="#{pacientesBean.paciente.numeroFicha}"
+                                                     readonly="true"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p:outputLabel value="Nombre Paciente :" styleClass="col-md-4 control-label" />
+                                    <div class="col-md-4">
+                                        <p:inputText id="nombreCompleto" styleClass="form-control input-md"
+                                                     value="#{pacientesBean.paciente.nombre} #{pacientesBean.paciente.papellidoPaciente} #{pacientesBean.paciente.sapellidoPaciente}"
+                                                     readonly="true"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label"></label>
+                                    <div class="col-md-4">
+                                        <p:commandButton value="Guardar" actionListener="#{pacientesBean.egresarPaciente()}" update="growl" styleClass="btn btn-success" >
+                                        </p:commandButton>
+                                        <p:commandButton value="Cancelar"  styleClass="btn btn-danger" 
+                                                         onclick="volver('#{appBean.baseUrl}/Mantenedores/Pacientes/Pacientes.xhtml')"/>
+                                    </div>
+                                </div>
+                            </h:form>
+                        </fieldset>
+                    </div>
+
+                </f:view>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

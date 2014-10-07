@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../Template.xhtml">
+
+            <ui:define name="content">
+                <f:view>
+
+                    <div id="content" style="margin-left: 0px !important;">
+                        <fieldset>
+                            <legend>WorkFlow por Rut</legend>
+                            <h:form styleClass="form-horizontal" id="workflowporrut" >
+                                <p:growl id="growl" showSummary="true" life="3000"  />  
+
+
+                                <div class="form-group">
+                                    <p:outputLabel value="RUT" for="rut" styleClass="col-md-4 control-label" />
+                                    <div class="col-md-4">
+                                        <p:inputText id="rut" value="#{reportesBean.rut}" title="Rut" styleClass="form-control input-md" required="true" requiredMessage="The IdCargo field is required.">
+                                            <p:ajax event="blur" update="growl" listener="#{reportesBean.onValidaRut()}"/>
+                                            <p:ajax event="blur" update="rut" listener="#{reportesBean.onFormateaRut()}"/>
+                                        </p:inputText>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label"></label>
+                                    <div class="col-md-4">
+                                        <p:commandButton value="Guardar" actionListener="#{reportesBean.buscarPorRut2()}" update="growl" styleClass="btn btn-success" />
+                                    </div>
+                                </div>
+                            </h:form>
+                        </fieldset>
+                    </div>
+
+                </f:view>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

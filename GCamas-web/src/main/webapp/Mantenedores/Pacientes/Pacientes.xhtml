@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:body>
+        <ui:composition template="./../../Template.xhtml">
+            <ui:define name="content">
+                <div id="content" style="margin-left: 0px !important;">
+                    <h:form id="frmPacientes">
+                        <p:growl id="growl" showSummary="true"/>
+                        <div class="menubar">
+                            <div class="sidebar-toggler visible-xs">
+                                <i class="ion-navicon"></i>
+                            </div>
+                            <div class="page-title">
+                                Pacientes
+                            </div>
+                            <p:commandButton id="cmdAgregar" value="Agregar" styleClass="new-user btn btn-success pull-right" 
+                                             action="PacienteCreate.xhtml" icon="ui-icon-person"  />
+                        </div>
+                        <div class="content-wrapper">  
+                            <p:dataTable value="#{pacientesBean.listPacientes}" var="item" 
+                                         rows="10" paginator="true"  id="tablePacientes"
+                                         paginatorPosition="bottom"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15"
+                                         widgetVar="pacienteTable"
+                                         emptyMessage="No existen pacientes con ese criterio de Busqueda" 
+                                         filteredValue="#{pacientesBean.filteredPacientes}"
+                                         resizableColumns="true">
+                                <f:facet name="header">
+                                    <p:outputPanel>
+                                        <h:outputText value="Busqueda por Todos los Campos:" />
+                                        <p:inputText id="globalFilter" onkeyup="PF('pacienteTable').filter()" style="width:150px" placeholder="Busqueda Paciente"/>
+                                    </p:outputPanel>
+                                </f:facet>
+
+                                <p:column filterBy="#{item.runPaciente}">
+                                    <f:facet name="header">
+                                        <h:outputText value="RUT"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.runPaciente}-#{item.dvPaciente}"/>
+                                </p:column>
+                                <p:column filterBy="#{item.numeroFicha}">
+                                    <f:facet name="header">
+                                        <h:outputText value="N&deg; Ficha"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.numeroFicha}"/>
+                                </p:column>
+                                <p:column filterBy="#{item.nombre}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Nombres"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.nombre}"/>
+                                </p:column>
+                                <p:column filterBy="#{item.papellidoPaciente}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Paterno"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.papellidoPaciente}"/>
+                                </p:column>
+                                <p:column filterBy="#{item.sapellidoPaciente}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Materno"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.sapellidoPaciente}"/>
+                                </p:column>
+                                <p:column filterBy="#{item.fechaNacimiento}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Fecha Nacimiento"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.fechaNacimiento}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column filterBy="#{item.idSexo.descripcion}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Sexo"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.idSexo.descripcion}"/>
+                                </p:column>
+                                <p:column filterBy="#{item.idTipoPrevision.idPrevision.descripcionPrevision}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Previsión"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.idTipoPrevision.idPrevision.descripcionPrevision} #{item.idTipoPrevision.descripcionTipoPrevision}"/>
+                                </p:column>
+                                <p:column style="width:15%; text-align:center" headerText="Acciones">
+                                    <p:commandButton icon="ui-icon-pencil" title="Editar" action="PacienteUpdate.xhtml" 
+                                                     styleClass="btn btn-default btn-xs" >
+                                        <f:setPropertyActionListener value="#{item}" target="#{pacientesBean.paciente}"/>
+                                    </p:commandButton>
+                                    <p:commandButton icon="ui-icon-person" title="Trasladar al Paciente" update=":frmPacientes:growl"
+                                                     actionListener="#{pacientesBean.trasladosPendientes(item)}" 
+                                                     styleClass="btn btn-warning btn-xs" disabled="#{pacientesBean.hospitalizado(item)}" >
+                                        <f:setPropertyActionListener value="#{item}" target="#{trasladoBean.paciente}"/>
+                                    </p:commandButton>
+                                    <p:commandButton icon="ui-icon-home" title="Asignar Cama" update=":frmPacientes:growl"
+                                                     actionListener="#{pacientesBean.camasDisponiblesEnEspecialidad()}"
+                                                     styleClass="btn btn-primary btn-xs" 
+                                                     disabled="#{!pacientesBean.hospitalizado(item)}">
+                                        <f:setPropertyActionListener value="#{item}" target="#{asignacionCamaBean.pacienteBuscado}"/>
+                                    </p:commandButton>
+                                    <p:commandButton icon="ui-icon-circle-check" title="Egresar Paciente" update=":frmPacientes:growl"
+                                                     action="PacienteEgreso.xhtml" 
+                                                     styleClass="btn btn-warning btn-xs" disabled="#{pacientesBean.hospitalizado(item)}" >
+                                        <f:setPropertyActionListener value="#{item}" target="#{pacientesBean.paciente}"/>
+                                    </p:commandButton>
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+                    </h:form>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

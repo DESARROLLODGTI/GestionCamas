@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+  <h:body>
+    <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                    xmlns="http://www.w3.org/1999/xhtml"
+                    xmlns:h="http://java.sun.com/jsf/html"
+                    template="./Template.xhtml">
+
+      <ui:define name="content">
+        <div id="app-sidebar">
+          <div class="scroll-wrapper">
+            <div class="menubar relative">
+              <div class="page-title">Developers</div>
+            </div>
+            <div class="messages">
+              <div class="message clearfix">
+                <div class="time">Developer</div>
+                <div class="avatar pull-left">
+                  <img src="#{appBean.baseUrl}/resources/images/oscar.png" alt="1" />
+                </div>
+                <a class="info pull-left" href="#" >
+                  <span class="name">Oscar Burdiles</span>
+                  <span class="subject">Analista Desarrollador</span>
+                  <span class="intro">Estudiante de Ingeníeria en Informática,Universidad INACAP</span>
+                </a>
+              </div>
+              <div class="message clearfix">
+                <div class="time">Developer</div>
+                <div class="avatar pull-left">
+                  <img src="#{appBean.baseUrl}/resources/images/andres.png" alt="1" />
+                </div>
+                <a class="info pull-left" href="#" >
+                  <span class="name">Andrés Gutiérrez</span>
+                  <span class="subject">Analista Desarrollador</span>
+                  <span class="intro">Estudiante de Ingeníeria en Informática,Universidad INACAP</span>
+                </a>
+              </div>
+              <div class="message clearfix">
+                <div class="time">Developer</div>
+                <div class="avatar pull-left">
+                  <img src="#{appBean.baseUrl}/resources/images/edwin.png" alt="1" />
+                </div>
+                <a class="info pull-left" href="#" >
+                  <span class="name">Edwin Guamán</span>
+                  <span class="subject">Analista Desarrollador</span>
+                  <span class="intro">Estudiante de Ingeníeria en Informática,Universidad INACAP</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="app-message">
+          <div class="scroll-wrapper">
+            <div class="menubar relative">
+              <div class="page-title">Contacto y Soporte</div>
+            </div>
+            <section>
+              <div class="message">
+                <div class="header">
+                  <div class="info">
+                    <img src="#{appBean.baseUrl}/resources/images/logo.png" alt="1" />
+                    <strong>Departamento de Gesti&oacute;n de Tecnolog&iacute;as de la Informaci&oacute;n</strong>
+                  </div>
+                </div>
+                <div class="body">
+                  <div class="field">
+                    <label>Email</label>
+                    <div class="value"><a href="mailto:mesadeayuda.cabl@redsalud.gov.cl;" title="Enviar Correo">mesadeayuda.cabl@redsalud.gov.cl</a></div>
+                    <div class="sub">Mesa de Ayuda</div>
+                  </div>
+                  <div class="field">
+                    <label>Fono</label>
+                    <div class="value">(+562)2 576 3300</div>
+                    <div class="sub">Mesa de Ayuda</div>
+                  </div>
+                  <div class="field">
+                    <label>MINSAL</label>
+                    <div class="value">263300</div>
+                    <div class="sub">Mesa de Ayuda</div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </ui:define>
+    </ui:composition>
+  </h:body>
+</html>

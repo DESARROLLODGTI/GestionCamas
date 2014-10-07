@@ -1,0 +1,175 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <body>
+        <ui:composition template="./../../Template.xhtml">
+            <ui:define name="content">
+                <div  id="wizard">
+                    <div id="wrapper">
+                        <div class="content-wrapper">
+                            <div class="header">
+                                <div class="sidebar-toggler visible-xs">
+                                    <i class="ion-navicon"></i>
+                                </div>
+
+                                <div class="steps clearfix">
+                                    <div class="step active">
+                                        Traslado de Paciente
+                                        <span></span>
+                                    </div>
+                                    <div class="step">
+                                        Selecci&oacute;n Servicio de Traslado
+                                        <span></span>
+                                    </div>
+                                    <div class="step">
+                                        Finalizar
+                                        <span></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <section class="form-wizard">
+                                <h:form id="asignacionPaciente" class="form-horizontal">
+                                    <p:growl id="growl" sticky="true" showDetail="true" />
+                                    <!-- PRIMER PASO SELECCION DE PACIENTE -->
+                                    <div class="step active animated fadeInRightStep">
+                                        <div class="form-group">
+                                            <h4 class="pull-left">Datos del Paciente a Trasladar</h4>
+                                        </div>
+                                        <div class="form-group">
+                                            <p:outputLabel value="RUT :" styleClass="col-md-4 control-label" />
+                                            <div class="col-md-4">
+                                                <p:inputText id="rut" styleClass="form-control input-md"
+                                                             value="#{trasladoBean.paciente.runPaciente}-#{trasladoBean.paciente.dvPaciente}"
+                                                             readonly="true"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <p:outputLabel value="FICHA :" styleClass="col-md-4 control-label" />
+                                            <div class="col-md-4">
+                                                <p:inputText id="ficha" styleClass="form-control input-md"
+                                                             value="#{trasladoBean.paciente.numeroFicha}"
+                                                             readonly="true"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <p:outputLabel value="Nombre Paciente :" styleClass="col-md-4 control-label" />
+                                            <div class="col-md-4">
+                                                <p:inputText id="nombreCompleto" styleClass="form-control input-md"
+                                                             value="#{trasladoBean.paciente.nombre} #{trasladoBean.paciente.papellidoPaciente} #{trasladoBean.paciente.sapellidoPaciente}"
+                                                             readonly="true"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group form-actions">
+                                            <button type="submit" id="paso1" class="button" data-step="2">
+                                                <span>Siguiente Paso<i class="fa fa-angle-double-right"></i></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!--SEGUNDO PASO SELECCIONAR LA ESPECIALIDAD DE TRASLADO -->
+                                    <div class="step">
+                                        <div class="form-group">
+                                            <p:outputLabel value="Especialidad:" styleClass="col-md-4 control-label" for="especialidad"/>
+                                            <div class="col-md-4">
+                                                <h:selectOneMenu id="especialidad" styleClass="form-control" 
+                                                                 value="#{trasladoBean.especialidad.idEspecialidad}" >
+                                                    <f:selectItem itemLabel="Seleccione..." itemValue="" noSelectionOption="true" />
+                                                    <f:selectItems value="#{trasladoBean.listEspecialidades}" var="itemEstraslado"
+                                                                   itemLabel="#{itemEstraslado.nombreEspecialidad}" 
+                                                                   itemValue="#{itemEstraslado.idEspecialidad}" />
+                                                    <p:ajax listener="#{trasladoBean.onEspecialidadTraslado()}" update="confirmEspecialidadHasta"/>
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <p:outputLabel value="Fecha Traslado" styleClass="col-md-4 control-label" for="fechaTraslado"/>
+                                            <div class="col-md-4">
+                                                <p:calendar id="fechaTraslado" value="#{trasladoBean.trasladoTemporal.fecha}" 
+                                                            placeholder="dd/mm/aaaa" pattern="dd/MM/yyyy" navigator="true"
+                                                            required="true"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group form-actions">
+                                            <a class="button" href="#" data-step="1">
+                                                <span><i class="fa fa-angle-double-left"></i> Atras</span>
+                                            </a>
+                                            <button type="submit" id="paso2" class="button" data-step="3">
+                                                <span>Siguiente Paso<i class="fa fa-angle-double-right"></i></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!--TERCER PASO cONFIRMAR LA INFORMACION INGRESADA-->
+                                    <div class="step">
+                                        <div class="form-group">
+                                            <h4 class="pull-left">Confirmar Traslado</h4>
+                                        </div>
+                                        <div class="form-group">
+                                            <p:outputLabel value="RUT:" styleClass="col-md-4 control-label" for="confirmRut" />
+                                            <div class="col-md-4">
+                                                <p:inputText readonly="true" value="#{trasladoBean.paciente.runPaciente}-#{trasladoBean.paciente.dvPaciente}"
+                                                             styleClass="form-control input-md" id="confirmRut" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <p:outputLabel value="Nombre:" styleClass="col-md-4 control-label" for="confirmPaciente" />
+                                            <div class="col-md-4">
+                                                <p:inputText type="hidden" value="#{trasladoBean.paciente.idPaciente}" /> 
+                                                <p:inputText readonly="true" id="confirmPaciente" styleClass="form-control"
+                                                             value="#{trasladoBean.paciente.nombre} #{trasladoBean.paciente.papellidoPaciente} #{trasladoBean.paciente.sapellidoPaciente}" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <p:outputLabel value="Ficha" styleClass="col-md-4 control-label" for="confirmFicha"/>
+                                            <div class="col-md-4">
+                                                <p:inputText readonly="true" styleClass="form-control" id="confirmFicha" 
+                                                             value="#{trasladoBean.paciente.numeroFicha}" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <p:outputLabel value="Traslado Desde:" styleClass="col-md-4 control-label" for="confirmEspecialidadDesde" />
+                                            <div class="col-md-4">
+                                                <p:inputText readonly="true" styleClass="form-control" id="confirmEspecialidadDesde" 
+                                                             value="#{usuariosBean.nombreEspecialdad}"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <p:outputLabel value="Tralado a:" styleClass="col-md-4 control-label"  for="confirmEspecialidadHasta" />
+                                            <div class="col-md-4">
+                                                <p:inputText readonly="true" styleClass="form-control" id="confirmEspecialidadHasta" 
+                                                             value="#{trasladoBean.especialidad.nombreEspecialidad}" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <p:outputLabel value="Motivo de Traslado:" styleClass="col-md-4 control-label"  for="motivoTraslado" />
+                                            <div class="col-sm-10 col-md-8">
+                                                <p:inputTextarea  styleClass="form-control" id="motivoTraslado" rows="6" cols="35" 
+                                                                  counter="display" maxlength="200" counterTemplate="{0} Letras Restantes." 
+                                                                  value="#{trasladoBean.trasladoTemporal.motivo}" />
+                                                <h:outputText id="display" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group form-actions">
+                                            <a class="button" href="#" data-step="2">
+                                                <span><i class="fa fa-angle-double-left"></i> Back</span>
+                                            </a>
+                                            <p:commandButton value="Terminar Ingreso"  update="growl"
+                                                             actionListener="#{trasladoBean.trasladar(event)}"
+                                                             oncomplete="redirect(xhr, status, args)"/>
+                                        </div>
+                                    </div>
+
+                                </h:form>
+                            </section>
+                        </div>
+                    </div>  
+                </div>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>
+
+
+

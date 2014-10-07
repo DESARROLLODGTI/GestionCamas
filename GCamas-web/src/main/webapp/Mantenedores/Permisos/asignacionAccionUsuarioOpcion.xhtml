@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../../Template.xhtml">
+            <ui:define name="content">
+                <div id="content" style="margin-left: 0px !important;">
+                    <h:form styleClass="form-horizontal" id="AccionesRol">
+                        <p:growl id="growl" life="3000" showSummary="true"/>
+                        <fieldset>
+                            <legend>Acciones Sobre Permisos</legend>
+                            <p:inputText value="#{accionUsuarioOpcion.usuarioOpcion.idUsuarioOpcion}"/>
+                            <!-- Multiple Checkboxes Agregar-->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="checkboxes0">Agregar :</label>
+                                <div class="col-md-4">
+                                    <div class="checkbox">
+                                        <label for="checkboxes-0">
+                                            <h:selectBooleanCheckbox value="#{accionUsuarioOpcion.agregar}" id="checkboxes-0"/>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Multiple Checkboxes Editar-->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="checkboxes1">Editar :</label>
+                                <div class="col-md-4">
+                                    <div class="checkbox">
+                                        <label for="checkboxes-1">
+                                            <h:selectBooleanCheckbox value="#{accionUsuarioOpcion.editar}"  id="checkboxes-1"/>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Multiple Checkboxes Asignar Apoderado -->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="checkboxes2">Asiganar Apoderado :</label>
+                                <div class="col-md-4">
+                                    <div class="checkbox">
+                                        <label for="checkboxes-2">
+                                            <h:selectBooleanCheckbox value="#{accionUsuarioOpcion.asignarApoderado}" id="checkboxes-2"/>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Multiple Checkboxes Asignar Cama -->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="checkboxes3">Asignar Cama :</label>
+                                <div class="col-md-4">
+                                    <div class="checkbox">
+                                        <label for="checkboxes-3">
+                                            <h:selectBooleanCheckbox value="#{accionUsuarioOpcion.asignarCama}" id="checkboxes-3"/>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                             <!-- Multiple Checkboxes Asignar Cama -->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="checkboxes4">Trasladar Paciente :</label>
+                                <div class="col-md-4">
+                                    <div class="checkbox">
+                                        <label for="checkboxes-4">
+                                            <h:selectBooleanCheckbox value="#{accionUsuarioOpcion.trasladarPaciente}" id="checkboxes-4"/>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Multiple Checkboxes Asignar Cama -->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="checkboxes6">Egresar Paciente :</label>
+                                <div class="col-md-4">
+                                    <div class="checkbox">
+                                        <label for="checkboxes-6">
+                                            <h:selectBooleanCheckbox value="#{accionUsuarioOpcion.egresarPaciente}" id="checkboxes-6"/>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Multiple Checkboxes Asignar Cama -->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="checkboxes5">Modificar Estado Paciente :</label>
+                                <div class="col-md-4">
+                                    <div class="checkbox">
+                                        <label for="checkboxes-5">
+                                            <h:selectBooleanCheckbox value="#{accionUsuarioOpcion.modEstadoPAciente}" id="checkboxes-5"/>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Button -->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label"></label>
+                                <div class="col-md-4">
+                                    <p:commandButton styleClass="btn btn-success" value="Guardar" action="#{accionUsuarioOpcion.update()}" />
+                                    <p:commandButton value="Cancelar" onclick="volver('#{appBean.baseUrl}/Mantenedores/Usuarios/Usuarios.xhtml')" styleClass="btn btn-danger" />
+                                </div>
+                            </div>
+                        </fieldset>
+                    </h:form>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

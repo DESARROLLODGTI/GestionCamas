@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+  <body>
+    <ui:composition template="./../../Template.xhtml" >
+      <ui:define name="content">
+        <div id="content" style="margin-left: 0px !important;">
+          <fieldset>
+            <legend>Editar Previsión</legend>
+            <h:form id="frmPrevisionEdit" styleClass="form-horizontal">
+              <p:growl id="growl" showSummary="true" life="3000"  />  
+              <p:inputText type="hidden" id="idPrevision" value="#{previsionBean.prevision.idPrevision}" title="IdPrevision" 
+                           required="true" requiredMessage="The IdPrevision field is required." maxlength="30" style="text-transform: uppercase;" />
+              <div class="form-group">
+                <p:outputLabel value="Previsión:" for="descripcionPrevision" styleClass="col-md-4 control-label"/>
+                <div class="col-md-4">
+                  <p:inputText id="descripcionPrevision" value="#{previsionBean.prevision.descripcionPrevision}" 
+                               title="DescripcionPrevision" styleClass="form-control input-md" style="text-transform: uppercase;"/>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-4 control-label"></label>
+                <div class="col-md-4">
+                  <p:commandButton actionListener="#{previsionBean.editPrevision()}" value="Guardar" id="btnGuardar" update="growl" styleClass="btn btn-mini btn-success"/>
+                  <p:commandButton onclick="volver('#{appBean.baseUrl}/Mantenedores/Prevision/Previsiones.xhtml')" value="Cancelar" id="btnCancelar" styleClass="btn btn-mini btn-danger " />
+                </div>
+              </div>
+            </h:form>
+          </fieldset>
+        </div>
+      </ui:define>
+    </ui:composition>
+  </body>
+</html>
+

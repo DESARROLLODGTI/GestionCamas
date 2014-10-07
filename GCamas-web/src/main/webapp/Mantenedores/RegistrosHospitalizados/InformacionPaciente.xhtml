@@ -1,0 +1,212 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <body>
+        <ui:composition template="./../../Template.xhtml">
+            <ui:define name="content">
+                <div id="user-profile">
+                    <div id="wrapper">
+                        <div id="menubar">
+                            <div class="sidebar-toggler visible-xs">
+                                <i class="icon-navicon"></i>
+                            </div>
+                        </div>
+                        <div class="content-wrapper clearfix">
+                            <div class="profile-content">
+                                <div class="tabs">
+                                    <ul>
+                                        <li>
+                                            <a class="active" href="#">Datos Paciente</a>
+                                        </li>
+                                        <li>
+                                            <a class="" href="#">Registro Hospitalización</a>
+                                        </li>
+                                        <li>
+                                            <a class="" href="#">Apoderado Responsable</a>
+                                        </li>
+                                        <li>
+                                            <a class="" href="#">Ubicaci&oacute;n Actual del Paciente</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="tab-content">
+                                    <div class="tab notes active">
+                                        <h:form id="frmPacientes" styleClass="form-horizontal" role="form">
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <p:outputLabel value="RUT" styleClass="col-md-1 control-label" for="rut" />
+                                                        <div class="col-md-2">
+                                                            <p:inputText value="#{asignacionCamaListBean.paciente.runPaciente}-#{asignacionCamaListBean.paciente.dvPaciente}" 
+                                                                         styleClass="form-control" id="rut" readonly="true" />
+                                                        </div>
+                                                        <p:outputLabel value="Ficha" styleClass="col-md-1 control-label" for="ficha" />
+                                                        <div class="col-md-2">
+                                                            <p:inputText value="#{asignacionCamaListBean.paciente.numeroFicha}" styleClass="form-control" id="ficha" 
+                                                                         readonly="true"/>
+                                                        </div>
+                                                        <p:outputLabel value="Nombre" styleClass="col-md-1 control-label" for="nombre" />
+                                                        <div class="col-md-4">
+                                                            <p:inputText value="#{asignacionCamaListBean.paciente.nombre} #{asignacionCamaListBean.paciente.papellidoPaciente} #{asignacionCamaListBean.paciente.sapellidoPaciente}" 
+                                                                         styleClass="form-control" id="nombre" readonly="true"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <p:outputLabel value="Sexo" styleClass="col-md-1 control-label" for="sexo" />
+                                                        <div class="col-md-2">
+                                                            <p:inputText value="#{asignacionCamaListBean.paciente.idSexo.descripcion}" styleClass="form-control" id="sexo" 
+                                                                         readonly="true"/>
+                                                        </div>
+                                                        <p:outputLabel value="Fecha Nacimiento" styleClass="col-md-1 control-label" for="fecha_nacimiento" />
+                                                        <div class="col-md-2">
+                                                            <p:inputText value="#{asignacionCamaListBean.paciente.fechaNacimiento}" styleClass="form-control" id="fecha_nacimiento" 
+                                                                         readonly="true"/>
+                                                        </div>
+                                                        <p:outputLabel value="Edad" styleClass="col-md-1 control-label" for="edad" />
+                                                        <div class="col-md-2">
+                                                            <p:inputText value="#{asignacionCamaListBean.edad}" styleClass="form-control" id="edad" readonly="true" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <p:outputLabel value="Previsión" styleClass="col-md-1 control-label" for="prevision" />
+                                                        <div class="col-md-4">
+                                                            <p:inputText value="${asignacionCamaListBean.prevision}" 
+                                                                         styleClass="form-control" id="prevision" readonly="true" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </h:form>
+                                    </div>
+                                    <div class="tab orders">
+                                        <p:dataTable var="asignacion" value="#{asignacionCamaListBean.listAsignacionCamas}">
+                                            <p:column headerText="Cama">
+                                                <h:outputLabel value="Cama #{asignacion.idCama.numeroCama}" />
+                                            </p:column>
+                                            <p:column headerText="Sala">
+                                                <h:outputLabel value="#{asignacion.idCama.idSala.nombreSala}" />
+                                            </p:column>
+                                            <p:column headerText="Especialidad">
+                                                <h:outputLabel value="#{asignacion.idCama.idSala.idEspecialidad.nombreEspecialidad}" />
+                                            </p:column>
+                                            <p:column headerText="Fecha Ingreso a la Cama">
+                                                <h:outputLabel value="#{asignacion.fechaAsignacion}"/>
+                                            </p:column>
+                                            <p:column headerText="Fecha Egreso de la Cama">
+                                                <h:outputLabel value="#{asignacion.fechaEgreso}"/>
+                                            </p:column>
+                                            <p:columnGroup type="footer">
+                                                <p:row>
+                                                    <p:column colspan="4" style="text-align:right" footerText="Total de Días Hospitalizado:" />
+                                                    <p:column footerText="#{asignacionCamaListBean.calculaTotalDias(asignacionCamaListBean.paciente)}" />
+                                                </p:row>
+                                            </p:columnGroup>
+                                            <div class="form-group">
+                                                <p:outputLabel value="Diagn&oacute;stico" styleClass="col-md-4 control-label"  for="diagnostico" />
+                                                <div class="col-sm-10 col-md-8">
+                                                    <p:inputTextarea  styleClass="form-control" id="diagnostico" rows="6" cols="35" 
+                                                                      value="#{asignacion.diagnosticoSala}" 
+                                                                      readonly="true"/>
+                                                </div>
+                                            </div>
+                                        </p:dataTable>
+                                    </div>
+                                    <div class="tab work">
+
+                                        <h:form styleClass="form-horizontal" id="frmApoderado" >
+                                            <div class="form-group">
+                                                <p:outputLabel value="RUT:" for="rutApoderado" styleClass="col-md-4 control-label" />
+                                                <div class="col-md-4">
+                                                    <p:inputText id="rutApoderado" value="#{asignacionCamaListBean.apoderado.runApoderado}-#{asignacionCamaListBean.apoderado.dvApoderado}" title="Rut" 
+                                                                 styleClass="form-control input-md" readonly="true" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <p:outputLabel value="Nombre:" for="nombreApo" styleClass="col-md-4 control-label" />
+                                                <div class="col-md-4">
+                                                    <p:inputText id="nombreApo" value="#{asignacionCamaListBean.apoderado.nombreApoderado} #{asignacionCamaListBean.apoderado.papellidoApoderado} #{asignacionCamaListBean.apoderado.sapellidoApoderado}"
+                                                                 title="Nombre" styleClass="form-control input-md" readonly="true" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <p:outputLabel value="Parentesco:" for="parentesco" styleClass="col-md-4 control-label" />
+                                                <div class="col-md-4">
+                                                    <p:inputText id="parentesco" value="#{asignacionCamaListBean.apoderado.idParentesco.descripcionParentesco}"
+                                                                 title="Nombre" styleClass="form-control input-md" readonly="true" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <p:outputLabel value="Teléfono de Contacto:" for="telefono" styleClass="col-md-4 control-label" />
+                                                <div class="col-md-4">
+                                                    <p:inputText id="telefono" value="#{asignacionCamaListBean.apoderado.numContactoApoderado}"
+                                                                 title="Nombre" styleClass="form-control input-md" readonly="true" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <p:outputLabel value="Tarjeta Entregada:"  styleClass="col-md-4 control-label" />
+                                                <div class="col-md-4">
+                                                    <h:outputText styleClass="form-control input-md" value="SI" rendered="#{asignacionCamaListBean.apoderado.tarjetaApoderado != 0}"/>
+                                                    <h:outputText styleClass="form-control input-md" value="NO" rendered="#{asignacionCamaListBean.apoderado.tarjetaApoderado == 0}"/>
+                                                </div>
+                                            </div>
+                                        </h:form>
+                                    </div>
+                                    <div class="tab ubicacion">
+                                        <h:form styleClass="form-horizontal" id="formdedatostraslado" >
+                                            <div class="form-group">
+                                                <p:outputLabel value="Motivo:" for="motivo" styleClass="col-md-4 control-label" />
+                                                <div class="col-sm-10 col-md-8">
+                                                    <p:inputTextarea id="motivo" value="#{asignacionCamaListBean.trasladoTempora.motivo}" title="Motivo" 
+                                                                     cols="35" rows="6" readonly="true"
+                                                                     styleClass="form-control" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <p:outputLabel value="Fecha:" for="fecha" styleClass="col-md-4 control-label" />
+                                                <div class="col-md-4">
+                                                    <p:inputText id="fecha" value="#{asignacionCamaListBean.trasladoTempora.fecha}" styleClass="form-control input-md" 
+                                                                 readonly="true" title="Fecha" >
+                                                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                                                    </p:inputText>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <p:outputLabel value="Especialidad Procedencia:" for="idEspecialidadProcedencia" styleClass="col-md-4 control-label" />
+                                                <div class="col-md-4">
+                                                    <p:inputText id="idEspecialidadProcedencia" value="#{asignacionCamaListBean.getNombreEspecialidadById(asignacionCamaListBean.trasladoTempora.idEspecialidadProcedencia)}"
+                                                                 readonly="true" title="IdEspecialidadProcedencia" styleClass="form-control input-md" required="true" requiredMessage="The IdEspecialidadProcedencia field is required."/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <p:outputLabel value="Especialidad Traslado:" for="idEspecialidadTraslado" styleClass="col-md-4 control-label" />
+                                                <div class="col-md-4">
+                                                    <p:inputText id="idEspecialidadTraslado" value="#{asignacionCamaListBean.getNombreEspecialidadById(asignacionCamaListBean.trasladoTempora.idEspecialidadTraslado)}"
+                                                                 readonly="true"
+                                                                 title="IdEspecialidadTraslado" styleClass="form-control input-md" required="true" requiredMessage="The IdEspecialidadTraslado field is required."/>
+                                                </div>
+                                            </div>
+                                        </h:form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>
+

@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <body>
+        <ui:composition template="./../../Template.xhtml">
+
+            <ui:define name="content">
+                <div id="content" style="margin-left: 0px ! important;">
+                    <h:form styleClass="form-horizontal" id="formCreate">
+                        <fieldset>
+                            <p:growl id="mensaje" showSummary="true" showDetail="true" life="3000"/>
+                            <!-- Form Name -->
+                            <legend>Crear Nueva Sala</legend>
+
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <p:outputLabel styleClass="col-md-4 control-label" for="textinput">Nombre Sala :</p:outputLabel>  
+                                <div class="col-md-4">
+                                    <p:inputText onkeyup="javascript:this.value = this.value.toUpperCase();" id="textinput" type="text" styleClass="form-control input-md" value="#{salaBean.nombre}" required="true" requiredMessage="Debe ingresar un nombre"/>
+                                </div>
+                            </div>
+
+                            <!-- Select Basic -->
+                            <div class="form-group">
+                                <p:outputLabel styleClass="col-md-4 control-label" for="selectbasic">Especialidad :</p:outputLabel>
+                                <div class="col-md-4">
+                                    <h:selectOneMenu id="selectbasic" value="#{salaBean.especialidad.idEspecialidad}" style="width:250px" styleClass="form-control"> 
+                                        <f:selectItems value="#{especialidadMB.especialidades}" var="lista" itemLabel="#{lista.nombreEspecialidad}" itemValue="#{lista.idEspecialidad}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+
+                            <!-- Multiple Checkboxes -->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="checkboxes">Activo :</label>
+                                <div class="col-md-4">
+                                    <div class="checkbox">
+                                        <label for="checkboxes-0">
+                                            <h:selectBooleanCheckbox value="#{salaBean.activo}" id="checkboxes-0"/>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Button -->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label"/>
+                                <div class="col-md-4">
+                                    <p:commandButton styleClass="btn btn-success" value="Crear" update="mensaje" action="#{salaBean.create()}"/>
+                                    <p:commandButton value="Cancelar" onclick="volver('#{appBean.baseUrl}/Mantenedores/Salas/Salas.xhtml')" styleClass="btn btn-danger" />
+                                </div>
+                            </div>
+                        </fieldset>
+                    </h:form>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>
+
+
+

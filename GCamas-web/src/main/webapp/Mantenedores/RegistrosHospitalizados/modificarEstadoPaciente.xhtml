@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../../Template.xhtml">
+
+            <ui:define name="content">
+                <f:view>
+
+                    <div id="content" style="margin-left: 0px !important;">
+                        <fieldset>
+                            <legend>Modificar Estado Paciente</legend>
+                            <h:form styleClass="form-horizontal" id="modEstPaciente" >
+                                <p:growl id="growl" showSummary="true" life="3000"  />  
+                                <p:inputText type="hidden" id="idAsignacion" value="#{asignacionCamaListBean.asignacionCama.idAsignacion}" title="IdAsignacion" styleClass="form-control input-md" required="true" requiredMessage="The IdAsignacion field is required."/>
+                                
+                                <div class="form-group">
+                                    <p:outputLabel value="Fecha Asignacion" for="fechaAsignacion" styleClass="col-md-4 control-label" />
+                                    <div class="col-md-4">
+                                        <p:inputText readonly="true" id="fechaAsignacion" value="#{asignacionCamaListBean.asignacionCama.fechaAsignacion}" styleClass="form-control input-md" title="FechaAsignacion" >
+                                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                                        </p:inputText>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p:outputLabel value="Paciente"  styleClass="col-md-4 control-label" />
+                                    <div class="col-md-4">
+                                        <h:outputText value="#{asignacionCamaListBean.paciente.nombre} #{asignacionCamaListBean.paciente.papellidoPaciente} #{asignacionCamaListBean.paciente.sapellidoPaciente}"/> 
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p:outputLabel value="Ectopico" styleClass="col-md-4 control-label" />
+                                    <div class="col-md-4">
+                                        <h:outputText value="SI" rendered="#{asignacionCamaListBean.asignacionCama.ectopico != 0}"/>
+                                        <h:outputText value="NO" rendered="#{asignacionCamaListBean.asignacionCama.ectopico == 0}"/>
+                                        <p:inputText type="hidden" id="ectopico" value="#{asignacionCamaListBean.asignacionCama.ectopico}" title="Ectopico" styleClass="form-control input-md" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p:outputLabel value="IdServicioProcedencia:" for="idServicioProcedencia" styleClass="col-md-4 control-label" />
+                                    <div class="col-md-4">
+                                        <h:outputText value="#{asignacionCamaListBean.getNombreEspecialidadById(asignacionCamaListBean.asignacionCama.idServicioProcedencia)}"/>
+                                        <p:inputText type="hidden" id="idServicioProcedencia" value="#{asignacionCamaListBean.asignacionCama.idServicioProcedencia}" title="IdServicioProcedencia" styleClass="form-control input-md" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p:outputLabel value="IdServEctopico:" for="idServEctopico" styleClass="col-md-4 control-label" />
+                                    <div class="col-md-4">
+                                        <h:outputText value="#{asignacionCamaListBean.getNombreEspecialidadById(asignacionCamaListBean.asignacionCama.idServEctopico)}"
+                                                      rendered="#{asignacionCamaListBean.asignacionCama.ectopico != 0}"/>
+                                        <h:outputText value="NO" rendered="#{asignacionCamaListBean.asignacionCama.ectopico == 0}"/>
+                                        <p:inputText type="hidden" id="idServEctopico" value="#{asignacionCamaListBean.asignacionCama.idServEctopico}" title="IdServEctopico" styleClass="form-control input-md" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p:outputLabel value="Diagn&oacute;stico" styleClass="col-md-4 control-label"  for="diagnostico" />
+                                    <div class="col-sm-10 col-md-8">
+                                        <p:inputTextarea  styleClass="form-control" id="diagnostico" rows="6" cols="35" 
+                                                          counter="display" maxlength="200" counterTemplate="{0} Letras Restantes." 
+                                                          value="#{asignacionCamaListBean.asignacionCama.diagnosticoSala}"
+                                                          required="true"/>
+                                        <h:outputText id="display" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                        <p:outputLabel value="Estado Paciente:" styleClass="col-md-4 control-label" for="estadoPaciente" />
+                                        <div class="col-md-4">
+                                            <h:selectOneMenu id="estadoPaciente"  styleClass="form-control" 
+                                                             value="#{asignacionCamaListBean.idEstadoPaciente}"
+                                                             required="true">
+                                                <f:selectItem itemLabel="Seleccione..." itemValue="" noSelectionOption="true" />
+                                                <f:selectItems value="#{asignacionCamaListBean.listEstadoPaciente}" 
+                                                               var="itemEstadoPaciente" itemLabel="#{itemEstadoPaciente.descripcionEstadoPaciente}"
+                                                               itemValue="#{itemEstadoPaciente.idEstadoPaciente}" />
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label"></label>
+                                    <div class="col-md-4">
+                                        <p:commandButton value="Guardar" actionListener="#{asignacionCamaListBean.guardarModificacionEstado()}" update="growl" styleClass="btn btn-success" />
+                                        <p:commandButton value="Cancelar" onclick="volver('#{appBean.baseUrl}/Mantenedores/RegistrosHospitalizados/PacientesHospitalizados.xhtml');" styleClass="btn btn-danger" />
+                                    </div>
+                                </div>
+                            </h:form>
+                        </fieldset>
+                    </div>
+
+                </f:view>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

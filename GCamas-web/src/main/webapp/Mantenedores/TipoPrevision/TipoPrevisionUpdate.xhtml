@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+  <body>
+    <ui:composition template="./../../Template.xhtml">
+      <ui:define name="content">
+        <div id="content" style="margin-left: 0px !important;">
+          <fieldset>
+            <legend>Editar Tipo Previsión</legend>
+            <h:form styleClass="form-horizontal" id="frmTipoPrevisionEdit" >
+              <p:growl id="growl" showSummary="true" life="3000"  />  
+              <p:inputText type="hidden" id="idPrevision" value="#{tipoPrevisionBean.prevision.idPrevision}" title="Id Prevision" />
+              <p:inputText type="hidden" id="idTipoPrevision" value="#{tipoPrevisionBean.tipoPrevision.idTipoPrevision}" title="IdTipoPrevision" 
+                           styleClass="form-control input-md" required="true" requiredMessage="The IdTipoPrevision field is required."/>
+
+              <div class="form-group">
+                <p:outputLabel value="Previsión:" for="idPrevision" styleClass="col-md-4 control-label" />
+                <div class="col-md-4">
+                  <p:outputLabel value="#{tipoPrevisionBean.prevision.descripcionPrevision}" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <p:outputLabel value="Descripción Tipo Previsión:" for="descripcionTipoPrevision" styleClass="col-md-4 control-label" />
+                <div class="col-md-4">
+                  <p:inputText id="descripcionTipoPrevision" value="#{tipoPrevisionBean.tipoPrevision.descripcionTipoPrevision}" 
+                               title="Descripción Tipo Previsión" styleClass="form-control input-md" style="text-transform: uppercase;" 
+                               required="true" requiredMessage="Este Campo es Requerido"/>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-md-4 control-label"></label>
+                <div class="col-md-4">
+                  <p:commandButton value="Guardar" actionListener="#{tipoPrevisionBean.editTipoPrevision()}" update="growl" styleClass="btn btn-success" />
+                  <p:commandButton value="Cancelar" onclick="volver('#{appBean.baseUrl}/Mantenedores/Prevision/Previsiones.xhtml');" styleClass="btn btn-danger" />
+                </div>
+              </div>
+            </h:form>
+          </fieldset>
+        </div>
+      </ui:define>
+    </ui:composition>
+  </body>
+</html>
+

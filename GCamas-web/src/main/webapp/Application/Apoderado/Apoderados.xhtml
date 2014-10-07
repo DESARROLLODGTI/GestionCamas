@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../../Template.xhtml">
+
+            <ui:define name="content">
+                <f:view>
+                    <div id="content" style="margin-left:0px !important;">
+                        <h:form>
+                            <div class="menubar">
+                                <div class="sidebar-toggler visible-xs">
+                                    <i class="ion-navicon"></i>
+                                </div>
+                                <div class="page-title">
+                                    Apoderados
+                                </div>
+                                <p:commandButton id="cmdAgregar" value="Agregar" styleClass="new-user btn btn-success pull-right"
+                                                 action="ApoderadoCreate.xhtml" />
+                            </div>
+                            <div class="content-wrapper">  
+                                <p:dataTable value="#{apoderadoBean.apoderados}" var="item" 
+                                             rows="10" paginator="true" 
+                                             paginatorPosition="bottom"
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="5,10,15"
+                                             widgetVar="tabla"
+                                             filteredValue="#{apoderadoBean.filterApoderados}"
+                                             emptyMessage="No se encontraron resultados"
+
+                                             >
+                                    <f:facet name="header">
+                                        <p:outputPanel>
+                                            <h:outputText value="Buscar en todas las Columnas" />
+                                            <p:inputText id="globalFilter" onkeyup="PF('tabla').filter()" style="width:300px; text-transform: uppercase;" placeholder="Ingrese palabra"/>
+                                        </p:outputPanel>
+                                    </f:facet>
+                                    <p:column filterBy="#{item.runApoderado}">
+                                        <f:facet name="header">
+                                            <h:outputText value="RUT"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.runApoderado}"/>
+                                    </p:column>
+                                    <p:column filterBy="#{item.nombreApoderado}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Nombre Apoderado"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.nombreApoderado}"/>
+                                    </p:column>
+                                    <p:column filterBy="#{item.papellidoApoderado}">
+                                        <f:facet name="header">
+                                            <h:outputText value="APELLIDO P."/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.papellidoApoderado}"/>
+                                    </p:column>
+                                    <p:column filterBy="#{item.sapellidoApoderado}">
+                                        <f:facet name="header">
+                                            <h:outputText value="APELLIDO M."/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.sapellidoApoderado}"/>
+                                    </p:column>
+                                    <p:column filterBy="#{item.numContactoApoderado}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Num. Contacto"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.numContactoApoderado}"/>
+                                    </p:column>
+                                    <p:column filterBy="#{item.idParentesco}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Parentesco"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.idParentesco.descripcionParentesco}"/>
+                                    </p:column>
+                                    <p:column style="width:10%; text-align:center">
+                                        <p:commandButton icon="ui-icon-plus" title="Editar" action="ApoderadoUpdate.xhtml">
+                                            <f:setPropertyActionListener value="#{item}" target="#{apoderadoBean.apoderado}" />
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </h:form>
+                    </div>
+                </f:view>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

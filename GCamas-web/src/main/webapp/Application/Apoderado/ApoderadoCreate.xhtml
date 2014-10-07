@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../../Template.xhtml">
+
+            <ui:define name="content">
+                <f:view>
+
+                    <div id="content" style="margin-left: 0px !important;">
+                        <fieldset>
+                            <legend>Crear "nombre de página"</legend>
+                            <h:form styleClass="form-horizontal" id="ApoderadoCreate" >
+                                <p:growl id="growl" showSummary="true" life="3000"  />  
+
+                                <div class="form-group">
+                                    <p:outputLabel value="Rut" for="runApoderado" styleClass="col-md-4 control-label" />
+                                    <div class="col-md-4">
+                                        <p:inputText id="runApoderado" value="#{apoderadoBean.rut}" title="RunApoderado" styleClass="form-control input-md" >
+                                            <f:validator validatorId="Validator.RutValidator"/>
+                                            <p:ajax event="blur" update="growl" listener="#{apoderadoBean.onValidaRut()}"/>
+                                            <p:ajax event="blur" update="runApoderado" listener="#{apoderadoBean.onFormateaRut()}"/>
+                                        </p:inputText>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p:outputLabel value="Nombre Apoderado:" for="nombreApoderado" styleClass="col-md-4 control-label" />
+                                    <div class="col-md-4">
+                                        <p:inputText id="nombreApoderado" value="#{apoderadoBean.apoderado.nombreApoderado}" 
+                                                     style="text-transform: uppercase;"
+                                                     title="NombreApoderado" styleClass="form-control input-md" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p:outputLabel value="Apellido P.:" for="papellidoApoderado" styleClass="col-md-4 control-label" />
+                                    <div class="col-md-4">
+                                        <p:inputText id="papellidoApoderado" value="#{apoderadoBean.apoderado.papellidoApoderado}" 
+                                                     style="text-transform: uppercase;"
+                                                     title="PapellidoApoderado" styleClass="form-control input-md" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p:outputLabel value="Apellido M.:" for="sapellidoApoderado" styleClass="col-md-4 control-label" />
+                                    <div class="col-md-4">
+                                        <p:inputText id="sapellidoApoderado" value="#{apoderadoBean.apoderado.sapellidoApoderado}" 
+                                                     style="text-transform: uppercase;"
+                                                     title="SapellidoApoderado" styleClass="form-control input-md" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p:outputLabel value="Num. Contacto:" for="numContactoApoderado" styleClass="col-md-4 control-label" />
+                                    <div class="col-md-4">
+                                        <p:inputText id="numContactoApoderado" value="#{apoderadoBean.apoderado.numContactoApoderado}" 
+                                                     title="NumContactoApoderado" styleClass="form-control input-md" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p:outputLabel value="Parentesco:" for="idParentesco" styleClass="col-md-4 control-label" />
+                                    <div class="col-md-4">
+                                        <h:selectOneMenu id="idParentesco" value="#{apoderadoBean.apoderado.idParentesco}" styleClass="form-control" 
+                                                         required="true" requiredMessage="The IdParentesco field is required."
+                                                         converter="parentescoConverter">
+                                            <!-- TODO: update below reference to list of available items-->
+                                            <f:selectItems value="#{apoderadoBean.parentescos}" var="parentesco" 
+                                                           itemLabel="#{parentesco.descripcionParentesco}" 
+                                                           itemValue="#{parentesco}" />
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="checkboxes">Tarjeta Entregada:</label>
+                                    <div class="col-md-4">
+                                        <div class="checkbox">
+                                            <label for="checkboxes-0">
+                                                <h:selectBooleanCheckbox value="#{apoderadoBean.tarjetaApoderado}" id="checkboxes-0"/>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label"></label>
+                                    <div class="col-md-4">
+                                        <p:commandButton value="Guardar" actionListener="#{apoderadoBean.create()}" update="growl" styleClass="btn btn-success" />
+                                        <p:commandButton value="Cancelar" onclick="volver('#{appBean.baseUrl}/Application/Apoderado/Apoderados.xhtml');" styleClass="btn btn-danger" />
+                                    </div>
+                                </div>
+                            </h:form>
+                        </fieldset>
+                    </div>
+
+                </f:view>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

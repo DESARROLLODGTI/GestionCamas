@@ -1,0 +1,151 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <body>
+        <ui:composition template="./../../Template.xhtml">
+            <ui:define name="content">
+                <f:view>
+                    <div id="content" style="margin-left:0px !important;">
+                        <h:form>
+                            <div class="menubar">
+                                <div class="sidebar-toggler visible-xs">
+                                    <i class="ion-navicon"></i>
+                                </div>
+                                <div class="page-title">
+                                    Usuarios
+                                </div>
+                                <p:commandButton id="cmdAgregar" value="Agregar" styleClass="new-user btn btn-success pull-right"
+                                                 action="UsuarioCreate.xhtml" />
+                            </div>
+                            <div class="content-wrapper">  
+                                <p:dataTable value="#{usuariosBean.usuarios}" var="item" 
+                                             rows="10" paginator="true" 
+                                             paginatorPosition="bottom"
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="5,10,15"
+                                             widgetVar="tablaUsers"
+                                             filteredValue="#{usuariosBean.filterUsuarios}"
+                                             emptyMessage="No se encontraron resultados"
+                                             >
+                                    <p:column>
+                                        <p:rowToggler id="permisosUsuarios">ver permisos</p:rowToggler>
+                                    </p:column>
+                                    <f:facet name="header">
+                                        <p:outputPanel>
+                                            <h:outputText value="Buscar en todas las Columnas" />
+                                            <p:inputText id="globalFilter" onkeyup="PF('tablaUsers').filter()" style="width:300px; text-transform: uppercase;" placeholder="Ingrese palabra"/>
+                                        </p:outputPanel>
+                                    </f:facet>
+                                    <p:column filterBy="#{item.rutUsuario}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Rut"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.rutUsuario}"/>
+                                    </p:column>
+                                    <p:column filterBy="#{item.nombreUsuario}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Nombre"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.nombreUsuario}"/>
+                                    </p:column>
+                                    <p:column filterBy="#{item.papellidoUsuario}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Apellido"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.papellidoUsuario}"/>
+                                    </p:column>
+                                    <p:column filterBy="#{item.correoElectronico}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Correo Electronico"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.correoElectronico}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Activo"/>
+                                        </f:facet>
+                                        <p:column>
+                                            <h:selectBooleanCheckbox disabled="true" value="#{true}" rendered="#{item.indActivo == 1}"/>
+                                            <h:selectBooleanCheckbox disabled="true" value="#{false}" rendered="#{item.indActivo == 0}"/>
+                                        </p:column>
+                                    </p:column>
+                                    <p:column filterBy="#{item.idCargo.descripcionCargo}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Cargo"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.idCargo.descripcionCargo}"/>
+                                    </p:column>
+                                    <p:column filterBy="#{item.idEspecialidad.nombreEspecialidad}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Especialidad"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.idEspecialidad.nombreEspecialidad}"/>
+                                    </p:column>
+                                    <p:column filterBy="#{item.idRol.descripcionRol}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Rol"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.idRol.descripcionRol}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:commandButton icon="ui-icon-pencil" title="Editar" action="UsuariosUpdate.xhtml">
+                                            <f:setPropertyActionListener value="#{item}" target="#{usuariosBean.usuario}" />
+                                        </p:commandButton>
+                                        <p:commandButton action="#{usuarioOpcionBean.asignarPermisos()}" title="Modificar Permisos" value="Modificar Permisos">
+                                            <f:setPropertyActionListener target="#{usuarioOpcionBean.usuarioSistema}" value="#{item}"/>
+                                            <f:param name="idUsuario" value="#{item.idUsuario}"/>
+                                        </p:commandButton>
+                                    </p:column>
+                                    <p:rowExpansion>
+                                        <p:dataTable var="permisosUsuarios" value="#{usuarioOpcionBean.getListaOpcionesByUsser(item)}">
+                                            <p:column headerText="Opcion">
+                                                <p:outputLabel value="#{permisosUsuarios.idOpcion.nombreOpcion}"/>
+                                            </p:column>
+                                            <p:column headerText="Agregar">
+                                                <h:selectBooleanCheckbox disabled="true" value="#{true}" rendered="#{permisosUsuarios.opcionAg == 1}"/>
+                                                <h:selectBooleanCheckbox disabled="true" value="#{false}" rendered="#{permisosUsuarios.opcionAg != 1}"/>
+                                            </p:column>
+                                            <p:column headerText="Editar">
+                                                <h:selectBooleanCheckbox disabled="true" value="#{true}" rendered="#{permisosUsuarios.opcionEd == 1}"/>
+                                                <h:selectBooleanCheckbox disabled="true" value="#{false}" rendered="#{permisosUsuarios.opcionEd != 1}"/>
+                                            </p:column>
+                                            <p:column headerText="Asignar Cama">
+                                                <h:selectBooleanCheckbox disabled="true" value="#{true}" rendered="#{permisosUsuarios.opcionAc == 1}"/>
+                                                <h:selectBooleanCheckbox disabled="true" value="#{false}" rendered="#{permisosUsuarios.opcionAc != 1}" />
+                                            </p:column>
+                                            <p:column headerText="Trasladar Paciente">
+                                                <h:selectBooleanCheckbox disabled="true" value="#{true}" rendered="#{permisosUsuarios.opcionTp == 1}"/>
+                                                <h:selectBooleanCheckbox disabled="true" value="#{false}" rendered="#{permisosUsuarios.opcionTp != 1}" />
+                                            </p:column>
+                                            <p:column headerText="Egresar Paciente">
+                                                <h:selectBooleanCheckbox disabled="true" value="#{true}" rendered="#{permisosUsuarios.opcionEp == 1}"/>
+                                                <h:selectBooleanCheckbox disabled="true" value="#{false}" rendered="#{permisosUsuarios.opcionEp != 1}" />
+                                            </p:column>
+                                            <p:column headerText="Modificar Estado Paciente">
+                                                <h:selectBooleanCheckbox disabled="true" value="#{true}" rendered="#{permisosUsuarios.opcionMep == 1}"/>
+                                                <h:selectBooleanCheckbox disabled="true" value="#{false}" rendered="#{permisosUsuarios.opcionMep != 1}"/>
+                                            </p:column>
+                                            <p:column headerText="Asignar Apoderado">
+                                                <h:selectBooleanCheckbox disabled="true" value="#{true}" rendered="#{permisosUsuarios.opcionAa == 1}"/>
+                                                <h:selectBooleanCheckbox disabled="true" value="#{false}" rendered="#{permisosUsuarios.opcionAa != 1}"/>
+                                            </p:column>
+                                            <p:column>
+                                                <p:commandButton action="../Permisos/asignacionAccionUsuarioOpcion.xhtml" value="asignar acciones">
+                                                    <f:setPropertyActionListener value="#{permisosUsuarios}" target="#{accionUsuarioOpcion.usuarioOpcion}"/>
+                                                </p:commandButton>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </p:rowExpansion>
+                                </p:dataTable>
+                            </div>
+                        </h:form>
+                    </div>
+                </f:view>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../../Template.xhtml">
+
+            <ui:define name="content">
+                <f:view>
+
+
+                    <div id="content" style="margin-left:0px !important;">
+                        <h:form>
+                            <div class="menubar">
+                                <div class="sidebar-toggler visible-xs">
+                                    <i class="ion-navicon"></i>
+                                </div>
+                                <div class="page-title">
+                                    Menus
+                                </div>
+                                <p:commandButton id="cmdAgregar" value="Agregar" styleClass="new-user btn btn-success pull-right"
+                                                 action="MenuCreate.xhtml" />
+                            </div>
+                            <div class="content-wrapper">  
+                                <p:dataTable value="#{menuBean.menus}" var="item" 
+                                             rows="10" paginator="true" 
+                                             paginatorPosition="bottom"
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="5,10,15"
+                                             widgetVar="tabla"
+                                             filteredValue="#{menuBean.filterMenu}"
+                                             emptyMessage="No se encontraron resultados">
+                                    <f:facet name="header">
+                                        <p:outputPanel>
+                                            <h:outputText value="Buscar en todas las Columnas" />
+                                            <p:inputText id="globalFilter" onkeyup="PF('tabla').filter()" style="width:300px; text-transform: uppercase;" placeholder="Ingrese palabra"/>
+                                        </p:outputPanel>
+                                    </f:facet>
+                                    <p:column style="width:16px" headerText="Ver Opciones Menu">
+                                        <p:rowToggler></p:rowToggler>
+                                    </p:column>
+                                    <p:column filterBy="#{item.idMenu}">
+                                        <f:facet name="header">
+                                            <h:outputText value="IdMenu"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.idMenu}"/>
+                                    </p:column>
+                                    <p:column filterBy="#{item.nombre}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Nombre"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.nombre}"/>
+                                    </p:column>
+                                    <p:column style="width:10%; text-align:center">
+                                        <p:commandButton icon="ui-icon-pencil" title="Editar" action="MenuUpdate.xhtml">
+                                            <f:setPropertyActionListener value="#{item}" target="#{menuBean.menu}" />
+                                        </p:commandButton>
+                                        <p:commandButton icon="ui-icon-plus" title="Agregar SubMenu" action="SubMenuCreate.xhtml">
+                                            <f:setPropertyActionListener value="#{item.idMenu}" target="#{menuBean.opcion.idMenu.idMenu}" />
+                                        </p:commandButton>
+                                    </p:column>
+                                    <p:rowExpansion>
+                                        <p:dataTable var="submenu" value="#{menuBean.getOpciones(item)}">
+                                            <p:column id="accion" headerText="SubMenu" sortBy="#{submenu.nombreOpcion}">
+                                                <h:outputText value="#{submenu.nombreOpcion}"/>
+                                            </p:column>
+                                            <p:column headerText="Ruta">
+                                                <h:outputText value="#{submenu.paginaOpcion}" />
+                                            </p:column>
+                                            <p:column style="width:10%;text-align: center">
+                                                <p:commandButton icon="ui-icon-pencil" title="Editar Tipo Previsión" 
+                                                                 action="SubMenuUpdate.xhtml">
+                                                    <f:setPropertyActionListener value="#{submenu}" target="#{menuBean.opcion}" parent="accion"  />
+                                                    <f:setPropertyActionListener value="#{item.idMenu}" target="#{menuBean.opcion.idMenu.idMenu}" />
+                                                </p:commandButton>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </p:rowExpansion>
+                                </p:dataTable>
+                            </div>
+                        </h:form>
+                    </div>
+                </f:view>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

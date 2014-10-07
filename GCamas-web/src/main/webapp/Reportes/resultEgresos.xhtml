@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+        <ui:composition template="./../Template.xhtml">
+
+            <ui:define name="content">
+                <f:view>
+
+                    <div id="content" style="margin-left:0px !important;">
+                        <h:form>
+                            <div class="content-wrapper">  
+                                <p:dataTable value="#{reportesBean.reporteEgreso}" var="item" 
+                                             rows="10" paginator="true" 
+                                             paginatorPosition="bottom"
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="5,10,15"
+                                             widgetVar="tabla"
+                                             filteredValue="#{reportesBean.filterReporteEgresos}"
+                                             emptyMessage="No se encontraron resultados"
+                                             id="tbl">
+                                    <f:facet name="header">
+                                        <p:outputPanel>
+                                            <h:outputText value="Buscar en todas las Columnas" />
+                                            <p:inputText id="globalFilter" onkeyup="PF('tabla').filter()" style="width:300px; text-transform: uppercase;" placeholder="Ingrese palabra"/>
+                                        </p:outputPanel>
+                                    </f:facet>
+                                    <p:column filterBy="#{item.idPaciente}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Paciente"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.idPaciente.nombre} #{item.idPaciente.papellidoPaciente}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Apoderado"/>
+                                        </f:facet>
+                                        <h:outputText value="#{reportesBean.getNombreApoderado(item.idPaciente)}"/>
+                                    </p:column>
+                                     <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Num Contacto"/>
+                                        </f:facet>
+                                        <h:outputText value="#{reportesBean.getNumeroContacto(item.idPaciente)}"/>
+                                    </p:column>
+
+                                    <p:column filterBy="#{item.motivoEgreso}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Motivo Egreso"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.motivoEgreso}"/>
+                                    </p:column>
+                                    <p:column filterBy="#{item.fechaEgreso}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Fecha Egreso"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.fechaEgreso}">
+                                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column filterBy="#{item.idTipoEgreso}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Tipo Egreso"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.idTipoEgreso.descripcion}"/>
+                                    </p:column>
+                                </p:dataTable>
+                                <h:commandLink>
+                                    <p:graphicImage name="/images/csv.PNG" width="24"/>
+                                    <p:dataExporter type="xls" target="tbl" fileName="hospitalizados" postProcessor="#{reportBean.postProcessXLS}" />
+                                </h:commandLink>
+                            </div>
+                        </h:form>
+                    </div>
+                </f:view>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

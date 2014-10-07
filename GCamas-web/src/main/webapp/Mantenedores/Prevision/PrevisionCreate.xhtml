@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+  <body>
+    <ui:composition template="./../../Template.xhtml">
+      <ui:define name="content">
+        <div id="content" style="margin-left: 0px !important;">
+          <fieldset>
+            <legend>Crear Previsión</legend>
+            <h:form styleClass="form-horizontal" id="frmPrevisionAdd" >
+              <p:growl id="growl" showSummary="true" life="3000"  />  
+              <div class="form-group">
+                <p:outputLabel value="Nombre de la Previsión:" for="descripcionPrevision" styleClass="col-md-4 control-label" />
+                <div class="col-md-4">
+                  <p:inputText id="descripcionPrevision" value="#{previsionBean.prevision.descripcionPrevision}"  maxlength="30"
+                               title="DescripcionPrevision" required="true" requiredMessage="Ingrese una Descripción "
+                               styleClass="form-control input-md" style="text-transform: uppercase;">
+                  </p:inputText>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-4 control-label"></label>
+                <div class="col-md-4">
+                  <p:commandButton value="Guardar" actionListener="#{previsionBean.addPrevision()}" update="growl" styleClass="btn btn-success" />
+                  <p:commandButton value="Cancelar" onclick="volver('#{appBean.baseUrl}/Mantenedores/Prevision/Previsiones.xhtml');" styleClass="btn btn-danger" />
+                </div>
+              </div>
+            </h:form>
+          </fieldset>
+        </div>
+      </ui:define>
+    </ui:composition>
+  </body>
+</html>
+

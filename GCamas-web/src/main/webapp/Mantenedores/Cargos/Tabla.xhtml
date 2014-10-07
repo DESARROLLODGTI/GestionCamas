@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <body>
+        <ui:composition template="./../../Template.xhtml">
+
+            <ui:define name="content">
+                <div id="content" style="margin-left: 0px !important;">
+                    <h:form id="Datos">
+                        <p:growl id="growl" life="3000" showSummary="true"/>
+                        <div class="menubar">
+                            <div class="sidebar-toggler visible-xs">
+                                <i class="ion-navicon"></i>
+                            </div>
+
+                            <div class="page-title">
+                                Cargos
+
+                            </div>
+                            <p:commandButton id="cmdAgregar" value="Agregar" action="IngresoCargos.xhtml" styleClass="btn btn-success pull-right"/>
+                        </div>
+                        <p:dataTable value="#{cargoBean.allCargos}" var="item" widgetVar="Cargos"
+                                     id="Cargos"
+                                     rows="10"
+                                     paginator="true"
+                                     paginatorPosition="bottom"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15">
+                            <p:column sortBy="#{item.descripcionCargo}" filterBy="#{item.descripcionCargo}" headerText="Id" footerText="contains" filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="DescripcionCargo"/>
+                                </f:facet>
+                                <h:outputText value="#{item.descripcionCargo}"/>
+                            </p:column>
+                            <p:column style="width:6%;text-align: center">
+                                <p:commandButton  icon="ui-icon-search" title="View" action="ModCargos.xhtml">
+                                    <f:setPropertyActionListener value="#{item}" target="#{cargoBean.cargo}"/>
+                                </p:commandButton>
+                            </p:column>
+                            <f:facet name="footer">
+
+                            </f:facet>
+                        </p:dataTable>
+                    </h:form>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>
+

@@ -1,0 +1,259 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+  <h:head>
+    <title>Gestión de Camas</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link data-turbolinks-track="true" href="resources/js/libs/bootstrap/css/estilo.css" media="all" rel="stylesheet" />
+    <link href="resources/css/default.css" rel="stylesheet" />
+    <script data-turbolinks-track="true" src="resources/js/libs/jquery/java.js"></script>
+    <script src="resources/js/app/menu.js" type="text/javascript"></script>
+    <script type="text/javascript" language="JavaScript">
+      function ajaxFunction() {
+        var xmlHttp;
+        try {
+
+          xmlHttp = new XMLHttpRequest();
+          return xmlHttp;
+        } catch (e) {
+
+          try {
+            xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
+            return xmlHttp;
+          } catch (e) {
+
+            try {
+              xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+              return xmlHttp;
+            } catch (e) {
+              alert("Tu navegador no soporta AJAX!");
+              return false;
+            }
+          }
+        }
+      }
+      function Enviar(_pagina, capa) {
+        var ajax;
+        ajax = ajaxFunction();
+        ajax.open("POST", _pagina, true);
+        ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        ajax.onreadystatechange = function() {
+          if (ajax.readyState == 1) {
+            document.getElementById(capa).innerHTML = " Aguarde por favor...";
+          }
+          if (ajax.readyState == 4) {
+
+            document.getElementById(capa).innerHTML = ajax.responseText;
+          }
+        }
+
+        ajax.send(null);
+      }
+    </script>
+  </h:head>
+  <h:body>
+    <div id="wrapper">
+      <div id="sidebar-default" class="main-sidebar fix-scroll">
+        <div class="current-user">
+          <a href="#" class="name">
+            <img class="avatar" src="resources/images/default1.jpg" alt="1" />
+            <span>
+              Edwin Guaman
+              <i class="fa fa-chevron-down"></i>
+            </span>
+          </a>
+          <ul class="menu">
+            <li>
+              <a href="#">Configuración de la cuenta</a>
+            </li>
+            <li>
+              <a href="#">Ayuda y Soporte</a>
+            </li>
+            <li>
+              <a href="#">Cerrar Sesión</a>
+            </li>
+          </ul>
+        </div>
+        <div class="menu-section">
+          <h3>Gestión de Camas</h3>
+          <ul>
+            <li class="option">
+              <a class="active" href="./prevision.xhtml" target="carga" >
+                <i class ="ion-alert"></i>
+                <span>Inicio</span>
+              </a>
+            </li>
+            <li class="option">
+              <a href="#" data-toggle="sidebar">
+                <i class="ion-person-stalker"></i> <span>Lists &amp; Tables</span>
+                <i class="fa fa-chevron-down"></i>
+              </a>
+              <ul class="submenu">
+                <li><a href="./demo1.xhtml">Customers list</a></li>
+                <li><a href="#">Orders (Datatables)</a></li>
+                <li><a href="#">Products (Filters)</a></li>
+              </ul>
+            </li>
+            <li class="option">
+              <a href="#" data-toggle="sidebar">
+                <i class="ion-stats-bars"></i> <span>Reports</span>
+                <i class="fa fa-chevron-down"></i>
+              </a>
+              <ul class="submenu">
+                <li><a href="#">Reports orders</a></li>
+                <li><a href="#">Report sales</a></li>
+              </ul>
+            </li>
+            <li class="option">
+              <a href="#" data-toggle="sidebar">
+                <i class="ion-pricetags"></i> <span>Forms</span>
+                <i class="fa fa-chevron-down"></i>
+              </a>
+              <ul class="submenu">
+                <li><a href="#">Nuevo usuario</a></li>
+                <li><a href="#">New Product (add-ons)</a></li>
+                <li><a href="#">Wizard</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div class="menu-section">
+          <h3>Application</h3>
+          <ul>
+            <li class="option">
+              <a href="#" data-toggle="sidebar">
+                <i class="ion-earth"></i> <span>App Pages</span>
+                <i class="fa fa-chevron-down"></i>
+              </a>
+              <ul class="submenu">
+                <li><a href="#">Inbox Messages</a></li>
+                <li><a href="#">User profile</a></li>
+                <li><a href="#">Latest activity</a></li>
+                <li><a href="#">Projects</a></li>
+                <li><a href="#">Steps to launch</a></li>
+                <li><a href="#">Calendar</a></li>
+              </ul>
+            </li>
+            <li class="option">
+              <a href="#" data-toggle="sidebar">
+                <i class="ion-card"></i> <span>Pricing</span>
+                <i class="fa fa-chevron-down"></i>
+              </a>
+              <ul class="submenu">
+                <li><a href="#">Pricing (Plans)</a></li>
+                <li><a href="#">Pricing charts</a></li>
+                <li><a href="#">Billing form</a></li>
+                <li><a href="#">Invoice</a></li>
+              </ul>
+            </li>
+            <li class="option">
+              <a href="#" data-toggle="sidebar">
+                <i class="ion-flash"></i> <span>Features</span>
+                <i class="fa fa-chevron-down"></i>
+              </a>
+              <ul class="submenu">
+                <li><a href="#">Email templates</a></li>
+                <li><a href="#">Gallery</a></li>
+                <li><a href="#">UI Extras</a></li>
+                <li><a href="#">API Documentation</a></li>
+                <li><a href="#">Sign up</a></li>
+                <li><a href="#">Sign in</a></li>
+                <li><a href="#">App Status</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div class="menu-section">
+          <h3>Administración</h3>
+          <ul>
+            <li class="option">
+              <a href="#" data-toggle="sidebar">
+                <i class="ion-gear-b"></i> <span>Configuración del Sistema</span>
+                <i class="fa fa-chevron-down"></i>
+              </a>
+              <ul class="submenu">
+                <li><a href="#"><i class="ion-person-stalker"></i><span>Usuarios</span></a></li>
+                <li><a href="#">Camas</a></li>
+                <li><a href="#">Roles</a></li>
+                <li><a href="#">Salas</a></li>
+                <li><a href="./Mantenedores/Especialidades/Especialidades.xhtml" target="carga">Especialidades</a></li>
+                <li><a href="./Mantenedores/Cargos/Tabla.xhtml" target="carga">
+                    <i class="ion-medkit"></i><span>Cargos</span></a></li>
+                <li>
+                  <a href="./Mantenedores/Prevision/listPrevision.xhtml" target="carga">
+                    <i class="ion-medkit"></i> <span>Prevision</span></a>
+                </li>
+              </ul>
+            </li>
+            <li class="option">
+              <a href="#" data-toggle="sidebar">
+                <i class="ion-usb"></i> <span>Level Navigation</span>
+                <i class="fa fa-chevron-down"></i>
+              </a>
+              <ul class="submenu">
+                <li>
+                  <a href="#" data-toggle="sidebar">
+                    Submenu
+                    <i class="fa fa-chevron-down"></i>
+                  </a>
+                  <ul class="submenu">
+                    <li><a href="#">Last menu</a></li>
+                    <li><a href="#">Last menu</a></li>
+                  </ul>
+                </li>
+                <li><a href="#">Menu link</a></li>
+                <li><a href="#">Extra link</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div class="bottom-menu hidden-sm">
+          <ul>
+            <li><a href="#"><i class="ion-help"></i></a></li>
+            <li>
+              <a href="#">
+                <i class="ion-archive"></i>
+                <span class="flag"></span>
+              </a>
+              <ul class="menu">
+                <li><a href="#">5 unread messages</a></li>
+                <li><a href="#">12 tasks completed</a></li>
+                <!-- <li><a href="#">3 features added</a></li> -->
+              </ul>
+            </li>
+            <li><a href=""><i class="ion-log-out"></i></a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="content" style="padding: 0 !important;">
+
+        <iframe id="carga" name="carga" width="100%" />
+        <script type="text/javascript">
+
+          function expandFrame(panelID, frameID) {
+            var panel = jQuery("#" + panelID);
+            var frame = jQuery("#" + frameID);
+            var fpos = frame.position();
+            frame.height(panel.height() - fpos.top);
+            frame.width(panel.width());
+          }
+
+          jQuery("#carga").load(function() {
+            expandFrame('content', 'carga');
+          });
+
+
+
+        </script>
+
+        <p:resizable for="content" onStop="expandFrame('content', 'carga')"  />    
+      </div>
+    </div>
+  </h:body>
+</html>
+

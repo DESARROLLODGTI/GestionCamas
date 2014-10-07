@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+  <body>
+    <ui:composition template="./../../Template.xhtml">
+      <ui:define name="content">
+        <div id="content" style="margin-left: 0px !important;">
+          <h:form id="frmPrevision">
+            <p:growl id="growlList" showSummary="true" life="3000"  />
+            <div class="menubar">
+              <div class="sidebar-toggler visible-xs">
+                <i class="ion-navicon"></i>
+              </div>
+
+              <div class="page-title">
+                Previsión
+              </div>
+              <p:commandButton id="cmdAgregar" value="Agregar Previsión" 
+                               styleClass="new-user btn btn-success pull-right" 
+                               action="PrevisionCreate.xhtml"  />
+            </div>
+            <div class="content-wrapper">
+              <p:dataTable value="#{previsionBean.allPrevisiones}" 
+                           var="item" 
+                           rows="10"
+                           paginator="true"
+                           paginatorPosition="bottom"
+                           paginatorTemplate="{CurrentPageReport}  {FirstPageLink} 
+                           {PreviousPageLink} {PageLinks} 
+                           {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                           rowsPerPageTemplate="5,10,15">
+                <p:column style="width:16px" headerText="Ver Tipo Previsiones">
+                  <p:rowToggler></p:rowToggler>
+                </p:column>
+                <p:column filterBy="#{item.descripcionPrevision}" 
+                          sortBy="#{item.descripcionPrevision}">
+                  <f:facet name="header">
+                    <h:outputText value="Descripción Previsión"/>
+                  </f:facet>
+                  <h:outputText value="#{item.descripcionPrevision}"/>
+                </p:column>
+                <p:column style="width:10%;text-align: center">
+                  <p:commandButton icon="ui-icon-pencil" title="Editar Previsión" action="PrevisionUpdate.xhtml">
+                    <f:setPropertyActionListener value="#{item}" target="#{previsionBean.prevision}" />
+                  </p:commandButton>
+                  <p:commandButton icon="ui-icon-plus" title="Agregar Tipo Prevision" 
+                                       action="../TipoPrevision/TipoPrevisionCreate.xhtml"
+                                   styleClass="btn btn-success btn-xs">
+                    <f:setPropertyActionListener value="#{item}" target="#{tipoPrevisionBean.prevision}" />
+                  </p:commandButton>
+                </p:column>
+                <p:rowExpansion>
+                  <p:dataTable var="tipo" value="#{previsionBean.listByPrevision(item)}">
+                    <p:column id="accion" headerText="Tipo Prevision" sortBy="#{tipo.descripcionTipoPrevision}">
+                      <h:outputText value="#{tipo.descripcionTipoPrevision}" />
+                    </p:column>
+                    <p:column style="width:10%;text-align: center">
+                      <p:commandButton icon="ui-icon-pencil" title="Editar Tipo Previsión" 
+                                       action="../TipoPrevision/TipoPrevisionUpdate.xhtml">
+                        <f:setPropertyActionListener value="#{tipo}" target="#{tipoPrevisionBean.tipoPrevision}" parent="accion"  />
+                        <f:setPropertyActionListener value="#{item}" target="#{tipoPrevisionBean.prevision}" parent="accion" />
+                      </p:commandButton>
+                    </p:column>
+                  </p:dataTable>
+                </p:rowExpansion>
+              </p:dataTable>
+            </div>
+          </h:form>
+        </div>
+      </ui:define>
+    </ui:composition>
+  </body>
+</html>
+

@@ -1,0 +1,145 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./Template.xhtml">
+
+            <ui:define name="content">
+
+                <div  id="wizard">
+                    <div id="wrapper">
+                        <div class="header">
+                            <div class="sidebar-toggler visible-xs">
+                                <i class="ion-navicon"></i>
+                            </div>
+
+                            <div class="steps clearfix">
+                                <div class="step active">
+                                    Introducci&oacute;n
+                                    <span></span>
+                                </div>
+                                <div class="step">
+                                    Vista Pacientes
+                                    <span></span>
+                                </div>
+                                <div class="step">
+                                    Vista Hospitalizados
+                                    <span></span>
+                                </div>
+                                <div class="step">
+                                    Observaciones
+                                    <span></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="content" style="margin-left: 0px !important;">
+                            <section class="form-wizard">
+                                <h:form id="FormularioIntroductivo" class="form-horizontal">
+                                    <div class="step active animated fadeInRightStep">
+
+                                        <h1 id="grid" class="page-header">Bienvenidos al Sistema de Registro Hospitalizados</h1>
+                                        <p class="lead">
+                                            El sistema est&aacute; en  una etapa de desarrollo por lo que no todas la funciones se encuentran operativas.
+                                            Como beta est&aacute; sujeto a mostrar errores por lo que se pedir&aacute; que si aparece alguna pantalla de error o no funcionamiento de este, envi&eacute; un comentario al correo andres.gutierrez@redsalud.gov.cl explicando cualquier inconveniente.
+                                        </p>
+                                        <h3 id="grid-intro">Introducci&oacute;n</h3>
+                                        <p>Uso de la aplicación para los usuarios.
+                                            La aplicación contemplara el uso del modulo de gestión el cual cuenta con el registro de pacientes, apoderados, y hospitalizados. 
+                                            Las vistas son intuitivas por lo que las características de los botones son acordes a lo que se requiera realizar por ejemplo el botón agregar sirve en los formularios de Pacientes y Apoderados para agregar un nuevo registro de estos, y en Hospitalizados pueden registrar una nueva Hospitalización, estos botones son de color Verde.
+                                            Dentro de las vistas desplegadas de cada opción se visualizaran botones de acciones al lado derecho de cada fila, los cuales poseen iconos descriptivos, pero si se posiciona el mouse sobre uno de ellos aparecerá la descripción del botón.
+                                        </p>
+                                        <h3 id="grid-intro">Updates 1.3v</h3>
+                                        <p>
+                                            Capacidad de Modificaci&oacute;n para los Estados y Diagn&oacute;sticos dentro de la vista  Hospitalizados con el Bot&oacute;n de Cruz.<br/>
+                                            Creaci&oacute;n de Reportes de Egresados dentro del Men&uacute; de Reportes.<br/>
+                                            Actualizaci&oacute;n de Reporte Hospitalizados, se agrega el campo de Estado del Paciente y diagn&oacute;stico.<br/>
+                                            
+                                        </p>
+                                        <div class="form-group form-actions">
+                                            <button type="submit" id="paso1" class="button" data-step="2">
+                                                <span>Siguiente Paso<i class="fa fa-angle-double-right"></i></span>
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                    <!--SEGUNDO PASO SELECCIONAR LA SALA Y CAMA DE LA ESPECIALIDAD -->
+                                    <div class="step">
+                                        <img class="avatar" src="#{appBean.baseUrl}/resources/images/vistaPacientes.jpg" width="980" alt="1" />
+                                        <h3 id="grid-intro">Vista Pacientes	</h3>
+                                        <p>Uso de la aplicación para los usuarios.</p>
+                                        <p> En la vista pacientes se pueden apreciar los pacientes que han sido ingresados alguna vez en el sistema como también la opción en el botón verde para agregar nuevos pacientes.
+                                            Dentro de la tabla paciente se pueden apreciar un campo de búsqueda global y campos de búsqueda para cada campo debajo de la descripción.</p>
+                                        <h3 id="grid-intro">Ejemplos.</h3>
+                                        <p>Si buscamos en el campo global el nombre FRIAS, en la tabla se visualizaran todos los registros que contengan ese nombre o palabra. En cambio si se escribe la palabra FRIAS dentro del cuadro que está debajo de Nombres, solo se visualizaran los registros con dicho nombre.
+                                            Se pueden buscar de forma más personalizada si los datos a buscar son escritos en cada uno de los campos.</p>
+                                        <p>En los recuadros de acciones de esta vista hay cuatro botones los cuales realizan las siguientes operaciones:</p>
+                                        <ui>
+                                            <li> 1. editar al paciente.</li>
+                                            <li>2. trasladar al paciente.</li>
+                                            <li>3. asignar cama al paciente.</li>
+                                            <li> 4. egresar al paciente. (Este último no está aun completamente terminado).</li>
+                                        </ui>
+                                        <div class="form-group form-actions">
+                                            <a class="button" href="#" data-step="1">
+                                                <span><i class="fa fa-angle-double-left"></i> Atras</span>
+                                            </a>
+                                            <button type="submit" id="paso2" class="button" data-step="3">
+                                                <span>Siguiente Paso<i class="fa fa-angle-double-right"></i></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!--TERCER PASO SELECCIONAR LA FECHA DE ASIGNACION DE LA CAMA-->
+                                    <div class="step">
+                                        <img class="avatar" src="#{appBean.baseUrl}/resources/images/vistaHospitalizados1.jpg" width="980" alt="1" />
+                                        <h3 id="grid-intro">Vista Hospitalizados</h3>
+                                        <p>La vista Hospitalizados es similar a la anterior descrita, esta también posee un botón para registrar las hospitalizaciones y una tabla con las mismas características.</p>
+                                        <img class="avatar" src="#{appBean.baseUrl}/resources/images/vistaInformacion.jpg" width="980" alt="1" />
+                                        <p>Los datos del paciente<br/>
+                                            Registro de Hospitalizaciones, lo que contempla el flujo por los diferentes servicios que ha pasado el Paciente.<br/>
+                                            Los Datos del Apoderado Responsable (Aun no se ha realizado la inserción de estos datos por parte de los usuarios del sistema, por el momento solo ingresa un Apoderado por defecto a modo de pruebas).<br/>
+                                            Ubicación del paciente que muestra el motivo de traslado, la fecha, la especialidad de procedencia y destino (Especialidad Traslado).
+                                        </p>
+                                        <div class="form-group form-actions">
+                                            <a class="button" href="#" data-step="2">
+                                                <span><i class="fa fa-angle-double-left"></i> Back</span>
+                                            </a>
+                                            <button type="submit" id="paso3" class="button" data-step="4">
+                                                <span>Siguiente Paso<i class="fa fa-angle-double-right"></i></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!--PASO 4  CONFIRMACION DE LA INFORMACION INGRESADA-->
+                                    <div class="step">
+                                        <h3 id="grid-intro">Observaciones</h3>
+                                        <p>
+                                            Se ha levantado el sistema en un servidor de prueba para el manejo de éste. Por lo que los datos ingresados pueden ser eliminados o modificado según el desarrollo.<br/>
+                                            Pueden existir modificaciones las cuales sean implementadas para ser utilizadas a modo de encontrar errores los cuales deben ser enviado a los correos electrónicos de los desarrolladores , estos los pueden encontrar en la opción de ayuda que se despliega cuando presionan un click sobre el nombre del usuario logeado (costado superior izquierdo)<br/>
+                                            Las Funcionalidades restantes Solicitadas Se realizaran dentro del plazo establecido en la reunión.<br/>
+                                            ATTE.<br/>
+                                            Grupo de desarrollo del Hospital Barros Luco Trudeau.
+                                        </p>
+                                   
+
+                                        <div class="form-group form-actions">
+                                            <a class="button" href="#" data-step="3">
+                                                <span><i class="fa fa-angle-double-left"></i> Back</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </h:form>
+                                <!--DIALOG DE BUSQUEDA DE PACIENTE-->
+                            </section>
+                        </div>
+                    </div>  
+                </div>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

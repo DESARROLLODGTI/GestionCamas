@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scene Scope="Project" version="2">
+    <Scope Scope="Faces Configuration Only"/>
+    <Scope Scope="Project">
+        <Node id="Mantenedores/RegistrosHospitalizados/PacientesHospitalizados.xhtml" x="1400" y="150" zoom="true"/>
+        <Node id="demo1.xhtml" x="150" y="900" zoom="true"/>
+        <Node id="Mantenedores/Salas/SalaUpdate.xhtml" x="150" y="450" zoom="true"/>
+        <Node id="Mantenedores/Usuarios/Usuarios.xhtml" x="1650" y="150" zoom="true"/>
+        <Node id="Mantenedores/Cargos/Tabla.xhtml" x="1400" y="300" zoom="true"/>
+        <Node id="Mantenedores/Salas/Salas.xhtml" x="70" y="145" zoom="false"/>
+        <Node id="Mantenedores/Camas/CamaUpdate.xhtml" x="150" y="300" zoom="true"/>
+        <Node id="Mantenedores/Especialidades/EspecialidadUpdate.xhtml" x="650" y="750" zoom="true"/>
+        <Node id="Mantenedores/Prevision/PrevisionCreate.xhtml" x="1900" y="150" zoom="true"/>
+        <Node id="demo2.xhtml" x="900" y="300" zoom="true"/>
+        <Node id="Mantenedores/Usuarios/UsuarioCreate.xhtml" x="1400" y="450" zoom="true"/>
+        <Node id="Mantenedores/Cargos/IngresoCargos.xhtml" x="650" y="450" zoom="true"/>
+        <Node id="Mantenedores/Roles/RolUpdate.xhtml" x="400" y="450" zoom="true"/>
+        <Node id="Mantenedores/Usuarios/UsuariosUpdate.xhtml" x="650" y="600" zoom="true"/>
+        <Node id="Mantenedores/Roles/RolCreate.xhtml" x="71" y="43" zoom="false"/>
+        <Node id="Mantenedores/Pacientes/PacienteCreate.xhtml" x="650" y="150" zoom="true"/>
+        <Node id="Mantenedores/TipoPrevision/TipoPrevisionUpdate.xhtml" x="900" y="600" zoom="true"/>
+        <Node id="Mantenedores/TipoPrevision/TipoPrevisionCreate.xhtml" x="900" y="450" zoom="true"/>
+        <Node id="login.xhtml" x="650" y="300" zoom="true"/>
+        <Node id="Mantenedores/Camas/Camas.xhtml" x="1150" y="450" zoom="true"/>
+        <Node id="Mantenedores/Pacientes/PacienteUpdate.xhtml" x="1150" y="150" zoom="true"/>
+        <Node id="Mantenedores/Prevision/Previsiones.xhtml" x="150" y="600" zoom="true"/>
+        <Node id="index2.xhtml" x="150" y="750" zoom="true"/>
+        <Node id="Mantenedores/Camas/CamaCreate.xhtml" x="1150" y="300" zoom="true"/>
+        <Node id="Mantenedores/Roles/Roles.xhtml" x="1650" y="300" zoom="true"/>
+        <Node id="Mantenedores/Salas/SalaCreate.xhtml" x="1150" y="600" zoom="true"/>
+        <Node id="Mantenedores/Cargos/ModCargos.xhtml" x="900" y="150" zoom="true"/>
+        <Node id="index.xhtml" x="650" y="900" zoom="true"/>
+        <Node id="Mantenedores/Especialidades/EspecialidadCreate.xhtml" x="150" y="1050" zoom="true"/>
+        <Node id="Mantenedores/Especialidades/Especialidades.xhtml" x="900" y="750" zoom="true"/>
+        <Node id="Mantenedores/Pacientes/Pacientes.xhtml" x="400" y="600" zoom="true"/>
+        <Node id="Mantenedores/RegistrosHospitalizados/RegistrarHospitalizacion.xhtml" x="400" y="900" zoom="true"/>
+        <Node id="Mantenedores/Prevision/PrevisionUpdate.xhtml" x="400" y="750" zoom="false"/>
+    </Scope>
+    <Scope Scope="All Faces Configurations"/>
+</Scene>

@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config version="2.0"
+              xmlns="http://java.sun.com/xml/ns/javaee" 
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+    <lifecycle>
+        <phase-listener>utils.AuthorizationListener</phase-listener>
+    </lifecycle>
+    <managed-bean>
+        <managed-bean-name>previsionBean</managed-bean-name>
+        <managed-bean-class>cl.hblt.beans.previsionBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>tipoPrevisionBean</managed-bean-name>
+        <managed-bean-class>cl.hblt.beans.tipoPrevisionBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>pacientesBean</managed-bean-name>
+        <managed-bean-class>cl.hblt.beans.pacientesBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>rutValidator</managed-bean-name>
+        <managed-bean-class>cl.hblt.beans.validator.RutValidator</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>trasladoBean</managed-bean-name>
+        <managed-bean-class>cl.hblt.beans.TrasladoBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>asignacionCamaListBean</managed-bean-name>
+        <managed-bean-class>cl.hblt.beans.AsignacionCamaListBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+</faces-config>

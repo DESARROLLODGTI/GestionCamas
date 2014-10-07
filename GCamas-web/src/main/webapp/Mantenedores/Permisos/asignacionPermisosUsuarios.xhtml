@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+        <ui:composition template="./../../Template.xhtml">
+             <ui:define name="content">
+                <div id="content" style="margin-left: 0px ! important;">
+                    <h:form id="AsignarPermisosUsuarios" styleClass="form-horizontal">
+                        <fieldset>
+                        <div class="menubar">
+                            <div class="sidebar-toggler visible-xs">
+                                <i class="ion-navicon"></i>
+                            </div>
+
+                            <div class="page-title">
+                                Modificar Permisos de Acceso a Usuario <p:outputLabel value="#{usuarioOpcionBean.usuarioSistema.nombreUsuario} #{usuarioOpcionBean.usuarioSistema.papellidoUsuario} " />
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="padding-left: 250px;padding-top: 50px;">
+                            <h:inputHidden value="#{usuarioOpcionBean.idUsuario}"/>
+                            <p:growl id="msg" showDetail="true" />
+                            <p:pickList id="PojoPickList" value="#{usuarioOpcionBean.opcionesDisponibles}"
+                                        var="opcion" effect="bounce"
+                                        itemValue="#{opcion}" itemLabel="#{opcion.nombreOpcion}"
+                                        showSourceFilter="true" showTargetFilter="true" 
+                                        filterMatchMode="contains" converter="opcionConverter">
+                                <f:facet name="sourceCaption">Opciones Disponibles</f:facet>
+                                <f:facet name="targetCaption">Opciones Actuales</f:facet>
+
+                                <p:ajax event="transfer" listener="#{usuarioOpcionBean.onTransfer}" update="msg"  partialSubmit="@this"/>
+                                <p:column>
+                                    <h:outputText value="#{opcion.nombreOpcion}" />
+                                </p:column>
+                            </p:pickList>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-4 control-label"></label>
+                            <div class="col-md-4">
+                                <p:commandButton value="Guardar" action="#{usuarioOpcionBean.update()}"  styleClass="btn btn-success" />
+                                <p:commandButton value="Cancelar" onclick="volver('#{appBean.baseUrl}/Mantenedores/Usuarios/Usuarios.xhtml')"  styleClass="btn btn-danger" />
+                            </div>
+                        </div>
+                        </fieldset>
+                    </h:form>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

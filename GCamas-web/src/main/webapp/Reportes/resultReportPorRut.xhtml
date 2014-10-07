@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../Template.xhtml">
+
+            <ui:define name="content">
+                <f:view>
+
+
+                    <div id="content" style="margin-left:0px !important;">
+                        <h:form>
+                            <div class="menubar">
+                                <div class="sidebar-toggler visible-xs">
+                                    <i class="ion-navicon"></i>
+                                </div>
+                                <div class="page-title">
+                                    Reporte Hospitalizaciones por Paciente
+                                </div>
+                            </div>
+                            <div class="content-wrapper">  
+                                <p:dataTable value="#{reportesBean.reportePorRut2}" var="item" 
+                                             rows="10" paginator="true" 
+                                             paginatorPosition="bottom"
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="5,10,15"
+                                             widgetVar="tabla"
+                                             emptyMessage="No se encontraron resultados"
+                                             id="tbl"
+                                             >
+                                    <p:column>
+                                        <p:rowToggler>Ver Datos</p:rowToggler>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Periodo"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.perido}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Fecha Ingreso"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.ih.fechaIngreso}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Fecha Egreso"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.eh.fechaEgreso}"/>
+                                    </p:column>
+                                    <p:rowExpansion>
+                                        <p:dataTable var="asignacion" value="#{reportesBean.getListAsignacion(item)}">
+                                            <p:column headerText="Cama">
+                                                <h:outputLabel value="Cama #{asignacion.idCama.numeroCama}" />
+                                            </p:column>
+                                            <p:column headerText="Sala">
+                                                <h:outputLabel value="#{asignacion.idCama.idSala.nombreSala}" />
+                                            </p:column>
+                                            <p:column headerText="Especialidad">
+                                                <h:outputLabel value="#{asignacion.idCama.idSala.idEspecialidad.nombreEspecialidad}" />
+                                            </p:column>
+                                            <p:column headerText="Fecha Ingreso a la Cama">
+                                                <h:outputLabel value="#{asignacion.fechaAsignacion}"/>
+                                            </p:column>
+                                            <p:column headerText="Fecha Egreso de la Cama">
+                                                <h:outputLabel value="#{asignacion.fechaEgreso}"/>
+                                            </p:column>
+                                            <p:column headerText="Total Dias">
+                                                <h:outputLabel value="#{reportesBean.calculaTotalDias(asignacion.fechaAsignacion, asignacion.fechaEgreso)}"/>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </p:rowExpansion>
+                                </p:dataTable>
+                            </div>
+                            <p:commandButton value="Exportar a Excel"  ajax="false" action="#{reportesBean.crearExcel()}" styleClass="btn btn-success" />
+                        </h:form>
+                    </div>
+                </f:view>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

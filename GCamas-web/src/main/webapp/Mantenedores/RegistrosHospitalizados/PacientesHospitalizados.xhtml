@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <body>
+        <ui:composition template="./../../Template.xhtml">
+            <ui:define name="content">
+                <div id="content" style="margin-left:0px !important;">
+                    <h:form id="frmPacientes">
+                        <p:growl id="msgs" showSummary="true" life="3000"  />  
+                        <div class="menubar">
+                            <div class="sidebar-toggler visible-xs">
+                                <i class="ion-navicon"></i>
+                            </div>
+                            <div class="page-title">
+                                Registro Pacientes Hospitalizados
+                            </div>
+                            <p:commandButton id="cmdAgregar" value="Registrar Hospitalizacion" styleClass="new-user btn btn-success pull-right" 
+                                             action="RegistrarHospitalizacion.xhtml" icon="ui-icon-person" 
+                                             onclick="#{asignacionCamaBean.resetData()}"/>
+                        </div>
+                        <div class="content-wrapper">  
+                            <p:dataTable value="#{asignacionCamaListBean.listIngresohospitalizados}" var="item"
+                                         rows="10" paginator="true" 
+                                         paginatorPosition="bottom"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="10,20,30"
+                                         widgetVar="hospitalizadosTable"
+                                         emptyMessage="No existen registros con ese criterio de Busqueda" 
+                                         filteredValue="#{asignacionCamaListBean.filteredIngresoghospitalizados}"
+                                         resizableColumns="true">
+                               
+                                <f:facet name="header">
+                                    <p:outputPanel>
+                                        <h:outputText value="Busqueda por Todos los Campos:" />
+                                        <p:inputText id="globalFilter" onkeyup="PF('hospitalizadosTable').filter()" style="width:150px" placeholder="Busqueda"/>
+                                    </p:outputPanel>
+                                </f:facet>
+                                <p:column style="width: 47px;">
+                                    <f:facet name="header">
+                                        <h:outputText value="Diag"/>
+                                    </f:facet>
+                                    <p:rowToggler></p:rowToggler>
+                                </p:column>
+                                <p:column filterBy="#{item.idPaciente.runPaciente}" style="width: 125px;">
+                                    <f:facet name="header">
+                                        <h:outputText value="RUT"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.idPaciente.runPaciente}-#{item.idPaciente.dvPaciente}"/>
+                                </p:column>
+                                <p:column style="width: 300px;" filterBy="#{item.idPaciente.nombre} #{item.idPaciente.sapellidoPaciente} #{item.idPaciente.papellidoPaciente}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Nombre"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.idPaciente.nombre} #{item.idPaciente.papellidoPaciente} #{item.idPaciente.sapellidoPaciente}"/>
+                                </p:column>
+                                <p:column filterBy="#{item.fechaIngreso}" style="width: 125px;">
+                                    <f:facet name="header">
+                                        <h:outputText value="Fecha Ingreso"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.fechaIngreso}"/>
+                                </p:column>
+                                <p:column style="width: 370px;">
+                                    <f:facet name="header">
+                                        <h:outputText value="Ubicaci&oacute;n"/>
+                                    </f:facet>
+                                    <h:outputText value="#{asignacionCamaBean.getUbicacionActual(item.idPaciente.idPaciente)}"/>
+                                </p:column>
+                                <p:column style="width: 185px;">
+                                    <f:facet name="header">
+                                        <h:outputText value="Estado"/>
+                                    </f:facet>
+                                    <h:outputText value="#{asignacionCamaBean.getEstado(item.idPaciente.idPaciente)}"/>
+                                </p:column>
+                                <p:column style="width: 140px;">
+                                    <f:facet name="header">
+                                        <h:outputLabel value="Acciones" />
+                                    </f:facet>
+                                    <p:commandButton icon="ui-icon-plusthick" title="Cambiar Estado Paciente" action="#{asignacionCamaListBean.modificarEstado(item.idPaciente)}" 
+                                                     styleClass="btn btn-default btn-xs" update=":frmPacientes:msgs">
+                                        <f:setPropertyActionListener value="#{item.idPaciente}" target="#{asignacionCamaListBean.paciente}"/>
+                                    </p:commandButton>
+                                    <p:commandButton icon="ui-icon-note" title="Información Paciente" action="#{asignacionCamaListBean.cargaDatos(item.idPaciente,item.idApoderado)}" 
+                                                     styleClass="btn btn-default btn-xs">
+                                        <f:setPropertyActionListener value="#{item.idPaciente}" target="#{asignacionCamaListBean.paciente}"/>
+                                    </p:commandButton>
+                                    <p:commandButton icon="ui-icon-person" title="Asignar Apoderado" action="IngresoApoderadoCreate.xhtml" 
+                                                     styleClass="btn btn-default btn-xs">
+                                        <f:setPropertyActionListener value="#{item.idPaciente}" target="#{asignacionCamaBean.pacienteBuscado}"/>
+                                        <f:setPropertyActionListener value="#{item}" target="#{asignacionCamaBean.ih}"/>
+                                    </p:commandButton>
+                                </p:column>
+                                <p:rowExpansion>
+                                    <h:outputText value="#{asignacionCamaBean.getDiagnostico(item.idPaciente.idPaciente)}"/>
+                                </p:rowExpansion>
+                            </p:dataTable>
+                        </div>
+                    </h:form>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

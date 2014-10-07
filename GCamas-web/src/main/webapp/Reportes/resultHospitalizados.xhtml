@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <body>
+        <ui:composition template="./../Template.xhtml">
+            <ui:define name="content">
+                <div id="content" style="margin-left: 0px !important;">
+                    <fieldset>
+                        <legend>Reporte Hospitalizado</legend>
+                        <h:form id="reporteHospitalizado">
+                            <p:dataTable value="#{reportBean.listHospitalizados}" var="item" id="tbl"
+                                         paginator="true" rows="10"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Rut" />
+                                    </f:facet>
+                                    <h:outputText value="#{item.idPaciente.runPaciente}-#{item.idPaciente.dvPaciente}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Ficha" />
+                                    </f:facet>
+                                    <h:outputText value="#{item.idPaciente.numeroFicha}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="nombre" />
+                                    </f:facet>
+                                    <h:outputText value="#{item.idPaciente.nombre} #{item.idPaciente.papellidoPaciente} #{item.idPaciente.sapellidoPaciente}" />
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Ectopico" />
+                                    </f:facet>
+                                    <h:outputText value="SI" rendered="#{item.ectopico != 0}"/>
+                                    <h:outputText value="NO" rendered="#{item.ectopico == 0}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Servicio Ectopico" />
+                                    </f:facet>
+                                    <h:outputText value="#{reportBean.getServEctopicoById(item.idServEctopico)}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Especialidad" />
+                                    </f:facet>
+                                    <h:outputText value="#{item.idCama.idSala.idEspecialidad.nombreEspecialidad}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Sala" />
+                                    </f:facet>
+                                    <h:outputText value="#{item.idCama.idSala.nombreSala}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Cama" />
+                                    </f:facet>
+                                    <h:outputText value="#{item.idCama.numeroCama}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Uso cama desde" />
+                                    </f:facet>
+                                    <h:outputText value="#{item.fechaAsignacion}"/>
+                                </p:column>
+                                 <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="D&iacute;as de uso Cama" />
+                                    </f:facet>
+                                     <h:outputText value="#{reportBean.calculaTotalDias(item.fechaAsignacion, null)}"/>
+                                </p:column>
+                                 <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Fecha de Ingreso Hosp" />
+                                    </f:facet>
+                                     <h:outputText value="#{reportBean.fechaDeIngreso(item.idPaciente)}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="D&iacute;as Totales Hospitalizaci&oacute;n" />
+                                    </f:facet>
+                                     <h:outputText value="#{reportBean.calculaTotalDias(reportBean.fechaDeIngreso(item.idPaciente), null)}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Estado" />
+                                    </f:facet>
+                                    <h:outputText value="#{item.idEstadoPaciente.descripcionEstadoPaciente}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Diagn&oacute;stico" />
+                                    </f:facet>
+                                    <h:outputText value="#{item.diagnosticoSala}"/>
+                                </p:column>
+                            </p:dataTable>
+                            <h:commandLink>
+                                <p:graphicImage name="/images/csv.PNG" width="24"/>
+                                <p:dataExporter type="xls" target="tbl" fileName="hospitalizados" postProcessor="#{reportBean.postProcessXLS}" />
+                            </h:commandLink>
+                        </h:form>
+                    </fieldset>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

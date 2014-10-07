@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <body>
+        <ui:composition template="./../../Template.xhtml">
+            <ui:define name="content">
+                <f:view>
+
+                    <div id="content" style="margin-left: 0px !important;">
+                        <fieldset>
+                            <legend>Modificar Usuario</legend>
+                            <h:form styleClass="form-horizontal" id="formCreate" >
+                                <p:growl id="growl" showSummary="true" life="3000"  />  
+                                <h:inputHidden value="#{usuariosBean.usuario.idUsuario}"/>
+                                <h:inputHidden value="#{usuariosBean.usuario.rutUsuario}"/>
+                                <h:inputHidden value="#{usuariosBean.usuario.dvUsuario}"/>
+                                <div class="form-group">
+                                    <p:outputLabel value="Nombre de Usuario:" for="nombreUsuario" styleClass="col-md-4 control-label" />
+                                    <div class="col-md-4">
+                                        <p:inputText id="nombreUsuario" value="#{usuariosBean.usuario.nombreUsuario}" 
+                                                     title="Nombre de Usuario" styleClass="form-control input-md" 
+                                                     required="true" requiredMessage="Debe ingresar el Nombre del Usuario"
+                                                     style="text-transform: uppercase;"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p:outputLabel value="Apellido Paterno:" for="papellidoUsuario" styleClass="col-md-4 control-label" />
+                                    <div class="col-md-4">
+                                        <p:inputText id="papellidoUsuario" value="#{usuariosBean.usuario.papellidoUsuario}" 
+                                                     title="Apellido Paterno" styleClass="form-control input-md" 
+                                                     required="true" requiredMessage="Debe ingresar el Apellido Paterno del Usuario"
+                                                     style="text-transform: uppercase;"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p:outputLabel value="Apellido Materno:" for="sapellidoUsuario" styleClass="col-md-4 control-label" />
+                                    <div class="col-md-4">
+                                        <p:inputText id="sapellidoUsuario" value="#{usuariosBean.usuario.sapellidoUsuario}" 
+                                                     title="Apellido Materno" styleClass="form-control input-md"
+                                                     style="text-transform: uppercase;"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p:outputLabel value="Clave Acceso:" for="claveAcceso" styleClass="col-md-4 control-label" />
+                                    <div class="col-md-4">
+                                        <p:password id="claveAcceso" value="#{usuariosBean.usuario.claveAcceso}" 
+                                                    title="ClaveAcceso" styleClass="form-control input-md" 
+                                                    required="true" requiredMessage="Debe ingresar Contraseña del Usuario"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p:outputLabel value="Correo Electronico:" for="correoElectronico" styleClass="col-md-4 control-label" />
+                                    <div class="col-md-4">
+                                        <p:inputText id="correoElectronico" value="#{usuariosBean.usuario.correoElectronico}"
+                                                     title="CorreoElectronico" styleClass="form-control input-md" 
+                                                     style="text-transform: uppercase;"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="checkboxes">Activo :</label>
+                                    <div class="col-md-4">
+                                        <div class="checkbox">
+                                            <label for="checkboxes-0">
+                                                <h:selectBooleanCheckbox value="#{usuariosBean.activo}" id="checkboxes-0"/>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p:outputLabel value="Cargo:" for="idCargo" styleClass="col-md-4 control-label" />
+                                    <div class="col-md-4">
+                                        <h:selectOneMenu id="idCargo" value="#{usuariosBean.usuario.idCargo}" 
+                                                         styleClass="form-control" converter="cargoConverter"
+                                                         required="true" requiredMessage="The IdCargo field is required.">
+                                            <!-- TODO: update below reference to list of available items-->
+                                            <f:selectItems value="#{usuariosBean.cargos}" var="tipoCargo" 
+                                                           itemLabel="#{tipoCargo.descripcionCargo}" 
+                                                           itemValue="#{tipoCargo}" />
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p:outputLabel value="Especialidad:" for="idEspecialidad" styleClass="col-md-4 control-label" />
+                                    <div class="col-md-4">
+                                        <h:selectOneMenu id="idEspecialidad" value="#{usuariosBean.usuario.idEspecialidad}" styleClass="form-control" converter="especialidadConverter"
+                                                         required="true" requiredMessage="The IdEspecialidad field is required.">
+                                            <!-- TODO: update below reference to list of available items-->
+                                            <f:selectItems value="#{usuariosBean.especialidades}" var="especialidad"
+                                                           itemLabel="#{especialidad.nombreEspecialidad}"
+                                                           itemValue="#{especialidad}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p:outputLabel value="Rol:" for="idRol" styleClass="col-md-4 control-label" />
+                                    <div class="col-md-4">
+                                        <h:selectOneMenu id="idRol" value="#{usuariosBean.usuario.idRol}" styleClass="form-control" converter="rolConverter" 
+                                                         required="true" requiredMessage="The IdRol field is required.">
+                                            <!-- TODO: update below reference to list of available items-->
+                                            <f:selectItems value="#{usuariosBean.roles}" var="roles"
+                                                           itemLabel="#{roles.descripcionRol}" 
+                                                           itemValue="#{roles}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label"></label>
+                                    <div class="col-md-4">
+                                        <p:commandButton value="Guardar" actionListener="#{usuariosBean.usuarioUpdate()}" update="growl" styleClass="btn btn-success" />
+                                        <p:commandButton value="Cancelar" onclick="volver('#{appBean.baseUrl}/Mantenedores/Usuarios/Usuarios.xhtml')"
+                                                         styleClass="btn btn-danger" />
+                                    </div>
+                                </div>
+                            </h:form>
+                        </fieldset>
+                    </div>
+
+                </f:view>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>
+

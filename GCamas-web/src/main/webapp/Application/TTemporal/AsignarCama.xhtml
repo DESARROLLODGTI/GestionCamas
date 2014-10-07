@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../../Template.xhtml">
+
+            <ui:define name="content">
+                <f:view>
+
+                    <div id="content" style="margin-left: 0px !important;">
+                        <fieldset>
+                            <legend>Asignaci&oacute;n de Camas</legend>
+                            <h:form styleClass="form-horizontal" id="formAsignarCama">
+                                <p:growl id="growl" showSummary="true" life="3000"  />  
+
+                                <div class="form-group">
+                                    <p:outputLabel value="RUT :" styleClass="col-md-4 control-label" />
+                                    <div class="col-md-4">
+                                        <p:inputText id="rut" styleClass="form-control input-md"
+                                                     value="#{ttemporalBean.trasladoTemp.idPaciente.runPaciente}-#{ttemporalBean.trasladoTemp.idPaciente.dvPaciente}"
+                                                     readonly="true"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p:outputLabel value="Nombre Paciente :" styleClass="col-md-4 control-label" />
+                                    <div class="col-md-4">
+                                        <p:inputText id="nombreCompleto" styleClass="form-control input-md"
+                                                     value="#{ttemporalBean.trasladoTemp.idPaciente.nombre} #{ttemporalBean.trasladoTemp.idPaciente.papellidoPaciente} #{tttemporalBean.trasladoTemp.idPaciente.sapellidoPaciente}"
+                                                     readonly="true"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p:outputLabel value="FICHA :" styleClass="col-md-4 control-label" />
+                                    <div class="col-md-4">
+                                        <p:inputText id="ficha" styleClass="form-control input-md"
+                                                     value="#{ttemporalBean.trasladoTemp.idPaciente.numeroFicha}"
+                                                     readonly="true"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p:outputLabel value="Especialidad:" styleClass="col-md-4 control-label" for="especialidad"/>
+                                    <div class="col-md-4">
+                                        <p:inputText type="hidden" id="especialidad" value="#{ttemporalBean.especialidadTraslado.idEspecialidad}" 
+                                                     styleClass="form-control input-md" />
+                                        <p:outputLabel value="#{ttemporalBean.especialidadTraslado.nombreEspecialidad}" 
+                                                       styleClass="form-control input-md"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p:outputLabel value="Tipo Cama:" styleClass="col-md-4 control-label" for="tipoCama"/>
+                                    <div class="col-md-4">
+                                        <h:selectOneMenu id="tipoCama" value="#{ttemporalBean.asignacionCama.idCama.idTipoCama.idTipoCama}" 
+                                                         styleClass="form-control">
+                                            <f:selectItem itemLabel="Seleccione..." itemValue="" noSelectionOption="true" />
+                                            <f:selectItems value="#{ttemporalBean.listTipoCama}" 
+                                                           var="itemTipoCama" itemLabel="#{itemTipoCama.descripcionTipoCama}" 
+                                                           itemValue="#{itemTipoCama.idTipoCama}"/>
+                                            <p:ajax listener="#{ttemporalBean.onTipoCamaChange()}" update="idCama idEstadoPaciente"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p:outputLabel value="Estado Paciente:" for="idEstadoPaciente" styleClass="col-md-4 control-label" />
+                                    <div class="col-md-4">
+                                        <h:selectOneMenu id="idEstadoPaciente" value="#{ttemporalBean.asignacionCama.idEstadoPaciente.idEstadoPaciente}" styleClass="form-control" 
+                                                         required="true" requiredMessage="The IdEstadoPaciente field is required."
+                                                         >
+                                            <!-- TODO: update below reference to list of available items-->
+                                            <f:selectItems value="#{ttemporalBean.listEstadoPacientes}" 
+                                                           var="itemEstadoPaciente" itemLabel="#{itemEstadoPaciente.descripcionEstadoPaciente}"
+                                                           itemValue="#{itemEstadoPaciente.idEstadoPaciente}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p:outputLabel value="Sala:" styleClass="col-md-4 control-label" for="sala"/>
+                                    <div class="col-md-4">
+                                        <h:selectOneMenu id="sala" value="#{ttemporalBean.asignacionCama.idCama.idSala.idSala}" 
+                                                         styleClass="form-control">
+                                            <f:selectItem itemLabel="Seleccione..." itemValue="" noSelectionOption="true" />
+                                            <f:selectItems value="#{ttemporalBean.listaSalasPorEspecialidad}" 
+                                                           var="item2" itemLabel="#{item2.nombreSala}" itemValue="#{item2.idSala}"/>
+                                            <p:ajax listener="#{ttemporalBean.onSalaChange()}" update="idCama"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p:outputLabel value="Cama:" for="idCama" styleClass="col-md-4 control-label" />
+                                    <div class="col-md-4">
+                                        <h:selectOneMenu id="idCama" value="#{ttemporalBean.asignacionCama.idCama.idCama}" styleClass="form-control" required="true" requiredMessage="The IdCama field is required."
+                                                         valueChangeListener="#{ttemporalBean.onCamaChange()}">
+                                            <!-- TODO: update below reference to list of available items-->
+                                            <f:selectItems value="#{ttemporalBean.listaCamasPorEspecialidad}"
+                                                           var="item3" itemLabel="#{item3.numeroCama}" itemValue="#{item3.idCama}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <p:outputLabel for="fechaAsignacion" value="Fecha Asignacion:" 
+                                                   styleClass="col-md-4 control-label" />
+                                    <div class="col-md-4">
+                                        <p:calendar id="fechaAsignacion" value="#{ttemporalBean.asignacionCama.fechaAsignacion}" 
+                                                    placeholder="dd/mm/aaaa" pattern="dd/MM/yyyy" navigator="true"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p:outputLabel value="Ectopico:" styleClass="col-md-4 control-label" for="ectopico"/>
+                                    <div class="col-md-4">
+                                        <p:selectBooleanCheckbox value="#{ttemporalBean.ectopico}" id="ectopico" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label"></label>
+                                    <div class="col-md-4">
+                                        <p:commandButton value="Guardar" action="#{ttemporalBean.create(event)}" update="growl" styleClass="btn btn-success" />
+                                        <p:commandButton value="Cancelar" onclick="volver('#{appBean.baseUrl}/Application/TTemporal/TTemporales.xhtml')" styleClass="btn btn-danger" />
+                                    </div>
+                                </div>
+                            </h:form>
+                        </fieldset>
+                    </div>
+
+                </f:view>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

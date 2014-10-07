@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <body>
+        <ui:composition template="./../../Template.xhtml">
+            <ui:define name="content">  
+                <div id="content" style="margin-left: 0px ! important;">
+                    <h:form styleClass="form-horizontal" id="formUpdate">
+                        <fieldset>
+                            <p:growl id="mensaje"  showSummary="true" showDetail="true" life="3000"/>
+                            <!-- Form Name -->
+                            <legend>Actualizar Datos Especialidad</legend>
+                            <h:inputHidden value="#{especialidadMB.especialidad.idEspecialidad}"/>
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <p:outputLabel styleClass="col-md-4 control-label">Nombre Especialidad:</p:outputLabel>  
+                                <div class="col-md-4">
+                                    <p:inputText onkeyup="javascript:this.value = this.value.toUpperCase();" styleClass="form-control input-md" value="#{especialidadMB.especialidad.nombreEspecialidad}" required="true" requiredMessage="Debe ingresar un nombre"/>
+                                </div>
+                            </div>
+
+                            <!-- Multiple Checkboxes -->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="checkboxes">Activo :</label>
+                                <div class="col-md-4">
+                                    <div class="checkbox">
+                                        <label for="checkboxes-0">
+                                            <h:selectBooleanCheckbox value="#{especialidadMB.activo}" id="checkboxes-0"/>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Button -->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label"></label>
+                                <div class="col-md-4">
+                                    <p:commandButton styleClass="btn btn-success" value="Guardar" update="mensaje" action="#{especialidadMB.update()}" />
+                                    <p:commandButton value="Cancelar" onclick="volver('#{appBean.baseUrl}/Mantenedores/Especialidades/Especialidades.xhtml')" styleClass="btn btn-danger" />
+                                </div>
+                            </div>
+                        </fieldset>
+                    </h:form>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>
+

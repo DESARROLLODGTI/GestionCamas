@@ -46,7 +46,7 @@ import utils.appBean;
  * @version 1.2
  */
 public class pacientesBean {
-
+    
     @EJB
     private final IngresoHospitalizadosFacadeLocal ingresoHospitalizadosFacade;
 
@@ -92,6 +92,10 @@ public class pacientesBean {
         paciente.setNumeroFicha(paciente.getNumeroFicha().toUpperCase());
     }
 
+    public void onRowSelect(){
+        pacienteHospitalizado = bussinessFacade.pacienteHospitalizado(selectedPaciente);
+    }
+    
     public void create() {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
@@ -137,7 +141,7 @@ public class pacientesBean {
             context.addMessage(null, new FacesMessage("Error", e.getMessage()));
         }
     }
-    
+
     public void trasladosPendientes() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         if (selectedPaciente == null) {
@@ -154,7 +158,7 @@ public class pacientesBean {
             }
         }
     }
-    
+
     public void trasladoInternoUnidad() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         if (selectedPaciente == null) {
@@ -171,7 +175,12 @@ public class pacientesBean {
             }
         }
     }
-    
+
+    public AsignacionCama getAsignacionActualPaciente(Paciente p) {
+        AsignacionCama ac = bussinessFacade.findAsignacionCamaByPacienteFENull(p);
+        return ac;
+    }
+
     public void actualizarDatosPaciente() throws IOException {
         if (selectedPaciente == null) {
             FacesContext context = FacesContext.getCurrentInstance();
@@ -287,6 +296,7 @@ public class pacientesBean {
     ///////////// INICIO CONSTRUCTOR /////////////////////
 
     public pacientesBean() {
+        selectedPaciente = null;
         pacienteFacade = new PacienteFacade();
         ingresoHospitalizadosFacade = new IngresoHospitalizadosFacade();
         asignacionCamaFacade = new AsignacionCamaFacade();
@@ -314,6 +324,7 @@ public class pacientesBean {
         this.rut = "";
         this.edad = "";
         this.paciente = new Paciente();
+        selectedPaciente = null;
     }
 
     ///////////////////////// FIN CONSTRUCTOR////////////////

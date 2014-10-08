@@ -40,6 +40,7 @@
                                         <p:inputText id="globalFilter" onkeyup="PF('pacienteTable').filter()" style="width:150px" placeholder="Busqueda Paciente"/>
                                     </p:outputPanel>
                                 </f:facet>
+                                <p:ajax event="rowSelect" listener="#{pacientesBean.onRowSelect}" update=":frmPacientes"/>
 
                                 <p:column filterBy="#{item.runPaciente}">
                                     <f:facet name="header">
@@ -91,21 +92,52 @@
                                     </f:facet>
                                     <h:outputText value="#{item.idTipoPrevision.idPrevision.descripcionPrevision} #{item.idTipoPrevision.descripcionTipoPrevision}"/>
                                 </p:column>
-                                <f:facet name="footer">
+                                <f:facet name="footer" id="footer">
                                     <p:outputLabel value="Acciones"/>
-                                    <p:commandButton icon="ui-icon-pencil" title="Editar" action="#{pacientesBean.actualizarDatosPaciente()}" 
-                                                     styleClass="btn btn-default btn-xs" process="tablePacientes" update=":frmPacientes:growl"/>
-                                    <p:commandButton icon="ui-icon-person" title="Trasladar al Paciente"  process="tablePacientes" update=":frmPacientes:growl"
+                                    <p:commandButton icon="ui-icon-pencil"
+                                                     title="Editar"
+                                                     action="#{pacientesBean.actualizarDatosPaciente()}" 
+                                                     styleClass="btn btn-default btn-xs"
+                                                     process="tablePacientes"
+                                                     update=":frmPacientes:growl"/>
+                                    <p:commandButton icon="ui-icon-person" 
+                                                     title="Trasladar al Paciente"  
+                                                     process="tablePacientes" 
+                                                     disabled="#{pacientesBean.pacienteHospitalizado}"
+                                                     update=":frmPacientes:growl"
                                                      actionListener="#{pacientesBean.trasladosPendientes()}" 
                                                      styleClass="btn btn-warning btn-xs">
                                         <f:setPropertyActionListener value="#{pacientesBean.selectedPaciente}" target="#{trasladoBean.paciente}"/>
                                     </p:commandButton>
-                                    <p:commandButton icon="ui-icon-person" title="Trasladar dentro de unidad" process="tablePacientes" update=":frmPacientes:growl"
+                                    <p:commandButton icon="ui-icon-person" 
+                                                     title="Trasladar dentro de unidad"
+                                                     process="tablePacientes" 
+                                                     update=":frmPacientes:growl"
                                                      actionListener="#{pacientesBean.trasladoInternoUnidad()}" 
+                                                     disabled="#{pacientesBean.pacienteHospitalizado}"
                                                      styleClass="btn btn-warning btn-xs">
                                         <f:setPropertyActionListener value="#{pacientesBean.selectedPaciente}" target="#{trasladoBean.paciente}"/>
-                                        <f:setPropertyActionListener value="#{asignacionCamaBean.getAsignacionActualPaciente(pacientesBean.selectedPaciente)}" target="#{trasladoBean.asignacionCama}"/>
+                                        <f:setPropertyActionListener value="#{pacientesBean.getAsignacionActualPaciente(pacientesBean.selectedPaciente)}" target="#{trasladoBean.asignacionCama}"/>
+                                    </p:commandButton>   
+                                    <p:commandButton icon="ui-icon-home" 
+                                                     title="Asignar Cama" 
+                                                     update=":frmPacientes:growl"
+                                                     process="tablePacientes"
+                                                     actionListener="#{pacientesBean.camasDisponiblesEnEspecialidad()}"
+                                                     styleClass="btn btn-primary btn-xs" 
+                                                     disabled="#{!pacientesBean.pacienteHospitalizado}">
+                                        <f:setPropertyActionListener value="#{item}" target="#{asignacionCamaBean.pacienteBuscado}"/>
                                     </p:commandButton>
+                                    <p:commandButton icon="ui-icon-circle-check"
+                                                     title="Egresar Paciente"
+                                                     update=":frmPacientes:growl"
+                                                     process="tablePacientes"
+                                                     action="PacienteEgreso.xhtml" 
+                                                     styleClass="btn btn-warning btn-xs"
+                                                     disabled="#{pacientesBean.pacienteHospitalizado}" >
+                                        <f:setPropertyActionListener value="#{item}" target="#{pacientesBean.paciente}"/>
+                                    </p:commandButton>
+
                                 </f:facet>
                             </p:dataTable>
                         </div>

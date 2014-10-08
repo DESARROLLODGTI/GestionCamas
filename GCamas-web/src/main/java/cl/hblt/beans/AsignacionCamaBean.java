@@ -199,7 +199,7 @@ public class AsignacionCamaBean implements Serializable {
     }
 
     public String getDiagnostico(Integer id) {
-        AsignacionCama  asig = bussinessFacade.findUltimaAsignacionDelPaciente(id);
+        AsignacionCama asig = bussinessFacade.findUltimaAsignacionDelPaciente(id);
         return asig.getDiagnosticoSala();
     }
 
@@ -209,33 +209,34 @@ public class AsignacionCamaBean implements Serializable {
         SimpleDateFormat dateFormat = new SimpleDateFormat(formato);
         Integer auxDate1 = Integer.parseInt(dateFormat.format(asignacionCama.getFechaAsignacion()));
         Integer auxDateActual = Integer.parseInt(dateFormat.format(new Date()));
-        if(auxDate1.equals(auxDateActual)){
-        ih.getIdPaciente().setIdPaciente(pacienteBuscado.getIdPaciente());
-        ih.setFechaIngreso(asignacionCama.getFechaAsignacion());
-        ih.setIdApoderado(new Apoderado(1));
-        if (ectopico) {
-            short aux = 1;
-            asignacionCama.setEctopico(aux);
-        } else {
+        if (auxDate1.equals(auxDateActual)) {
+            ih.getIdPaciente().setIdPaciente(pacienteBuscado.getIdPaciente());
+            ih.setFechaIngreso(asignacionCama.getFechaAsignacion());
+            ih.setIdApoderado(new Apoderado(1));
+            if (ectopico) {
+                short aux = 1;
+                asignacionCama.setEctopico(aux);
+            } else {
+                short aux = 0;
+                asignacionCama.setEctopico(aux);
+            }
             short aux = 0;
-            asignacionCama.setEctopico(aux);
-        }
-        short aux = 0;
-        ih.setEgreso(aux);
-        ih.setUbicacion("Especialidad: " + asignacionCama.getIdCama().getIdSala().getIdEspecialidad().getNombreEspecialidad() + " Sala: "
-                + asignacionCama.getIdCama().getIdSala().getNombreSala() + " Cama: " + asignacionCama.getIdCama().getNumeroCama());
-        asignacionCamaFacade.create(asignacionCama);
-        if (bussinessFacade.existeCierreDeIngreso(pacienteBuscado)) {
-            ingresoHospitalizadosFacade.create(ih);
-        }
-        cambiarEstadoCama(asignacionCama.getIdCama());
-        try {
-            resetData();
-            FacesContext.getCurrentInstance().getExternalContext()
-                    .redirect("PacientesHospitalizados.xhtml");
-        } catch (IOException e) {
+            ih.setEgreso(aux);
+            ih.setUbicacion("Especialidad: " + asignacionCama.getIdCama().getIdSala().getIdEspecialidad().getNombreEspecialidad() + " Sala: "
+                    + asignacionCama.getIdCama().getIdSala().getNombreSala() + " Cama: " + asignacionCama.getIdCama().getNumeroCama());
+            asignacionCamaFacade.create(asignacionCama);
+            if (bussinessFacade.existeCierreDeIngreso(pacienteBuscado)) {
+                ingresoHospitalizadosFacade.create(ih);
+            }
+            cambiarEstadoCama(asignacionCama.getIdCama());
+            try {
+                resetData();
+                FacesContext.getCurrentInstance().getExternalContext()
+                        .redirect("PacientesHospitalizados.xhtml");
+            } catch (IOException e) {
 
-        }}else{
+            }
+        } else {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Error en la Fecha de Ingreso no corresponde al Año en Curso", null));
         }

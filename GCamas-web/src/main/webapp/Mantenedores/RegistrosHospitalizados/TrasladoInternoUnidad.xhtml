@@ -1,0 +1,313 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+        <ui:composition template="./../../Template.xhtml">
+            <ui:define name="content">
+                <div  id="wizard">
+                    <div id="wrapper">
+                        <div class="content-wrapper">
+                            <div class="header">
+                                <div class="sidebar-toggler visible-xs">
+                                    <i class="ion-navicon"></i>
+                                </div>
+
+                                <div class="steps clearfix">
+                                    <div class="step active">
+                                        Traslado de Paciente
+                                        <span></span>
+                                    </div>
+                                    <div class="step">
+                                        Selecci&oacute;n Cama
+                                        <span></span>
+                                    </div>
+                                    <div class="step">
+                                        M&aacute;s datos de hospitalizaci&oacute;n
+                                        <span></span>
+                                    </div>
+                                    <div class="step">
+                                        Finalizar
+                                        <span></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <section class="form-wizard">
+                                <h:form id="trasladoDentroUnidad" class="form-horizontal">
+                                    <p:growl id="growl" sticky="true" showDetail="true" />
+                                    <!-- PRIMER PASO SELECCION DE PACIENTE -->
+                                    <div class="step active animated fadeInRightStep">
+                                        <div class="form-group">
+                                            <h4 class="pull-left">Datos del Paciente a Trasladar</h4>
+                                        </div>
+                                        <div class="form-group">
+                                            <p:outputLabel value="RUT :" styleClass="col-md-4 control-label" />
+                                            <div class="col-md-4">
+                                                <p:inputText id="rut" styleClass="form-control input-md"
+                                                             value="#{trasladoBean.paciente.runPaciente}-#{trasladoBean.paciente.dvPaciente}"
+                                                             readonly="true"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <p:outputLabel value="FICHA :" styleClass="col-md-4 control-label" />
+                                            <div class="col-md-4">
+                                                <p:inputText id="ficha" styleClass="form-control input-md"
+                                                             value="#{trasladoBean.paciente.numeroFicha}"
+                                                             readonly="true"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <p:outputLabel value="Nombre Paciente :" styleClass="col-md-4 control-label" />
+                                            <div class="col-md-4">
+                                                <p:inputText id="nombreCompleto" styleClass="form-control input-md"
+                                                             value="#{trasladoBean.paciente.nombre} #{trasladoBean.paciente.papellidoPaciente} #{trasladoBean.paciente.sapellidoPaciente}"
+                                                             readonly="true"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <p:outputLabel value="Servicio :" styleClass="col-md-4 control-label" />
+                                            <div class="col-md-4">
+                                                <p:inputText id="servicioActual" styleClass="form-control input-md"
+                                                             value="#{trasladoBean.asignacionCama.idCama.idSala.idEspecialidad.nombreEspecialidad}"
+                                                             readonly="true"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <p:outputLabel value="Sala :" styleClass="col-md-4 control-label" />
+                                            <div class="col-md-4">
+                                                <p:inputText id="salaActual" styleClass="form-control input-md"
+                                                             value="#{trasladoBean.asignacionCama.idCama.idSala.nombreSala}"
+                                                             readonly="true"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <p:outputLabel value="Cama :" styleClass="col-md-4 control-label" />
+                                            <div class="col-md-4">
+                                                <p:inputText id="camaActual" styleClass="form-control input-md"
+                                                             value="#{trasladoBean.asignacionCama.idCama.numeroCama}"
+                                                             readonly="true"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group form-actions">
+                                            <button type="submit" id="paso1" class="button" data-step="2">
+                                                <span>Siguiente Paso<i class="fa fa-angle-double-right"></i></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!--SEGUNDO PASO SELECCIONAR LA SALA Y CAMA DE LA ESPECIALIDAD -->
+                                    <div class="step">
+                                        <div class="form-group">
+                                            <p:outputLabel value="Especialidad:" styleClass="col-md-4 control-label"/>
+                                            <div class="col-md-4">
+                                                <h:selectOneMenu id="EspecialidadFutura" value="#{trasladoBean.asignacionCamaFutura.idCama.idSala.idEspecialidad.idEspecialidad}"
+                                                                 rendered="#{trasladoBean.isOirs}" 
+                                                                 styleClass="form-control" required="true">
+                                                    <f:selectItem itemLabel="Seleccione..." itemValue=""/>
+                                                    <f:selectItems value="#{especialidadMB.especialidades}" 
+                                                                   var="itemEsp" itemLabel="#{itemEsp.nombreEspecialidad}" itemValue="#{itemEsp.idEspecialidad}"/>
+                                                    <p:ajax listener="#{trasladoBean.onEspecialidadChange()}" update="salaFutura"/>
+                                                </h:selectOneMenu>
+                                                <h:inputText readonly="true" value="#{trasladoBean.asignacionCama.idCama.idSala.idEspecialidad.nombreEspecialidad}" rendered="#{!trasladoBean.isOirs}"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <p:outputLabel value="Sala:" styleClass="col-md-4 control-label" for="salaFutura"/>
+                                            <div class="col-md-4">
+                                                <h:selectOneMenu id="salaFutura" value="#{trasladoBean.asignacionCamaFutura.idCama.idSala.idSala}" 
+                                                                 styleClass="form-control" required="true">
+                                                    <f:selectItem itemLabel="Seleccione..." itemValue=""/>
+                                                    <f:selectItems value="#{trasladoBean.listaSalasPorEspecialidad}" 
+                                                                   var="item2" itemLabel="#{item2.nombreSala}" itemValue="#{item2.idSala}"/>
+                                                    <p:ajax listener="#{trasladoBean.onSalaChange()}" update="camaFutura"/>
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <p:outputLabel value="Tipo Cama:" styleClass="col-md-4 control-label" for="tipoCamaFutura"/>
+                                            <div class="col-md-4">
+                                                <h:selectOneMenu id="tipoCamaFutura" value="#{trasladoBean.asignacionCamaFutura.idCama.idTipoCama.idTipoCama}" 
+                                                                 styleClass="form-control" required="true">
+                                                    <f:selectItem itemLabel="Seleccione..." itemValue=""/>
+                                                    <f:selectItems value="#{trasladoBean.tiposCamas}" 
+                                                                   var="itemTipoCama" itemLabel="#{itemTipoCama.descripcionTipoCama}" 
+                                                                   itemValue="#{itemTipoCama.idTipoCama}"/>
+                                                    <p:ajax listener="#{trasladoBean.onTipoCamaChange()}" update="camaFutura estadoPaciente"/>
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <p:outputLabel value="Cama:" styleClass="col-md-4 control-label" for="camaFutura"/>
+                                            <div class="col-md-4">
+                                                <h:selectOneMenu id="camaFutura" value="#{trasladoBean.asignacionCamaFutura.idCama.idCama}" 
+                                                                 styleClass="form-control" required="true">
+                                                    <f:selectItem itemLabel="Seleccione..." itemValue=""/>
+                                                    <f:selectItems value="#{trasladoBean.listaCamasPorEspecialidad}" var="item3" 
+                                                                   itemLabel="#{item3.numeroCama}" itemValue="#{item3.idCama}"/>
+                                                    <p:ajax listener="#{trasladoBean.onCamaChangePrecarga}" update="confirmEspecialidadHasta"/>                                                   
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group form-actions">
+                                            <a class="button" href="#" data-step="1">
+                                                <span><i class="fa fa-angle-double-left"></i> Atras</span>
+                                            </a>
+                                            <button type="submit" id="paso2" class="button" data-step="3">
+                                                <span>Siguiente Paso<i class="fa fa-angle-double-right"></i></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!--TERCER PASO MAS DATOS SOBRE TRASLADO -->
+                                    <div class="step">
+
+                                        <div class="form-group">
+                                            <p:outputLabel value="Fecha Traslado" styleClass="col-md-4 control-label" for="fechaTraslado"/>
+                                            <div class="col-md-4">
+                                                <p:calendar id="fechaTraslado" value="#{trasladoBean.trasladoTemporal.fecha}" 
+                                                            placeholder="dd/mm/aaaa" pattern="dd/MM/yyyy" navigator="true"
+                                                            required="true"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <p:outputLabel value="Motivo de Traslado:" styleClass="col-md-4 control-label"  for="motivoTraslado" />
+                                            <div class="col-sm-10 col-md-8">
+                                                <p:inputTextarea  styleClass="form-control" id="motivoTraslado" rows="6" cols="35" 
+                                                                  counter="display" maxlength="200" counterTemplate="{0} Letras Restantes." 
+                                                                  value="#{trasladoBean.trasladoTemporal.motivo}" />
+                                                <h:outputText id="display" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <p:outputLabel value="Diagn&oacute;stico" styleClass="col-md-4 control-label"  for="diagnostico" />
+                                            <div class="col-sm-10 col-md-8">
+                                                <p:inputTextarea  styleClass="form-control" id="diagnostico" rows="6" cols="35" 
+                                                                  counter="display2" maxlength="200" counterTemplate="{0} Letras Restantes." 
+                                                                  value="#{trasladoBean.asignacionCamaFutura.diagnosticoSala}"
+                                                                  required="true"/>
+                                                <h:outputText id="display2" />
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <p:outputLabel value="Estado Paciente:" styleClass="col-md-4 control-label" for="estadoPaciente" />
+                                            <div class="col-md-4">
+                                                <h:selectOneMenu id="estadoPaciente"  styleClass="form-control" 
+                                                                 value="#{trasladoBean.asignacionCamaFutura.idEstadoPaciente.idEstadoPaciente}"
+                                                                 required="true">
+                                                    <f:selectItem itemLabel="Seleccione..." itemValue="" noSelectionOption="true" />
+                                                    <f:selectItems value="#{trasladoBean.listEstadoPacientes}" 
+                                                                   var="itemEstadoPaciente" itemLabel="#{itemEstadoPaciente.descripcionEstadoPaciente}"
+                                                                   itemValue="#{itemEstadoPaciente.idEstadoPaciente}" />
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <p:outputLabel value="Ectopico:" styleClass="col-md-4 control-label" for="ectopico"/>
+                                            <div class="col-md-4">
+                                                <p:selectBooleanCheckbox value="#{trasladoBean.ectopico}" id="ectopico" >
+                                                    <p:ajax rendered="pertenece" update="pertenece"/>
+                                                </p:selectBooleanCheckbox>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <p:outputLabel for="pertenece" value="Servicio al que Pertenece" 
+                                                           styleClass="col-md-4 control-label" />
+                                            <div class="col-md-4">
+                                                <h:selectOneMenu id="pertenece" value="#{trasladoBean.asignacionCamaFutura.idServEctopico}" disabled="#{!trasladoBean.ectopico}"
+                                                                 styleClass="form-control">
+                                                    <f:selectItems value="#{trasladoBean.listEspecialidades}" var="item5" 
+                                                                   itemLabel="#{item5.nombreEspecialidad}" itemValue="#{item5.idEspecialidad}"/>
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <p:outputLabel value="Servicio Procedencia:" styleClass="col-md-4 control-label" for="procedencia"/>
+                                            <div class="col-md-4">
+                                                <h:selectOneMenu id="procedencia" value="#{trasladoBean.asignacionCamaFutura.idServicioProcedencia}" 
+                                                                 styleClass="form-control" required="true">
+                                                    <f:selectItems value="#{trasladoBean.listEspecialidades}" var="item4" 
+                                                                   itemLabel="#{item4.nombreEspecialidad}" itemValue="#{item4.idEspecialidad}"/>
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group form-actions">
+                                            <a class="button" href="#" data-step="2">
+                                                <span><i class="fa fa-angle-double-left"></i> Atras</span>
+                                            </a>
+                                            <button type="submit" id="paso3" class="button" data-step="4">
+                                                <span>Siguiente Paso<i class="fa fa-angle-double-right"></i></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!--TERCER PASO CONFIRMAR LA INFORMACION INGRESADA-->
+                                    <div class="step">
+                                        <div class="form-group">
+                                            <h4 class="pull-left">Confirmar Traslado</h4>
+                                        </div>
+                                        <div class="form-group">
+                                            <p:outputLabel value="RUT:" styleClass="col-md-4 control-label" for="confirmRut" />
+                                            <div class="col-md-4">
+                                                <p:inputText readonly="true" value="#{trasladoBean.paciente.runPaciente}-#{trasladoBean.paciente.dvPaciente}"
+                                                             styleClass="form-control input-md" id="confirmRut" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <p:outputLabel value="Nombre:" styleClass="col-md-4 control-label" for="confirmPaciente" />
+                                            <div class="col-md-4">
+                                                <p:inputText type="hidden" value="#{trasladoBean.paciente.idPaciente}" /> 
+                                                <p:inputText readonly="true" id="confirmPaciente" styleClass="form-control"
+                                                             value="#{trasladoBean.paciente.nombre} #{trasladoBean.paciente.papellidoPaciente} #{trasladoBean.paciente.sapellidoPaciente}" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <p:outputLabel value="Ficha" styleClass="col-md-4 control-label" for="confirmFicha"/>
+                                            <div class="col-md-4">
+                                                <p:inputText readonly="true" styleClass="form-control" id="confirmFicha" 
+                                                             value="#{trasladoBean.paciente.numeroFicha}" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <p:outputLabel value="Traslado Desde:" styleClass="col-md-4 control-label" for="confirmEspecialidadDesde" />
+                                            <div class="col-md-4">
+                                                <p:inputText readonly="true" styleClass="form-control" id="confirmEspecialidadDesde" 
+                                                             value="#{trasladoBean.asignacionCama.idCama.idSala.idEspecialidad.nombreEspecialidad} - Sala #{trasladoBean.asignacionCama.idCama.idSala.nombreSala} - Cama #{trasladoBean.asignacionCama.idCama.numeroCama}"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <p:outputLabel value="Tralado a:" styleClass="col-md-4 control-label"  for="confirmEspecialidadHasta" />
+                                            <div class="col-md-4">
+                                                <p:inputText readonly="true" styleClass="form-control" id="confirmEspecialidadHasta" 
+                                                             value="#{trasladoBean.asignacionCamaFutura.idCama.idSala.idEspecialidad.nombreEspecialidad} - Sala #{trasladoBean.asignacionCamaFutura.idCama.idSala.nombreSala} - Cama #{trasladoBean.asignacionCamaFutura.idCama.numeroCama}" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group form-actions">
+                                            <a class="button" href="#" data-step="3">
+                                                <span><i class="fa fa-angle-double-left"></i> Back</span>
+                                            </a>
+                                            <p:commandButton value="Terminar Ingreso"  update="growl"
+                                                             actionListener="#{trasladoBean.trasladarDentroUnidad()}"
+                                                             oncomplete="redirect(xhr, status, args)"/>
+                                        </div>
+                                    </div>
+
+                                </h:form>
+                            </section>
+                        </div>
+                    </div>  
+                </div>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

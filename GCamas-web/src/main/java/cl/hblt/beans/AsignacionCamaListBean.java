@@ -16,8 +16,6 @@ import cl.hblt.sessions.AsignacionCamaFacade;
 import cl.hblt.sessions.AsignacionCamaFacadeLocal;
 import cl.hblt.sessions.BussinessFacade;
 import cl.hblt.sessions.BussinessFacadeLocal;
-import cl.hblt.sessions.EstadoPacienteFacade;
-import cl.hblt.sessions.EstadoPacienteFacadeLocal;
 import cl.hblt.sessions.TrasladoTemporalFacade;
 import cl.hblt.sessions.TrasladoTemporalFacadeLocal;
 import java.io.IOException;
@@ -35,17 +33,17 @@ import utils.appBean;
  * @author Edwin_Guaman
  */
 public class AsignacionCamaListBean {
+
     @EJB
     private final AsignacionCamaFacadeLocal asignacionCamaFacade;
-    
+
     @EJB
     private final TrasladoTemporalFacadeLocal trasladoTemporalFacade;
 
     @EJB
     private final BussinessFacadeLocal bussinessFacade;
 
-    
-    private List<AsignacionCama> listAsigCamasEnCurso, filteredHospitalizados, listAsignacionCamas;
+    private List<AsignacionCama> listAsigCamasEnCurso, listAsignacionCamas;
     private List<IngresoHospitalizados> listIngresohospitalizados, filteredIngresoghospitalizados;
     private IngresoHospitalizados ih;
     private EgresoHospitalizados eh;
@@ -56,6 +54,7 @@ public class AsignacionCamaListBean {
     private AsignacionCama asignacionCama;
     private Integer idEstadoPaciente;
     private List<EstadoPaciente> listEstadoPaciente;
+    private IngresoHospitalizados selectedIngresoHospitalizado;
     //Cargar datos tabla TrasladoTemporal
     private TrasladoTemporal trasladoTempora;
 
@@ -105,45 +104,73 @@ public class AsignacionCamaListBean {
         }
     }
 
-    public String cargaDatos(Paciente paciente, Apoderado apoderado) {
-        listAsignacionCamas = bussinessFacade.listCamasAsignadasByPaciente(paciente);
-        this.paciente = paciente;
-        this.apoderado = apoderado;
-        if (bussinessFacade.findUltimoTrasladoTemporalByIdPaciente(paciente.getIdPaciente()) != null) {
-            this.trasladoTempora = bussinessFacade.findUltimoTrasladoTemporalByIdPaciente(paciente.getIdPaciente());
-        } else {
-            this.trasladoTempora.setEstado('A');
-            this.trasladoTempora.setFecha(new Date());
+    public String cargaDatos() {
+
+        if (selectedIngresoHospitalizado == null) {
             FacesContext context = FacesContext.getCurrentInstance();
-            ExternalContext extContext = context.getExternalContext();
-            Integer idEspecialidad = (Integer) extContext.getSessionMap().get("idEspecialidad");
-            this.trasladoTempora.setIdEspecialidadTraslado(idEspecialidad);
-            this.trasladoTempora.setIdPaciente(paciente);
-            this.trasladoTempora.setMotivo("Traslado inicial a la especialidad: " + bussinessFacade.getEspecialidad(idEspecialidad).getNombreEspecialidad());
-            this.trasladoTempora.setIdEspecialidadProcedencia(idEspecialidad);
-            trasladoTemporalFacade.create(trasladoTempora);
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar una fila", null));
+        } else {
+            paciente = selectedIngresoHospitalizado.getIdPaciente();
+            apoderado = selectedIngresoHospitalizado.getIdApoderado();
+            listAsignacionCamas = bussinessFacade.listCamasAsignadasByPaciente(paciente);
+            if (bussinessFacade.findUltimoTrasladoTemporalByIdPaciente(paciente.getIdPaciente()) != null) {
+                this.trasladoTempora = bussinessFacade.findUltimoTrasladoTemporalByIdPaciente(paciente.getIdPaciente());
+            } else {
+                this.trasladoTempora.setEstado('A');
+                this.trasladoTempora.setFecha(new Date());
+                FacesContext context = FacesContext.getCurrentInstance();
+                ExternalContext extContext = context.getExternalContext();
+                Integer idEspecialidad = (Integer) extContext.getSessionMap().get("idEspecialidad");
+                this.trasladoTempora.setIdEspecialidadTraslado(idEspecialidad);
+                this.trasladoTempora.setIdPaciente(paciente);
+                this.trasladoTempora.setMotivo("Traslado inicial a la especialidad: " + bussinessFacade.getEspecialidad(idEspecialidad).getNombreEspecialidad());
+                this.trasladoTempora.setIdEspecialidadProcedencia(idEspecialidad);
+                trasladoTemporalFacade.create(trasladoTempora);
+            }
+            Date today = Calendar.getInstance().getTime();
+            this.edad = appBean.CalculaEdad(today, paciente.getFechaNacimiento());
+            this.prevision = paciente.getIdTipoPrevision().getIdPrevision().getDescripcionPrevision() + " " + paciente.getIdTipoPrevision().getDescripcionTipoPrevision();
+            return "InformacionPaciente.xhtml";
         }
-        Date today = Calendar.getInstance().getTime();
-        this.edad = appBean.CalculaEdad(today, paciente.getFechaNacimiento());
-        this.prevision = paciente.getIdTipoPrevision().getIdPrevision().getDescripcionPrevision() + " " + paciente.getIdTipoPrevision().getDescripcionTipoPrevision();
-        return "InformacionPaciente.xhtml";
+        return "";
     }
 
     //CAMBIAR ESTADO PACIENTE cargando datos del paciente  
-    public void modificarEstado(Paciente paciente) throws IOException {
-        System.out.println("nombre paciente " + paciente.getNombre());
-        FacesContext context = FacesContext.getCurrentInstance();
-        if (bussinessFacade.findAsignacionCamaByPacienteFENull2(paciente) == null) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "No existe Asignacion del Paciente", null));
+    public void modificarEstado() throws IOException {
+
+        if (selectedIngresoHospitalizado == null) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar una fila", null));
         } else {
-            asignacionCama = bussinessFacade.findAsignacionCamaByPacienteFENull2(paciente);
-            System.out.println("dato asignado a asignacionCama " + asignacionCama.getIdEstadoPaciente().getDescripcionEstadoPaciente());
-            System.out.println("id asignado a asignacionCama " + asignacionCama.getIdAsignacion());
-            FacesContext facesContext = FacesContext.getCurrentInstance();
-            ExternalContext extContext = facesContext.getExternalContext();
-            extContext.getSessionMap().put("Paciente", paciente);
-            extContext.getSessionMap().put("asignacionCamaEnModificacion", asignacionCama);
-            extContext.redirect("modificarEstadoPaciente.xhtml");
+            paciente = selectedIngresoHospitalizado.getIdPaciente();
+            FacesContext context = FacesContext.getCurrentInstance();
+            if (bussinessFacade.findAsignacionCamaByPacienteFENull2(paciente) == null) {
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "No existe Asignacion del Paciente", null));
+            } else {
+                asignacionCama = bussinessFacade.findAsignacionCamaByPacienteFENull2(paciente);
+                System.out.println("dato asignado a asignacionCama " + asignacionCama.getIdEstadoPaciente().getDescripcionEstadoPaciente());
+                System.out.println("id asignado a asignacionCama " + asignacionCama.getIdAsignacion());
+                FacesContext facesContext = FacesContext.getCurrentInstance();
+                ExternalContext extContext = facesContext.getExternalContext();
+                extContext.getSessionMap().put("Paciente", paciente);
+                extContext.getSessionMap().put("asignacionCamaEnModificacion", asignacionCama);
+                extContext.redirect("modificarEstadoPaciente.xhtml");
+            }
+        }
+    }
+
+    //ASIGNAR APODERADO RESPONSABLE
+    public void asignarApoderado() throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext extContext = context.getExternalContext();
+        if (selectedIngresoHospitalizado == null) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar una fila", null));
+        } else {
+            if (selectedIngresoHospitalizado.getIdApoderado().getRunApoderado().equals(1)) {
+                extContext.redirect("IngresoApoderadoCreate.xhtml");
+            } else {
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Paciente ya tiene apoderado asociado", null));
+            }
         }
     }
 
@@ -152,6 +179,11 @@ public class AsignacionCamaListBean {
         asignacionCama.setIdEstadoPaciente(estado);
         asignacionCamaFacade.edit(asignacionCama);
         FacesContext.getCurrentInstance().getExternalContext().redirect("PacientesHospitalizados.xhtml");
+    }
+
+    public String getDiagnostico(Integer id) {
+        AsignacionCama asig = bussinessFacade.findUltimaAsignacionDelPaciente(id);
+        return asig.getDiagnosticoSala();
     }
 
     //Getter and Setter
@@ -167,28 +199,12 @@ public class AsignacionCamaListBean {
         this.listAsigCamasEnCurso = listAsigCamasEnCurso;
     }
 
-    public List<AsignacionCama> getFilteredHospitalizados() {
-        return filteredHospitalizados;
-    }
-
-    public void setFilteredHospitalizados(List<AsignacionCama> filteredHospitalizados) {
-        this.filteredHospitalizados = filteredHospitalizados;
-    }
-
     public List<IngresoHospitalizados> getListIngresohospitalizados() {
         return listIngresohospitalizados;
     }
 
     public void setListIngresohospitalizados(List<IngresoHospitalizados> listIngresohospitalizados) {
         this.listIngresohospitalizados = listIngresohospitalizados;
-    }
-
-    public List<IngresoHospitalizados> getFilteredIngresoghospitalizados() {
-        return filteredIngresoghospitalizados;
-    }
-
-    public void setFilteredIngresoghospitalizados(List<IngresoHospitalizados> filteredIngresoghospitalizados) {
-        this.filteredIngresoghospitalizados = filteredIngresoghospitalizados;
     }
 
     public List<AsignacionCama> getListAsignacionCamas() {
@@ -273,6 +289,22 @@ public class AsignacionCamaListBean {
 
     public List<EstadoPaciente> getListEstadoPaciente() {
         return listEstadoPaciente;
+    }
+
+    public IngresoHospitalizados getSelectedIngresoHospitalizado() {
+        return selectedIngresoHospitalizado;
+    }
+
+    public void setSelectedIngresoHospitalizado(IngresoHospitalizados selectedIngresoHospitalizado) {
+        this.selectedIngresoHospitalizado = selectedIngresoHospitalizado;
+    }
+
+    public List<IngresoHospitalizados> getFilteredIngresoghospitalizados() {
+        return filteredIngresoghospitalizados;
+    }
+
+    public void setFilteredIngresoghospitalizados(List<IngresoHospitalizados> filteredIngresoghospitalizados) {
+        this.filteredIngresoghospitalizados = filteredIngresoghospitalizados;
     }
 
 }

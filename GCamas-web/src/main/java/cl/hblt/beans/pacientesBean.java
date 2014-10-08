@@ -67,7 +67,7 @@ public class pacientesBean {
     @EJB
     private final PacienteFacadeLocal pacienteFacade;
     private EgresoHospitalizados egresoH;
-    private Paciente paciente;
+    private Paciente paciente, selectedPaciente;
     private List<Paciente> listPacientes;
     private List<Paciente> filteredPacientes;
     private List<Sexo> listSexo;
@@ -135,6 +135,52 @@ public class pacientesBean {
             }
         } catch (IOException e) {
             context.addMessage(null, new FacesMessage("Error", e.getMessage()));
+        }
+    }
+    
+    public void trasladosPendientes() throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (selectedPaciente == null) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+                    "Debe seleccionar un registro", null));
+        } else {
+            paciente = selectedPaciente;
+            if (bussinessFacade.trasladosPendientes(paciente)) {
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+                        "No puede realizar un traslado, debido a que ud ya tiene un traslado pendiente asociado a ese Paciente",
+                        "No puede realizar un traslado, debido a que ud ya tiene un traslado pendiente asociado a ese Paciente"));
+            } else {
+                context.getExternalContext().redirect("../RegistrosHospitalizados/SolicitarTraslado.xhtml");
+            }
+        }
+    }
+    
+    public void trasladoInternoUnidad() throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (selectedPaciente == null) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+                    "Debe seleccionar un registro", null));
+        } else {
+            paciente = selectedPaciente;
+            if (bussinessFacade.trasladosPendientes(paciente)) {
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+                        "No puede realizar un traslado, debido a que ud ya tiene un traslado pendiente asociado a ese Paciente",
+                        "No puede realizar un traslado, debido a que ud ya tiene un traslado pendiente asociado a ese Paciente"));
+            } else {
+                context.getExternalContext().redirect("../RegistrosHospitalizados/TrasladoInternoUnidad.xhtml");
+            }
+        }
+    }
+    
+    public void actualizarDatosPaciente() throws IOException {
+        if (selectedPaciente == null) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+                    "Debe seleccionar un registro", null));
+        } else {
+            paciente = selectedPaciente;
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.getExternalContext().redirect("PacienteUpdate.xhtml");
         }
     }
 
@@ -371,6 +417,14 @@ public class pacientesBean {
 
     public void setListaEgresos(List<TipoEgreso> listaEgresos) {
         this.listaEgresos = listaEgresos;
+    }
+
+    public Paciente getSelectedPaciente() {
+        return selectedPaciente;
+    }
+
+    public void setSelectedPaciente(Paciente selectedPaciente) {
+        this.selectedPaciente = selectedPaciente;
     }
 
 }

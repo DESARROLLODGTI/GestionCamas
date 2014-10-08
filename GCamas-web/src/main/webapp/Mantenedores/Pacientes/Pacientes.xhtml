@@ -24,6 +24,9 @@
                         <div class="content-wrapper">  
                             <p:dataTable value="#{pacientesBean.listPacientes}" var="item" 
                                          rows="10" paginator="true"  id="tablePacientes"
+                                         selectionMode="single"
+                                         selection="#{pacientesBean.selectedPaciente}"
+                                         rowKey="#{item.idPaciente}"
                                          paginatorPosition="bottom"
                                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                          rowsPerPageTemplate="5,10,15"
@@ -88,28 +91,22 @@
                                     </f:facet>
                                     <h:outputText value="#{item.idTipoPrevision.idPrevision.descripcionPrevision} #{item.idTipoPrevision.descripcionTipoPrevision}"/>
                                 </p:column>
-                                <p:column style="width:15%; text-align:center" headerText="Acciones">
-                                    <p:commandButton icon="ui-icon-pencil" title="Editar" action="PacienteUpdate.xhtml" 
-                                                     styleClass="btn btn-default btn-xs" >
-                                        <f:setPropertyActionListener value="#{item}" target="#{pacientesBean.paciente}"/>
+                                <f:facet name="footer">
+                                    <p:outputLabel value="Acciones"/>
+                                    <p:commandButton icon="ui-icon-pencil" title="Editar" action="#{pacientesBean.actualizarDatosPaciente()}" 
+                                                     styleClass="btn btn-default btn-xs" process="tablePacientes" update=":frmPacientes:growl"/>
+                                    <p:commandButton icon="ui-icon-person" title="Trasladar al Paciente"  process="tablePacientes" update=":frmPacientes:growl"
+                                                     actionListener="#{pacientesBean.trasladosPendientes()}" 
+                                                     styleClass="btn btn-warning btn-xs">
+                                        <f:setPropertyActionListener value="#{pacientesBean.selectedPaciente}" target="#{trasladoBean.paciente}"/>
                                     </p:commandButton>
-                                    <p:commandButton icon="ui-icon-person" title="Trasladar al Paciente" update=":frmPacientes:growl"
-                                                     actionListener="#{pacientesBean.trasladosPendientes(item)}" 
-                                                     styleClass="btn btn-warning btn-xs" disabled="#{pacientesBean.hospitalizado(item)}" >
-                                        <f:setPropertyActionListener value="#{item}" target="#{trasladoBean.paciente}"/>
+                                    <p:commandButton icon="ui-icon-person" title="Trasladar dentro de unidad" process="tablePacientes" update=":frmPacientes:growl"
+                                                     actionListener="#{pacientesBean.trasladoInternoUnidad()}" 
+                                                     styleClass="btn btn-warning btn-xs">
+                                        <f:setPropertyActionListener value="#{pacientesBean.selectedPaciente}" target="#{trasladoBean.paciente}"/>
+                                        <f:setPropertyActionListener value="#{asignacionCamaBean.getAsignacionActualPaciente(pacientesBean.selectedPaciente)}" target="#{trasladoBean.asignacionCama}"/>
                                     </p:commandButton>
-                                    <p:commandButton icon="ui-icon-home" title="Asignar Cama" update=":frmPacientes:growl"
-                                                     actionListener="#{pacientesBean.camasDisponiblesEnEspecialidad()}"
-                                                     styleClass="btn btn-primary btn-xs" 
-                                                     disabled="#{!pacientesBean.hospitalizado(item)}">
-                                        <f:setPropertyActionListener value="#{item}" target="#{asignacionCamaBean.pacienteBuscado}"/>
-                                    </p:commandButton>
-                                    <p:commandButton icon="ui-icon-circle-check" title="Egresar Paciente" update=":frmPacientes:growl"
-                                                     action="PacienteEgreso.xhtml" 
-                                                     styleClass="btn btn-warning btn-xs" disabled="#{pacientesBean.hospitalizado(item)}" >
-                                        <f:setPropertyActionListener value="#{item}" target="#{pacientesBean.paciente}"/>
-                                    </p:commandButton>
-                                </p:column>
+                                </f:facet>
                             </p:dataTable>
                         </div>
                     </h:form>

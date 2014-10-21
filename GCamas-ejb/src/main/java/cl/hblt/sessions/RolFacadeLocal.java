@@ -18,12 +18,17 @@ import javax.ejb.Local;
 public interface RolFacadeLocal {
 
     void create(Rol rol);
+
     void edit(Rol rol);
+
     void remove(Rol rol);
+
     Rol find(Object id);
+
     List<Rol> findAll();
     List<Rol> findAll2(String dato);
     List<Rol> findRange(int[] range);
+
     int count();
     
 }

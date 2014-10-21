@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author AndresEduardo
+ * @author termiwum
  */
 @Entity
 @Table(name = "ingreso_hospitalizados")
@@ -34,9 +34,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "IngresoHospitalizados.findAll", query = "SELECT i FROM IngresoHospitalizados i"),
     @NamedQuery(name = "IngresoHospitalizados.findByIdIngreso", query = "SELECT i FROM IngresoHospitalizados i WHERE i.idIngreso = :idIngreso"),
     @NamedQuery(name = "IngresoHospitalizados.findByMotivoIngreso", query = "SELECT i FROM IngresoHospitalizados i WHERE i.motivoIngreso = :motivoIngreso"),
-    @NamedQuery(name = "IngresoHospitalizados.findByFechaIngreso", query = "SELECT i FROM IngresoHospitalizados i WHERE i.fechaIngreso = :fechaIngreso")})
+    @NamedQuery(name = "IngresoHospitalizados.findByFechaIngreso", query = "SELECT i FROM IngresoHospitalizados i WHERE i.fechaIngreso = :fechaIngreso"),
+    @NamedQuery(name = "IngresoHospitalizados.findByHoraIngreso", query = "SELECT i FROM IngresoHospitalizados i WHERE i.horaIngreso = :horaIngreso"),
+    @NamedQuery(name = "IngresoHospitalizados.findByUbicacion", query = "SELECT i FROM IngresoHospitalizados i WHERE i.ubicacion = :ubicacion"),
+    @NamedQuery(name = "IngresoHospitalizados.findByEgreso", query = "SELECT i FROM IngresoHospitalizados i WHERE i.egreso = :egreso")})
 public class IngresoHospitalizados implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,14 +48,17 @@ public class IngresoHospitalizados implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "motivo_ingreso")
     private String motivoIngreso;
+    @Column(name = "fecha_ingreso")
+    @Temporal(TemporalType.DATE)
+    private Date fechaIngreso;
+    @Column(name = "hora_ingreso")
+    @Temporal(TemporalType.TIME)
+    private Date horaIngreso;
     @Size(max = 2147483647)
     @Column(name = "ubicacion")
     private String ubicacion;
     @Column(name = "egreso")
     private Short egreso;
-    @Column(name = "fecha_ingreso")
-    @Temporal(TemporalType.DATE)
-    private Date fechaIngreso;
     @JoinColumn(name = "id_paciente", referencedColumnName = "id_paciente")
     @ManyToOne(optional = false)
     private Paciente idPaciente;
@@ -96,20 +101,12 @@ public class IngresoHospitalizados implements Serializable {
         this.fechaIngreso = fechaIngreso;
     }
 
-    public Paciente getIdPaciente() {
-        return idPaciente;
+    public Date getHoraIngreso() {
+        return horaIngreso;
     }
 
-    public void setIdPaciente(Paciente idPaciente) {
-        this.idPaciente = idPaciente;
-    }
-
-    public Apoderado getIdApoderado() {
-        return idApoderado;
-    }
-
-    public void setIdApoderado(Apoderado idApoderado) {
-        this.idApoderado = idApoderado;
+    public void setHoraIngreso(Date horaIngreso) {
+        this.horaIngreso = horaIngreso;
     }
 
     public String getUbicacion() {
@@ -127,7 +124,22 @@ public class IngresoHospitalizados implements Serializable {
     public void setEgreso(Short egreso) {
         this.egreso = egreso;
     }
-    
+
+    public Paciente getIdPaciente() {
+        return idPaciente;
+    }
+
+    public void setIdPaciente(Paciente idPaciente) {
+        this.idPaciente = idPaciente;
+    }
+
+    public Apoderado getIdApoderado() {
+        return idApoderado;
+    }
+
+    public void setIdApoderado(Apoderado idApoderado) {
+        this.idApoderado = idApoderado;
+    }
 
     @Override
     public int hashCode() {
@@ -153,5 +165,5 @@ public class IngresoHospitalizados implements Serializable {
     public String toString() {
         return "cl.hblt.entities.IngresoHospitalizados[ idIngreso=" + idIngreso + " ]";
     }
-
+    
 }

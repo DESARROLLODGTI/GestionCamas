@@ -31,5 +31,5 @@ public interface PrevisionFacadeLocal {
     List<Prevision> findRange(int[] range);
 
     int count();
-
+    
 }

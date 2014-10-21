@@ -13,20 +13,20 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author Edwin_Guaman
+ * @author termiwum
  */
 @Stateless
 public class IngresoHospitalizadosFacade extends AbstractFacade<IngresoHospitalizados> implements IngresoHospitalizadosFacadeLocal {
-  @PersistenceContext(unitName = "cl.hblt_GCamas-ejb_ejb_1.0PU")
-  private EntityManager em;
+    @PersistenceContext(unitName = "cl.hblt_GCamas-ejb_ejb_1.0PU")
+    private EntityManager em;
 
-  @Override
-  protected EntityManager getEntityManager() {
-    return em;
-  }
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
+    }
 
-  public IngresoHospitalizadosFacade() {
-    super(IngresoHospitalizados.class);
-  }
-  
+    public IngresoHospitalizadosFacade() {
+        super(IngresoHospitalizados.class);
+    }
+    
 }

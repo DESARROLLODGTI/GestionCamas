@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author AndresEduardo
+ * @author termiwum
  */
 @Entity
 @Table(name = "rol_opcion")
@@ -37,7 +37,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "RolOpcion.findByOpcionMep", query = "SELECT r FROM RolOpcion r WHERE r.opcionMep = :opcionMep"),
     @NamedQuery(name = "RolOpcion.findByOpcionAa", query = "SELECT r FROM RolOpcion r WHERE r.opcionAa = :opcionAa")})
 public class RolOpcion implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -180,5 +179,5 @@ public class RolOpcion implements Serializable {
     public String toString() {
         return "cl.hblt.entities.RolOpcion[ idRolOpcion=" + idRolOpcion + " ]";
     }
-
+    
 }

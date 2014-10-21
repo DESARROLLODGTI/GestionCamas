@@ -20,6 +20,8 @@
                             </div>
                             <p:commandButton id="cmdAgregar" value="Agregar" styleClass="new-user btn btn-success pull-right" 
                                              action="PacienteCreate.xhtml" icon="ui-icon-person"  />
+                            <p:commandButton id="cmdAgregarNN" value="Agregar NN" styleClass="new-user btn btn-success pull-right" 
+                                             action="RegistroNN.xhtml" icon="ui-icon-person"  />
                         </div>
                         <div class="content-wrapper">  
                             <p:dataTable value="#{pacientesBean.listPacientes}" var="item" 
@@ -126,7 +128,7 @@
                                                      actionListener="#{pacientesBean.camasDisponiblesEnEspecialidad()}"
                                                      styleClass="btn btn-primary btn-xs" 
                                                      disabled="#{!pacientesBean.pacienteHospitalizado}">
-                                        <f:setPropertyActionListener value="#{item}" target="#{asignacionCamaBean.pacienteBuscado}"/>
+                                        <f:setPropertyActionListener value="#{pacientesBean.selectedPaciente}" target="#{asignacionCamaBean.pacienteBuscado}"/>
                                     </p:commandButton>
                                     <p:commandButton icon="ui-icon-circle-check"
                                                      title="Egresar Paciente"
@@ -135,7 +137,7 @@
                                                      action="PacienteEgreso.xhtml" 
                                                      styleClass="btn btn-warning btn-xs"
                                                      disabled="#{pacientesBean.pacienteHospitalizado}" >
-                                        <f:setPropertyActionListener value="#{item}" target="#{pacientesBean.paciente}"/>
+                                        <f:setPropertyActionListener value="#{pacientesBean.selectedPaciente}" target="#{pacientesBean.paciente}"/>
                                     </p:commandButton>
 
                                 </f:facet>

@@ -117,6 +117,7 @@ public class TrasladoBean {
         AsignacionCama asignacionCama = bussinessFacade.findAsignacionCamaByPacienteFENull(paciente);
         if (asignacionCama != null) {
             asignacionCama.setFechaEgreso(trasladoTemporal.getFecha());
+            asignacionCama.setHoraEgreso(trasladoTemporal.getHora());
             asignacionCamaFacade.edit(asignacionCama);
             //Liberacion de Cama
             Cama cama = bussinessFacade.findCamaById(asignacionCama.getIdCama().getIdCama());
@@ -140,6 +141,7 @@ public class TrasladoBean {
         AsignacionCama asignacionCama = bussinessFacade.findAsignacionCamaByPacienteFENull(paciente);
         if (asignacionCama != null) {
             asignacionCama.setFechaEgreso(trasladoTemporal.getFecha());
+            asignacionCama.setHoraEgreso(trasladoTemporal.getHora());
             asignacionCamaFacade.edit(asignacionCama);
             //Liberacion de Cama
             Cama cama = bussinessFacade.findCamaById(asignacionCama.getIdCama().getIdCama());
@@ -149,6 +151,7 @@ public class TrasladoBean {
         System.out.println("Depues de trasladar");
 
         asignacionCamaFutura.setFechaAsignacion(trasladoTemporal.getFecha());
+        asignacionCamaFutura.setHoraAsignacion(trasladoTemporal.getHora());
         asignacionCamaFutura.setIdPaciente(asignacionCama.getIdPaciente());
         short aux = 1;
         if (!ectopico) {

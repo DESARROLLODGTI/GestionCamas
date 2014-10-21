@@ -20,11 +20,12 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author AndresEduardo
+ * @author termiwum
  */
 @Entity
 @Table(name = "egreso_hospitalizados")
@@ -32,9 +33,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "EgresoHospitalizados.findAll", query = "SELECT e FROM EgresoHospitalizados e"),
     @NamedQuery(name = "EgresoHospitalizados.findByIdEgreso", query = "SELECT e FROM EgresoHospitalizados e WHERE e.idEgreso = :idEgreso"),
-    @NamedQuery(name = "EgresoHospitalizados.findByFechaEgreso", query = "SELECT e FROM EgresoHospitalizados e WHERE e.fechaEgreso = :fechaEgreso")})
+    @NamedQuery(name = "EgresoHospitalizados.findByFechaEgreso", query = "SELECT e FROM EgresoHospitalizados e WHERE e.fechaEgreso = :fechaEgreso"),
+    @NamedQuery(name = "EgresoHospitalizados.findByHoraEgreso", query = "SELECT e FROM EgresoHospitalizados e WHERE e.horaEgreso = :horaEgreso"),
+    @NamedQuery(name = "EgresoHospitalizados.findByMotivoEgreso", query = "SELECT e FROM EgresoHospitalizados e WHERE e.motivoEgreso = :motivoEgreso")})
 public class EgresoHospitalizados implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,6 +46,10 @@ public class EgresoHospitalizados implements Serializable {
     @Column(name = "fecha_egreso")
     @Temporal(TemporalType.DATE)
     private Date fechaEgreso;
+    @Column(name = "hora_egreso")
+    @Temporal(TemporalType.TIME)
+    private Date horaEgreso;
+    @Size(max = 2147483647)
     @Column(name = "motivo_egreso")
     private String motivoEgreso;
     @JoinColumn(name = "id_tipo_egreso", referencedColumnName = "id_tipo_egreso")
@@ -68,21 +74,28 @@ public class EgresoHospitalizados implements Serializable {
         this.idEgreso = idEgreso;
     }
 
-    public String getMotivoEgreso() {
-        return motivoEgreso;
-    }
-
-    public void setMotivoEgreso(String motivoEgreso) {
-        this.motivoEgreso = motivoEgreso;
-    }
-    
-
     public Date getFechaEgreso() {
         return fechaEgreso;
     }
 
     public void setFechaEgreso(Date fechaEgreso) {
         this.fechaEgreso = fechaEgreso;
+    }
+
+    public Date getHoraEgreso() {
+        return horaEgreso;
+    }
+
+    public void setHoraEgreso(Date horaEgreso) {
+        this.horaEgreso = horaEgreso;
+    }
+
+    public String getMotivoEgreso() {
+        return motivoEgreso;
+    }
+
+    public void setMotivoEgreso(String motivoEgreso) {
+        this.motivoEgreso = motivoEgreso;
     }
 
     public TipoEgreso getIdTipoEgreso() {
@@ -125,5 +138,5 @@ public class EgresoHospitalizados implements Serializable {
     public String toString() {
         return "cl.hblt.entities.EgresoHospitalizados[ idEgreso=" + idEgreso + " ]";
     }
-
+    
 }

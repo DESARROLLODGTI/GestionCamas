@@ -12,24 +12,23 @@ import javax.ejb.Local;
 
 /**
  *
- * @author Edwin_Guaman
+ * @author termiwum
  */
 @Local
 public interface TipoEgresoFacadeLocal {
 
-  void create(TipoEgreso tipoEgreso);
+    void create(TipoEgreso tipoEgreso);
 
-  void edit(TipoEgreso tipoEgreso);
+    void edit(TipoEgreso tipoEgreso);
 
-  void remove(TipoEgreso tipoEgreso);
+    void remove(TipoEgreso tipoEgreso);
 
-  TipoEgreso find(Object id);
+    TipoEgreso find(Object id);
 
-  List<TipoEgreso> findAll();
-  List<TipoEgreso> findAll2(String dato);
+    List<TipoEgreso> findAll();
 
-  List<TipoEgreso> findRange(int[] range);
+    List<TipoEgreso> findRange(int[] range);
 
-  int count();
-  
+    int count();
+    
 }

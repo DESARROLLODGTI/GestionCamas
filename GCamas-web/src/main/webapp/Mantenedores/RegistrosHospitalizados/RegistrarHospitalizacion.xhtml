@@ -39,7 +39,7 @@
 
               <h:form id="asignacionPaciente" class="form-horizontal">
                 <p:growl id="growl" showSummary="true"/>
-                <!-- PRIMER PASO SELEKSION DE PASIENTE -->
+                <!-- PRIMER PASO SELECCION DE PACIENTE -->
                 <div class="step active animated fadeInRightStep">
                   <div class="form-group">
                     <p:commandButton icon="ui-icon-search" value="Buscar Paciente" type="button" onclick="PF('dlg1').show();" />
@@ -164,6 +164,15 @@
                                   required="true"/>
                     </div>
                   </div>
+                    
+                  <div class="form-group">
+                    <p:outputLabel for="horaAsignacion" value="Hora Asignacion:" 
+                                   styleClass="col-md-4 control-label" />
+                    <div class="col-md-4">
+                        <p:calendar id="horaAsignacion" value="#{asignacionCamaBean.asignacionCama.horaAsignacion}" pattern="HH:mm a" timeOnly="true" required="true"/>
+                    </div>
+                  </div>
+                    
                   <div class="form-group">
                     <p:outputLabel value="Estado Paciente:" styleClass="col-md-4 control-label" for="estadoPaciente" />
                     <div class="col-md-4">

@@ -51,7 +51,7 @@ public class appBean {
         return logoutUrl;
     }
 
-    /**
+     /**
      * *
      * Metodo que valida el Rut de una persona chilena
      *
@@ -178,4 +178,5 @@ public class appBean {
         }
         return edad;
     }
-}
+    
+ }

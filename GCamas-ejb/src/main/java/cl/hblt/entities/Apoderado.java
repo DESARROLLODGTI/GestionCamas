@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package cl.hblt.entities;
- 
+
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -27,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author AndresEduardo
+ * @author termiwum
  */
 @Entity
 @Table(name = "apoderado")
@@ -40,7 +39,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Apoderado.findByNombreApoderado", query = "SELECT a FROM Apoderado a WHERE a.nombreApoderado = :nombreApoderado"),
     @NamedQuery(name = "Apoderado.findByPapellidoApoderado", query = "SELECT a FROM Apoderado a WHERE a.papellidoApoderado = :papellidoApoderado"),
     @NamedQuery(name = "Apoderado.findBySapellidoApoderado", query = "SELECT a FROM Apoderado a WHERE a.sapellidoApoderado = :sapellidoApoderado"),
-    @NamedQuery(name = "Apoderado.findByNumContactoApoderado", query = "SELECT a FROM Apoderado a WHERE a.numContactoApoderado = :numContactoApoderado")})
+    @NamedQuery(name = "Apoderado.findByNumContactoApoderado", query = "SELECT a FROM Apoderado a WHERE a.numContactoApoderado = :numContactoApoderado"),
+    @NamedQuery(name = "Apoderado.findByTarjetaApoderado", query = "SELECT a FROM Apoderado a WHERE a.tarjetaApoderado = :tarjetaApoderado")})
 public class Apoderado implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -53,8 +53,6 @@ public class Apoderado implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "dv_apoderado")
     private String dvApoderado;
-    @Column(name = "tarjeta_apoderado")
-    private Short tarjetaApoderado;
     @Size(max = 2147483647)
     @Column(name = "nombre_apoderado")
     private String nombreApoderado;
@@ -67,6 +65,8 @@ public class Apoderado implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "num_contacto_apoderado")
     private String numContactoApoderado;
+    @Column(name = "tarjeta_apoderado")
+    private Short tarjetaApoderado;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idApoderado")
     private List<IngresoHospitalizados> ingresoHospitalizadosList;
     @JoinColumn(name = "id_parentesco", referencedColumnName = "id_parentesco")
@@ -136,6 +136,14 @@ public class Apoderado implements Serializable {
         this.numContactoApoderado = numContactoApoderado;
     }
 
+    public Short getTarjetaApoderado() {
+        return tarjetaApoderado;
+    }
+
+    public void setTarjetaApoderado(Short tarjetaApoderado) {
+        this.tarjetaApoderado = tarjetaApoderado;
+    }
+
     @XmlTransient
     public List<IngresoHospitalizados> getIngresoHospitalizadosList() {
         return ingresoHospitalizadosList;
@@ -152,16 +160,6 @@ public class Apoderado implements Serializable {
     public void setIdParentesco(Parentesco idParentesco) {
         this.idParentesco = idParentesco;
     }
-
-    public Short getTarjetaApoderado() {
-        return tarjetaApoderado;
-    }
-
-    public void setTarjetaApoderado(Short tarjetaApoderado) {
-        this.tarjetaApoderado = tarjetaApoderado;
-    }
-    
-    
 
     @Override
     public int hashCode() {

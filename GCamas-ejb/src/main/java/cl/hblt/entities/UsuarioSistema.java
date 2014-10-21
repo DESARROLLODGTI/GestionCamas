@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author AndresEduardo
+ * @author termiwum
  */
 @Entity
 @Table(name = "usuario_sistema")
@@ -85,13 +85,12 @@ public class UsuarioSistema implements Serializable {
     @ManyToOne(optional = false)
     private Cargo idCargo;
 
+    public UsuarioSistema() {
+    }
 
     public UsuarioSistema(Integer idUsuario) {
         this.idUsuario = idUsuario;
     }
-
-  public UsuarioSistema() {
-  }
 
     public Integer getIdUsuario() {
         return idUsuario;

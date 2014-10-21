@@ -12,23 +12,23 @@ import javax.ejb.Local;
 
 /**
  *
- * @author Edwin_Guaman
+ * @author termiwum
  */
 @Local
 public interface IngresoHospitalizadosFacadeLocal {
 
-  void create(IngresoHospitalizados ingresoHospitalizados);
+    void create(IngresoHospitalizados ingresoHospitalizados);
 
-  void edit(IngresoHospitalizados ingresoHospitalizados);
+    void edit(IngresoHospitalizados ingresoHospitalizados);
 
-  void remove(IngresoHospitalizados ingresoHospitalizados);
+    void remove(IngresoHospitalizados ingresoHospitalizados);
 
-  IngresoHospitalizados find(Object id);
+    IngresoHospitalizados find(Object id);
 
-  List<IngresoHospitalizados> findAll();
+    List<IngresoHospitalizados> findAll();
 
-  List<IngresoHospitalizados> findRange(int[] range);
+    List<IngresoHospitalizados> findRange(int[] range);
 
-  int count();
-  
+    int count();
+    
 }

@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author AndresEduardo
+ * @author termiwum
  */
 @Entity
 @Table(name = "tipo_prevision")
@@ -36,7 +36,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TipoPrevision.findByIdTipoPrevision", query = "SELECT t FROM TipoPrevision t WHERE t.idTipoPrevision = :idTipoPrevision"),
     @NamedQuery(name = "TipoPrevision.findByDescripcionTipoPrevision", query = "SELECT t FROM TipoPrevision t WHERE t.descripcionTipoPrevision = :descripcionTipoPrevision")})
 public class TipoPrevision implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -118,5 +117,5 @@ public class TipoPrevision implements Serializable {
     public String toString() {
         return "cl.hblt.entities.TipoPrevision[ idTipoPrevision=" + idTipoPrevision + " ]";
     }
-
+    
 }

@@ -26,10 +26,8 @@ public interface OpcionFacadeLocal {
 
     List<Opcion> findAll();
 
-    List<Opcion> findAll2(String dato);
-
     List<Opcion> findRange(int[] range);
 
     int count();
-
+    
 }

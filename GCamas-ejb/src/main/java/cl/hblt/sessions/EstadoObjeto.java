@@ -7,10 +7,11 @@ package cl.hblt.sessions;
 
 /**
  *
- * @author Edwin_Guaman
+ * @author termiwum
  */
 public enum EstadoObjeto {
-  ;
-  public static short ACTIVO=1;
-  public static short INACTIVO=0;
+    ;
+    public static short ACTIVO=1;
+    public static short INACTIVO=0;
+    
 }

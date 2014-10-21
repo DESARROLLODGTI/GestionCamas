@@ -1,31 +1,32 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
     <body>
+
         <ui:composition template="./../../Template.xhtml">
+
             <ui:define name="content">
                 <div id="content" style="margin-left: 0px !important;">
                     <fieldset>
-                        <legend>Ingresar Paciente</legend>
+                        <legend>Actualizar datos del paciente <p:outputLabel value="#{pacientesBean.paciente.runPaciente}-#{pacientesBean.paciente.dvPaciente}"/></legend>
                         <h:form styleClass="form-horizontal" id="frmPacienteCreate" >
                             <p:growl id="growl" showSummary="true" life="3000"  />  
                             <p:inputText type="hidden" id="idPaciente" value="#{pacientesBean.paciente.idPaciente}" title="idPaciente" 
                                          required="true" requiredMessage="The idPaciente field is required." maxlength="30" style="text-transform: uppercase;" />
-                            <p:inputText type="hidden" id="runPaciente" value="#{pacientesBean.paciente.runPaciente}" title="runPaciente" 
-                                         required="true" requiredMessage="The runPaciente field is required." maxlength="30" style="text-transform: uppercase;" />
-                            <p:inputText type="hidden" id="dvPaciente" value="#{pacientesBean.paciente.dvPaciente}" title="idPaciente" 
-                                         required="true" requiredMessage="The runPaciente field is required." maxlength="30" style="text-transform: uppercase;" />
                             <div class="form-group">
-                                <p:outputLabel value="Rut:" for="runPacineteLectura" styleClass="col-md-4 control-label" />
+                                <p:outputLabel value="Rut:" for="runPacinete" styleClass="col-md-4 control-label" />
                                 <div class="col-md-4">
-                                    <p:inputText id="runPacineteLectura" title="Rut"
-                                                 value="#{pacientesBean.paciente.runPaciente}-#{pacientesBean.paciente.dvPaciente}"  
-                                                 styleClass="form-control input-md" required="true" readonly="true"
+                                    <p:inputText id="runPacinete" value="#{pacientesBean.rut}" title="Rut" 
+                                                 styleClass="form-control input-md" required="true" 
                                                  requiredMessage="Ingrese un RUT." style="text-transform: uppercase;">
+                                        <f:validator validatorId="Validator.RutValidator" />
+                                        <p:ajax event="blur" update="growl" listener="#{pacientesBean.onValidaRut()}" />
+                                        <p:ajax event="blur" update="runPacinete" listener="#{pacientesBean.onFormateaRut()}" />
                                     </p:inputText>
                                 </div>
                             </div>
@@ -137,7 +138,8 @@
                     </fieldset>
                 </div>
             </ui:define>
+
         </ui:composition>
+
     </body>
 </html>
-

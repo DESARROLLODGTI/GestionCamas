@@ -121,11 +121,31 @@ public class ReportBean {
         }
     }
     
+     public String generateUrgenciaDiaNoche() throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext extContext = context.getExternalContext();
+        if (allServicios) {
+            listHospitalizados = bussinessFacade.listAllEctopicos();
+            extContext.getSessionMap().put("RepoHosp", listHospitalizados);
+            return "resultEctopicos.xhtml";
+        } else {
+            Especialidad aux = especialidadFacade.find(especialidad.getIdEspecialidad());
+            listHospitalizados = bussinessFacade.listEctopicosByEspecialidad(aux);
+            extContext.getSessionMap().put("RepoHosp", listHospitalizados);
+            return "resultEctopicos.xhtml";
+        }
+    }
+    
     public Date fechaDeIngreso(Paciente paciente){
-        System.out.println("Paciente listado: " + paciente.getNombre() + "rut: " +  paciente.getRunPaciente());
         IngresoHospitalizados aux = bussinessFacade.obtenerIngresoHospitalizado(paciente);
         return aux.getFechaIngreso();
     }
+    
+     public Date horaDeIngreso(Paciente paciente){
+        IngresoHospitalizados aux = bussinessFacade.obtenerIngresoHospitalizado(paciente);
+        return aux.getHoraIngreso();
+    }
+    
     public String calculaTotalDias(Date ih, Date eh) {
         Date date = new Date();
         long diferencia;

@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package cl.hblt.entities;
 
 import java.io.Serializable;
@@ -27,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author AndresEduardo
+ * @author termiwum
  */
 @Entity
 @Table(name = "traslado_temporal")
@@ -37,6 +36,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TrasladoTemporal.findByIdTrasladoTemporal", query = "SELECT t FROM TrasladoTemporal t WHERE t.idTrasladoTemporal = :idTrasladoTemporal"),
     @NamedQuery(name = "TrasladoTemporal.findByMotivo", query = "SELECT t FROM TrasladoTemporal t WHERE t.motivo = :motivo"),
     @NamedQuery(name = "TrasladoTemporal.findByFecha", query = "SELECT t FROM TrasladoTemporal t WHERE t.fecha = :fecha"),
+    @NamedQuery(name = "TrasladoTemporal.findByHora", query = "SELECT t FROM TrasladoTemporal t WHERE t.hora = :hora"),
     @NamedQuery(name = "TrasladoTemporal.findByEstado", query = "SELECT t FROM TrasladoTemporal t WHERE t.estado = :estado"),
     @NamedQuery(name = "TrasladoTemporal.findByIdEspecialidadProcedencia", query = "SELECT t FROM TrasladoTemporal t WHERE t.idEspecialidadProcedencia = :idEspecialidadProcedencia"),
     @NamedQuery(name = "TrasladoTemporal.findByIdEspecialidadTraslado", query = "SELECT t FROM TrasladoTemporal t WHERE t.idEspecialidadTraslado = :idEspecialidadTraslado")})
@@ -53,6 +53,9 @@ public class TrasladoTemporal implements Serializable {
     @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
     private Date fecha;
+    @Column(name = "hora")
+    @Temporal(TemporalType.TIME)
+    private Date hora;
     @Basic(optional = false)
     @NotNull
     @Column(name = "estado")
@@ -69,101 +72,110 @@ public class TrasladoTemporal implements Serializable {
     @ManyToOne(optional = false)
     private Paciente idPaciente;
 
-  public TrasladoTemporal() {
+    public TrasladoTemporal() {
     this.idPaciente= new Paciente();
-  }
-
-  public TrasladoTemporal(Integer idTrasladoTemporal) {
-    this.idTrasladoTemporal = idTrasladoTemporal;
-    this.idPaciente= new Paciente();
-  }
-
-  public TrasladoTemporal(Integer idTrasladoTemporal, Character estado, int idEspecialidadProcedencia, int idEspecialidadTraslado) {
-    this.idTrasladoTemporal = idTrasladoTemporal;
-    this.estado = estado;
-    this.idEspecialidadProcedencia = idEspecialidadProcedencia;
-    this.idEspecialidadTraslado = idEspecialidadTraslado;
-    this.idPaciente= new Paciente();
-  }
-
-  public Integer getIdTrasladoTemporal() {
-    return idTrasladoTemporal;
-  }
-
-  public void setIdTrasladoTemporal(Integer idTrasladoTemporal) {
-    this.idTrasladoTemporal = idTrasladoTemporal;
-  }
-
-  public String getMotivo() {
-    return motivo;
-  }
-
-  public void setMotivo(String motivo) {
-    this.motivo = motivo;
-  }
-
-  public Date getFecha() {
-    return fecha;
-  }
-
-  public void setFecha(Date fecha) {
-    this.fecha = fecha;
-  }
-
-  public Character getEstado() {
-    return estado;
-  }
-
-  public void setEstado(Character estado) {
-    this.estado = estado;
-  }
-
-  public int getIdEspecialidadProcedencia() {
-    return idEspecialidadProcedencia;
-  }
-
-  public void setIdEspecialidadProcedencia(int idEspecialidadProcedencia) {
-    this.idEspecialidadProcedencia = idEspecialidadProcedencia;
-  }
-
-  public int getIdEspecialidadTraslado() {
-    return idEspecialidadTraslado;
-  }
-
-  public void setIdEspecialidadTraslado(int idEspecialidadTraslado) {
-    this.idEspecialidadTraslado = idEspecialidadTraslado;
-  }
-
-  public Paciente getIdPaciente() {
-    return idPaciente;
-  }
-
-  public void setIdPaciente(Paciente idPaciente) {
-    this.idPaciente = idPaciente;
-  }
-
-  @Override
-  public int hashCode() {
-    int hash = 0;
-    hash += (idTrasladoTemporal != null ? idTrasladoTemporal.hashCode() : 0);
-    return hash;
-  }
-
-  @Override
-  public boolean equals(Object object) {
-    // TODO: Warning - this method won't work in the case the id fields are not set
-    if (!(object instanceof TrasladoTemporal)) {
-      return false;
     }
-    TrasladoTemporal other = (TrasladoTemporal) object;
-    if ((this.idTrasladoTemporal == null && other.idTrasladoTemporal != null) || (this.idTrasladoTemporal != null && !this.idTrasladoTemporal.equals(other.idTrasladoTemporal))) {
-      return false;
-    }
-    return true;
-  }
 
-  @Override
-  public String toString() {
-    return "cl.hblt.entities.TrasladoTemporal[ idTrasladoTemporal=" + idTrasladoTemporal + " ]";
-  }
+    public TrasladoTemporal(Integer idTrasladoTemporal) {
+        this.idTrasladoTemporal = idTrasladoTemporal;
+    this.idPaciente= new Paciente();
+    }
+
+    public TrasladoTemporal(Integer idTrasladoTemporal, Character estado, int idEspecialidadProcedencia, int idEspecialidadTraslado) {
+        this.idTrasladoTemporal = idTrasladoTemporal;
+        this.estado = estado;
+        this.idEspecialidadProcedencia = idEspecialidadProcedencia;
+        this.idEspecialidadTraslado = idEspecialidadTraslado;
+    this.idPaciente= new Paciente();
+    }
+
+    public Integer getIdTrasladoTemporal() {
+        return idTrasladoTemporal;
+    }
+
+    public void setIdTrasladoTemporal(Integer idTrasladoTemporal) {
+        this.idTrasladoTemporal = idTrasladoTemporal;
+    }
+
+    public String getMotivo() {
+        return motivo;
+    }
+
+    public void setMotivo(String motivo) {
+        this.motivo = motivo;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+    public Date getHora() {
+        return hora;
+    }
+
+    public void setHora(Date hora) {
+        this.hora = hora;
+    }
+
+    public Character getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Character estado) {
+        this.estado = estado;
+    }
+
+    public int getIdEspecialidadProcedencia() {
+        return idEspecialidadProcedencia;
+    }
+
+    public void setIdEspecialidadProcedencia(int idEspecialidadProcedencia) {
+        this.idEspecialidadProcedencia = idEspecialidadProcedencia;
+    }
+
+    public int getIdEspecialidadTraslado() {
+        return idEspecialidadTraslado;
+    }
+
+    public void setIdEspecialidadTraslado(int idEspecialidadTraslado) {
+        this.idEspecialidadTraslado = idEspecialidadTraslado;
+    }
+
+    public Paciente getIdPaciente() {
+        return idPaciente;
+    }
+
+    public void setIdPaciente(Paciente idPaciente) {
+        this.idPaciente = idPaciente;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (idTrasladoTemporal != null ? idTrasladoTemporal.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof TrasladoTemporal)) {
+            return false;
+        }
+        TrasladoTemporal other = (TrasladoTemporal) object;
+        if ((this.idTrasladoTemporal == null && other.idTrasladoTemporal != null) || (this.idTrasladoTemporal != null && !this.idTrasladoTemporal.equals(other.idTrasladoTemporal))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "cl.hblt.entities.TrasladoTemporal[ idTrasladoTemporal=" + idTrasladoTemporal + " ]";
+    }
+    
 }

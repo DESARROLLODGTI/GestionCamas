@@ -13,7 +13,7 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author AndresEduardo
+ * @author termiwum
  */
 @Stateless
 public class MenuFacade extends AbstractFacade<Menu> implements MenuFacadeLocal {

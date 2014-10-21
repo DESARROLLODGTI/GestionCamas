@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package cl.hblt.entities;
 
 import java.io.Serializable;
@@ -21,11 +20,12 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author AndresEduardo
+ * @author termiwum
  */
 @Entity
 @Table(name = "asignacion_cama")
@@ -34,9 +34,13 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "AsignacionCama.findAll", query = "SELECT a FROM AsignacionCama a"),
     @NamedQuery(name = "AsignacionCama.findByIdAsignacion", query = "SELECT a FROM AsignacionCama a WHERE a.idAsignacion = :idAsignacion"),
     @NamedQuery(name = "AsignacionCama.findByFechaAsignacion", query = "SELECT a FROM AsignacionCama a WHERE a.fechaAsignacion = :fechaAsignacion"),
+    @NamedQuery(name = "AsignacionCama.findByHoraAsignacion", query = "SELECT a FROM AsignacionCama a WHERE a.horaAsignacion = :horaAsignacion"),
     @NamedQuery(name = "AsignacionCama.findByFechaEgreso", query = "SELECT a FROM AsignacionCama a WHERE a.fechaEgreso = :fechaEgreso"),
+    @NamedQuery(name = "AsignacionCama.findByHoraEgreso", query = "SELECT a FROM AsignacionCama a WHERE a.horaEgreso = :horaEgreso"),
     @NamedQuery(name = "AsignacionCama.findByEctopico", query = "SELECT a FROM AsignacionCama a WHERE a.ectopico = :ectopico"),
-    @NamedQuery(name = "AsignacionCama.findByIdServicioProcedencia", query = "SELECT a FROM AsignacionCama a WHERE a.idServicioProcedencia = :idServicioProcedencia")})
+    @NamedQuery(name = "AsignacionCama.findByIdServicioProcedencia", query = "SELECT a FROM AsignacionCama a WHERE a.idServicioProcedencia = :idServicioProcedencia"),
+    @NamedQuery(name = "AsignacionCama.findByIdServEctopico", query = "SELECT a FROM AsignacionCama a WHERE a.idServEctopico = :idServEctopico"),
+    @NamedQuery(name = "AsignacionCama.findByDiagnosticoSala", query = "SELECT a FROM AsignacionCama a WHERE a.diagnosticoSala = :diagnosticoSala")})
 public class AsignacionCama implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -47,17 +51,24 @@ public class AsignacionCama implements Serializable {
     @Column(name = "fecha_asignacion")
     @Temporal(TemporalType.DATE)
     private Date fechaAsignacion;
+    @Column(name = "hora_asignacion")
+    @Temporal(TemporalType.TIME)
+    private Date horaAsignacion;
     @Column(name = "fecha_egreso")
     @Temporal(TemporalType.DATE)
     private Date fechaEgreso;
+    @Column(name = "hora_egreso")
+    @Temporal(TemporalType.TIME)
+    private Date horaEgreso;
     @Column(name = "ectopico")
     private Short ectopico;
-    @Column(name = "id_serv_ectopico")
-    private Integer idServEctopico;
-    @Column(name = "diagnostico_sala")
-    private String diagnosticoSala;
     @Column(name = "id_servicio_procedencia")
     private Integer idServicioProcedencia;
+    @Column(name = "id_serv_ectopico")
+    private Integer idServEctopico;
+    @Size(max = 2147483647)
+    @Column(name = "diagnostico_sala")
+    private String diagnosticoSala;
     @JoinColumn(name = "id_paciente", referencedColumnName = "id_paciente")
     @ManyToOne(optional = false)
     private Paciente idPaciente;
@@ -67,7 +78,6 @@ public class AsignacionCama implements Serializable {
     @JoinColumn(name = "id_cama", referencedColumnName = "id_cama")
     @ManyToOne(optional = false)
     private Cama idCama;
-
 
     public AsignacionCama() {
         this.idCama = new Cama();
@@ -97,12 +107,28 @@ public class AsignacionCama implements Serializable {
         this.fechaAsignacion = fechaAsignacion;
     }
 
+    public Date getHoraAsignacion() {
+        return horaAsignacion;
+    }
+
+    public void setHoraAsignacion(Date horaAsignacion) {
+        this.horaAsignacion = horaAsignacion;
+    }
+
     public Date getFechaEgreso() {
         return fechaEgreso;
     }
 
     public void setFechaEgreso(Date fechaEgreso) {
         this.fechaEgreso = fechaEgreso;
+    }
+
+    public Date getHoraEgreso() {
+        return horaEgreso;
+    }
+
+    public void setHoraEgreso(Date horaEgreso) {
+        this.horaEgreso = horaEgreso;
     }
 
     public Short getEctopico() {

@@ -12,7 +12,7 @@ import javax.ejb.Local;
 
 /**
  *
- * @author AndresEduardo
+ * @author termiwum
  */
 @Local
 public interface TrasladoTemporalFacadeLocal {

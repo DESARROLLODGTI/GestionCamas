@@ -212,6 +212,7 @@ public class AsignacionCamaBean implements Serializable {
         if (auxDate1.equals(auxDateActual)) {
             ih.getIdPaciente().setIdPaciente(pacienteBuscado.getIdPaciente());
             ih.setFechaIngreso(asignacionCama.getFechaAsignacion());
+            ih.setHoraIngreso(asignacionCama.getHoraAsignacion());
             ih.setIdApoderado(new Apoderado(1));
             if (ectopico) {
                 short aux = 1;

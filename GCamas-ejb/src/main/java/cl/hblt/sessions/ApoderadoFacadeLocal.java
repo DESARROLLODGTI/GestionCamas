@@ -26,7 +26,7 @@ public interface ApoderadoFacadeLocal {
     Apoderado find(Object id);
 
     List<Apoderado> findAll();
-    
+
      List<Apoderado> findAll2(String dato);
 
     List<Apoderado> findRange(int[] range);

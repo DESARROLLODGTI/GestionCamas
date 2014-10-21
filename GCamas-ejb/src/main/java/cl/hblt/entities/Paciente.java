@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author AndresEduardo
+ * @author termiwum
  */
 @Entity
 @Table(name = "paciente")
@@ -45,7 +45,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Paciente.findByFechaNacimiento", query = "SELECT p FROM Paciente p WHERE p.fechaNacimiento = :fechaNacimiento"),
     @NamedQuery(name = "Paciente.findByNumeroFicha", query = "SELECT p FROM Paciente p WHERE p.numeroFicha = :numeroFicha")})
 public class Paciente implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -238,6 +237,5 @@ public class Paciente implements Serializable {
     public String toString() {
         return "cl.hblt.entities.Paciente[ idPaciente=" + idPaciente + " ]";
     }
-
     
 }

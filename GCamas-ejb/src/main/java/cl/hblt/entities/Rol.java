@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package cl.hblt.entities;
 
 import java.io.Serializable;
@@ -24,8 +23,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *findIdByDescripcionRol
- * @author AndresEduardo
+ *
+ * @author termiwum
  */
 @Entity
 @Table(name = "rol")
@@ -36,8 +35,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Rol.findByDescripcionRol", query = "SELECT r FROM Rol r WHERE r.descripcionRol = :descripcionRol"),
     @NamedQuery(name = "Rol.findByIndActivo", query = "SELECT r FROM Rol r WHERE r.indActivo = :indActivo")})
 public class Rol implements Serializable {
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "idRol")
-  
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -127,7 +124,5 @@ public class Rol implements Serializable {
     public String toString() {
         return "cl.hblt.entities.Rol[ idRol=" + idRol + " ]";
     }
-
-  
     
 }

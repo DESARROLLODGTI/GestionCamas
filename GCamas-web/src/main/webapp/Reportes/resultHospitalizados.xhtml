@@ -70,7 +70,7 @@
                                     <f:facet name="header">
                                         <h:outputText value="Uso cama desde" />
                                     </f:facet>
-                                    <h:outputText value="#{item.fechaAsignacion}"/>
+                                    <h:outputText value="#{item.fechaAsignacion} #{item.horaAsignacion}"/>
                                 </p:column>
                                  <p:column>
                                     <f:facet name="header">
@@ -82,7 +82,7 @@
                                     <f:facet name="header">
                                         <h:outputText value="Fecha de Ingreso Hosp" />
                                     </f:facet>
-                                     <h:outputText value="#{reportBean.fechaDeIngreso(item.idPaciente)}"/>
+                                     <h:outputText value="#{reportBean.fechaDeIngreso(item.idPaciente)} #{reportBean.horaDeIngreso(item.idPaciente)} "/>
                                 </p:column>
                                 <p:column>
                                     <f:facet name="header">

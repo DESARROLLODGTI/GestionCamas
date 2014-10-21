@@ -46,7 +46,7 @@ import utils.appBean;
  * @version 1.2
  */
 public class pacientesBean {
-    
+
     @EJB
     private final IngresoHospitalizadosFacadeLocal ingresoHospitalizadosFacade;
 
@@ -78,6 +78,7 @@ public class pacientesBean {
     private String edad;
     private Boolean pacienteHospitalizado;
     private List<TipoEgreso> listaEgresos;
+    private Integer correlativoNN;
 
     ///////////////////// INICIO METODOS //////////////////////
     /**
@@ -92,10 +93,10 @@ public class pacientesBean {
         paciente.setNumeroFicha(paciente.getNumeroFicha().toUpperCase());
     }
 
-    public void onRowSelect(){
+    public void onRowSelect() {
         pacienteHospitalizado = bussinessFacade.pacienteHospitalizado(selectedPaciente);
     }
-    
+
     public void create() {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
@@ -130,12 +131,23 @@ public class pacientesBean {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
             camposMayuscula();
-            if (!bussinessFacade.findByNroFicha(paciente.getNumeroFicha())) {
-                pacienteFacade.edit(paciente);
-                this.resetData();
-                context.getExternalContext().redirect("Pacientes.xhtml");
-            } else {
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "El N° de Ficha Ingresado ya se Encuentra Asociado a un Paciente", null));
+            rut = rut.replace("-", "");
+            rut = rut.replace(".", "");
+            String rut1 = rut.substring(0, rut.length() - 1);
+            String dv = rut.charAt(rut.length() - 1) + "";
+            camposMayuscula();
+            paciente.setRunPaciente(Integer.parseInt(rut1));
+            paciente.setDvPaciente(dv.toUpperCase());
+            if (bussinessFacade.findByRutPaciente(paciente.getRunPaciente())) {
+                if (bussinessFacade.findByNroFicha(paciente.getNumeroFicha())) {
+                    pacienteFacade.edit(paciente);
+                    this.resetData();
+                    context.getExternalContext().redirect("Pacientes.xhtml");
+                } else {
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "El N° de Ficha Ingresado ya se Encuentra Asociado a un Paciente", null));
+                }
+            }else{
+                   context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "El RUT del Paciente ya se encuentra Ingresado", null));
             }
         } catch (IOException e) {
             context.addMessage(null, new FacesMessage("Error", e.getMessage()));
@@ -291,9 +303,33 @@ public class pacientesBean {
         }
 
     }
-    //////////////////// FIN METODOS //////////////////////
-    ///////////////////////////////////////////////////////
-    ///////////// INICIO CONSTRUCTOR /////////////////////
+
+    //valida unicidad del correlativo
+    public void onValidaCorrelativo() {
+        if (!bussinessFacade.existeNN(correlativoNN)) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Correlativo NN existente", "Intente con otro correlativo"));
+        }
+    }
+
+    public void createNN() throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
+        paciente.setRunPaciente(correlativoNN);
+        if (bussinessFacade.findByRutPaciente(paciente.getRunPaciente())) {
+            paciente.setDvPaciente("0");
+            paciente.setNombre("NN");
+            paciente.setIdTipoPrevision(new TipoPrevision(12)); //tipo prevision 12 corresponde a desconocido
+            pacienteFacade.create(paciente);
+            this.resetData();
+            context.getExternalContext().redirect("Pacientes.xhtml");
+        } else {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "El correlativo ya esta en uso", null));
+        }
+        
+    }
+        //////////////////// FIN METODOS //////////////////////
+        ///////////////////////////////////////////////////////
+        ///////////// INICIO CONSTRUCTOR /////////////////////
 
     public pacientesBean() {
         selectedPaciente = null;
@@ -436,6 +472,14 @@ public class pacientesBean {
 
     public void setSelectedPaciente(Paciente selectedPaciente) {
         this.selectedPaciente = selectedPaciente;
+    }
+
+    public Integer getCorrelativoNN() {
+        return correlativoNN;
+    }
+
+    public void setCorrelativoNN(Integer correlativoNN) {
+        this.correlativoNN = correlativoNN;
     }
 
 }

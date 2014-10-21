@@ -20,6 +20,8 @@
                             </div>
                             <p:commandButton id="cmdAgregar" value="Agregar" styleClass="new-user btn btn-success pull-right" 
                                              action="PacienteCreate.xhtml" icon="ui-icon-person"  />
+                            <p:commandButton id="cmdAgregarNN" value="Agregar NN" styleClass="new-user btn btn-success pull-right" 
+                                             action="RegistroNN.xhtml" icon="ui-icon-person"  />
                         </div>
                         <div class="content-wrapper">  
                             <p:dataTable value="#{pacientesBean.listPacientes}" var="item" 

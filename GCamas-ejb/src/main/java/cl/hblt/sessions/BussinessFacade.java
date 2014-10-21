@@ -456,13 +456,7 @@ public class BussinessFacade implements BussinessFacadeLocal {
     public boolean findByRutPaciente(int rut) {
         Query query = em.createQuery("SELECT p FROM Paciente p WHERE p.runPaciente = :runPaciente");
         query.setParameter("runPaciente", rut);
-
-        if (query.getResultList().isEmpty()) {
-            return true;
-        } else {
-            return false;
-        }
-
+        return query.getResultList().isEmpty();
     }
 
     /**
@@ -478,11 +472,7 @@ public class BussinessFacade implements BussinessFacadeLocal {
     public boolean findByNroFicha(String nroFicha) {
         Query query = em.createQuery("SELECT p FROM Paciente p WHERE p.numeroFicha = :numeroFicha");
         query.setParameter("numeroFicha", nroFicha);
-        if (query.getResultList().isEmpty()) {
-            return true;
-        } else {
-            return false;
-        }
+        return query.getResultList().isEmpty();
     }
 
     @Override
@@ -1186,6 +1176,13 @@ public class BussinessFacade implements BussinessFacadeLocal {
             }
         }
         return eh;
+    }
+
+    @Override
+    public boolean existeNN(Integer correlativoNN) {
+        Query q = em.createQuery("Select p From Paciente p WHERE p.runPaciente=:correlativoNN");
+        q.setParameter("correlativoNN", correlativoNN);
+        return q.getResultList().isEmpty();
     }
 
 }

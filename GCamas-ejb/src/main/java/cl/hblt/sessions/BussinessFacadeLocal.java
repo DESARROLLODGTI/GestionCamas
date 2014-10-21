@@ -229,5 +229,7 @@ public interface BussinessFacadeLocal {
   // Rerporte Egresados
    public List<Integer> getListaIdPacientesRangoFechas(Date fecha1, Date fecha2);
    public ArrayList<EgresoHospitalizados> getEgresos(Date fecha1, Date fecha2);
+   //Pacientes NN
+   public boolean existeNN(Integer correlativoNN);
 
 }
